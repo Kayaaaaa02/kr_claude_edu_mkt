@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KARINA EDITION VOL.2 — 판매전략 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --s0:#F0F8FD; --s1:#D6EEF9; --s2:#A8D8EE; --s3:#6BBCDE; --s4:#3AA4CD; --s5:#1A7FAA;
+  --bg:#F4F9FD; --white:#fff;
+  --t1:#0F2733; --t2:#2C4F61; --t3:#5A7F92;
+  --bdr:rgba(58,164,205,0.18); --bdr2:rgba(58,164,205,0.38);
+  --grn:#2EAA78; --grn-bg:#E8F7F1;
+  --rad:14px; --sh:0 2px 18px rgba(58,164,205,0.10);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  font-family: 'Outfit', sans-serif;
+  color: var(--t1);
+  overflow: hidden;
+}
+
+/* ══ TOP HEADER ══ */
+.top-header {
+  background: linear-gradient(135deg, #0D2230 0%, #163A50 60%, #1A7FAA 100%);
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 16px rgba(13,34,48,0.4);
+  position: relative;
+  z-index: 200;
+}
+
+.top-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: rgba(107,188,222,0.25);
+}
+
+.hdr-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.hdr-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 19px;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+
+.hdr-divider {
+  width: 1px;
+  height: 14px;
+  background: rgba(255,255,255,0.25);
+  align-self: center;
+}
+
+.hdr-sub {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--s2);
+  letter-spacing: 0.04em;
+}
+
+.hdr-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pill {
+  background: rgba(255,255,255,0.12);
+  color: var(--s1);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(107,188,222,0.28);
+  letter-spacing: 0.03em;
+}
+
+.pill-grn {
+  background: rgba(46,170,120,0.18);
+  color: #5CDBA4;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(46,170,120,0.35);
+}
+
+/* ══ IFRAME CONTAINER ══ */
+.frame-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.frame-pane {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.frame-pane iframe {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background: var(--bg);
+}
+
+/* Layout root */
+.layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Loading overlay per frame */
+.frame-loading {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 10;
+  transition: opacity 0.4s;
+}
+
+.frame-loading.done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--s1);
+  border-top-color: var(--s4);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text {
+  font-size: 13px;
+  color: var(--t3);
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ══ TOP HEADER ══ -->
+  <header class="top-header">
+    <div class="hdr-brand">
+      <span class="hdr-logo">KARINA EDITION VOL.2</span>
+      <div class="hdr-divider"></div>
+      <span class="hdr-sub">판매전략 분석</span>
+    </div>
+    <div class="hdr-pills">
+      <span class="pill">MAR 21 1ST DROP</span>
+      <span class="pill">MAR 28 2ND DROP</span>
+      <span class="pill">7 Markets</span>
+      <span class="pill-grn">✅ ALL SOLD OUT</span>
+    </div>
+  </header>
+
+  <!-- ══ IFRAME ══ -->
+  <div class="frame-wrapper">
+    <div class="frame-pane" id="pane-1">
+      <div class="frame-loading" id="loading-1">
+        <div class="spinner"></div>
+        <div class="loading-text">판매전략 분석 로딩 중...</div>
+      </div>
+      <iframe
+        id="frame-1"
+        src="tab1.html"
+        allow="autoplay"
+        onload="onFrameLoad()"
+        title="판매전략 분석"
+      ></iframe>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function onFrameLoad() {
+  var loading = document.getElementById('loading-1');
+  if (loading) {
+    loading.classList.add('done');
+    setTimeout(function() { loading.style.display = 'none'; }, 500);
+  }
+  triggerVideos();
+}
+
+function triggerVideos() {
+  var iframe = document.getElementById('frame-1');
+  if (!iframe) return;
+  try {
+    var doc = iframe.contentDocument || iframe.contentWindow.document;
+    if (!doc) return;
+    doc.querySelectorAll('video').forEach(function(v) {
+      v.muted = true;
+      v.loop = true;
+      v.playsInline = true;
+      v.setAttribute('muted', '');
+      v.setAttribute('loop', '');
+      v.setAttribute('playsinline', '');
+      if (v.readyState === 0) v.load();
+      var p = v.play();
+      if (p) p.catch(function() {});
+    });
+  } catch(e) {
+    // cross-origin or access denied — videos will autoplay via iframe's own script
+  }
+}
+
+// Periodically ensure videos keep playing
+setInterval(triggerVideos, 3000);
+
+// On user interaction, trigger videos
+['click', 'touchstart', 'keydown'].forEach(function(evt) {
+  document.addEventListener(evt, triggerVideos, { passive: true });
+});
+
+// Initial trigger after page loads
+window.addEventListener('load', function() {
+  setTimeout(triggerVideos, 500);
+  setTimeout(triggerVideos, 1500);
+});
+</script>
+
+</body>
+</html>

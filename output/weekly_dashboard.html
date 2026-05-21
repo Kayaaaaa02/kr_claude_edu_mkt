@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F&amp;F China Weekly Report</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f5; color:#333; }
+  .header { background:linear-gradient(135deg,#1a1a2e,#16213e); color:#fff; padding:30px 40px; }
+  .header h1 { font-size:24px; font-weight:600; }
+  .header p { opacity:0.8; margin-top:5px; font-size:14px; }
+  .container { max-width:1200px; margin:0 auto; padding:20px; }
+  .kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+  .kpi { background:#fff; border-radius:12px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .kpi .label { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; }
+  .kpi .value { font-size:28px; font-weight:700; margin-top:8px; color:#1a1a2e; }
+  .kpi .sub { font-size:12px; color:#aaa; margin-top:4px; }
+  .charts { display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:24px; }
+  .card { background:#fff; border-radius:12px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .card h3 { font-size:16px; margin-bottom:16px; color:#1a1a2e; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th { text-align:left; padding:10px 12px; border-bottom:2px solid #e0e0e0; color:#666; font-weight:600; }
+  td { padding:10px 12px; border-bottom:1px solid #f0f0f0; }
+  tr:hover { background:#fafafa; }
+  .bar { height:18px; background:linear-gradient(90deg,#4361ee,#3a86ff); border-radius:9px; min-width:4px; }
+  .bar-cat { background:linear-gradient(90deg,#f72585,#b5179e); }
+  .footer { text-align:center; padding:20px; color:#aaa; font-size:12px; }
+  canvas { max-height:280px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>F&amp;F China Weekly Sales Report</h1>
+  <p>2026-05-05 ~ 2026-05-11 | Generated: 2026-05-13</p>
+</div>
+<div class="container">
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">Total Revenue</div>
+      <div class="value">¥3,543万</div>
+      <div class="sub">¥35,426,121</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Gross Profit</div>
+      <div class="value">¥2,038万</div>
+      <div class="sub">¥20,379,200</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Gross Margin</div>
+      <div class="value">57.5%</div>
+      <div class="sub">Target: 60%</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Units Sold</div>
+      <div class="value">88,288</div>
+      <div class="sub">Avg ¥401/unit</div>
+    </div>
+  </div>
+
+  <div class="charts">
+    <div class="card">
+      <h3>Daily Revenue Trend (CNY)</h3>
+      <canvas id="dailyChart"></canvas>
+    </div>
+    <div class="card">
+      <h3>Revenue by Channel</h3>
+      <canvas id="channelPie"></canvas>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px">
+    <h3>Channel Performance</h3>
+    <table>
+      <thead><tr><th>Channel</th><th>Revenue</th><th>Qty</th><th>Profit</th><th>Margin</th><th>Share</th></tr></thead>
+      <tbody><tr>
+        <td>Tmall</td>
+        <td>¥11,510,386</td>
+        <td>27,440</td>
+        <td>¥6,624,165</td>
+        <td>57.5%</td>
+        <td><div class="bar" style="width:32%"></div></td>
+    </tr><tr>
+        <td>JD.com</td>
+        <td>¥8,208,957</td>
+        <td>20,078</td>
+        <td>¥4,743,041</td>
+        <td>57.8%</td>
+        <td><div class="bar" style="width:23%"></div></td>
+    </tr><tr>
+        <td>Douyin</td>
+        <td>¥5,973,020</td>
+        <td>16,456</td>
+        <td>¥3,434,323</td>
+        <td>57.5%</td>
+        <td><div class="bar" style="width:17%"></div></td>
+    </tr><tr>
+        <td>Offline Store</td>
+        <td>¥5,882,635</td>
+        <td>14,232</td>
+        <td>¥3,372,110</td>
+        <td>57.3%</td>
+        <td><div class="bar" style="width:17%"></div></td>
+    </tr><tr>
+        <td>WeChat Mini</td>
+        <td>¥3,851,123</td>
+        <td>10,082</td>
+        <td>¥2,205,560</td>
+        <td>57.3%</td>
+        <td><div class="bar" style="width:11%"></div></td>
+    </tr></tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:24px">
+    <h3>Category Performance</h3>
+    <table>
+      <thead><tr><th>Category</th><th>Revenue</th><th>Qty</th><th>Profit</th><th>Margin</th><th>Share</th></tr></thead>
+      <tbody><tr>
+        <td>MLB Cap</td>
+        <td>¥9,646,483</td>
+        <td>24,153</td>
+        <td>¥5,482,535</td>
+        <td>56.8%</td>
+        <td><div class="bar bar-cat" style="width:54%"></div></td>
+    </tr><tr>
+        <td>MLB Apparel</td>
+        <td>¥7,645,999</td>
+        <td>20,048</td>
+        <td>¥4,474,136</td>
+        <td>58.5%</td>
+        <td><div class="bar bar-cat" style="width:43%"></div></td>
+    </tr><tr>
+        <td>Discovery Apparel</td>
+        <td>¥6,479,972</td>
+        <td>15,137</td>
+        <td>¥3,759,993</td>
+        <td>58.0%</td>
+        <td><div class="bar bar-cat" style="width:37%"></div></td>
+    </tr><tr>
+        <td>MLB Bag</td>
+        <td>¥6,309,359</td>
+        <td>16,104</td>
+        <td>¥3,511,434</td>
+        <td>55.7%</td>
+        <td><div class="bar bar-cat" style="width:36%"></div></td>
+    </tr><tr>
+        <td>Discovery Shoes</td>
+        <td>¥5,344,308</td>
+        <td>12,846</td>
+        <td>¥3,151,102</td>
+        <td>59.0%</td>
+        <td><div class="bar bar-cat" style="width:30%"></div></td>
+    </tr></tbody>
+    </table>
+  </div>
+</div>
+<div class="footer">F&amp;F China | Auto-generated Weekly Report | Confidential</div>
+
+<script>
+new Chart(document.getElementById('dailyChart'), {
+  type:'bar',
+  data:{
+    labels:['2026-05-05', '2026-05-06', '2026-05-07', '2026-05-08', '2026-05-09', '2026-05-10', '2026-05-11'],
+    datasets:[{
+      label:'Revenue (CNY)',
+      data:[4592407, 4941442, 5251733, 5694870, 4970367, 4443493, 5531809],
+      backgroundColor:'rgba(67,97,238,0.7)',
+      borderRadius:6
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{display:false}},
+    scales:{y:{ticks:{callback:v=>'¥'+(v/10000).toFixed(0)+'万'}}}
+  }
+});
+
+new Chart(document.getElementById('channelPie'), {
+  type:'doughnut',
+  data:{
+    labels:['Tmall', 'JD.com', 'Douyin', 'Offline Store', 'WeChat Mini'],
+    datasets:[{
+      data:[11510386, 8208957, 5973020, 5882635, 3851123],
+      backgroundColor:['#4361ee','#3a86ff','#f72585','#4cc9f0','#7209b7']
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}
+  }
+});
+</script>
+</body>
+</html>

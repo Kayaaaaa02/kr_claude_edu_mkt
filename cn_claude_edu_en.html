@@ -1,0 +1,4367 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>F&amp;F CN · Claude Code · 나만의 대시보드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root {
+    /* Brand */
+    --primary:           #9C6CE4;
+    --primary-pressed:   #7C5DC1;
+    --primary-deep:      #6440A4;
+    --on-primary:        #FFFFFF;
+
+    --brand-navy:        #191B22;
+    --brand-navy-deep:   #0F1117;
+    --brand-navy-mid:    #2A2D3A;
+
+    --link-blue:         #2383E2;
+    --link-blue-pressed: #1C68B7;
+
+    /* Brand spectrum */
+    --brand-pink:        #E8649D;
+    --brand-pink-deep:   #C8447D;
+    --brand-orange:      #F58A4F;
+    --brand-orange-deep: #C46532;
+    --brand-purple:      #9C6CE4;
+    --brand-purple-300:  #C8B3F0;
+    --brand-purple-800:  #5D40A4;
+    --brand-teal:        #4F9D9D;
+    --brand-green:       #4F9D6E;
+    --brand-yellow:      #F2CB6E;
+    --brand-brown:       #8B6B53;
+
+    /* Card tints (pastel) */
+    --tint-peach:        #FFE9DD;
+    --tint-rose:         #FFE0E5;
+    --tint-mint:         #D9F1E1;
+    --tint-lavender:     #E8E0FB;
+    --tint-sky:          #DAEAF7;
+    --tint-yellow:       #FFF3D6;
+    --tint-yellow-bold:  #FFD93D;
+    --tint-cream:        #F7F1E8;
+    --tint-gray:         #F2F2F1;
+
+    /* Surface */
+    --canvas:           #FFFFFF;
+    --surface:          #F7F6F3;
+    --surface-soft:     #FBFBFA;
+    --hairline:         #EBEBEA;
+    --hairline-soft:    #F2F2F1;
+    --hairline-strong:  #D8D8D5;
+
+    /* Text */
+    --ink-deep:      #0F0F0F;
+    --ink:           #191919;
+    --charcoal:      #37352F;
+    --slate:         #6B6B6B;
+    --steel:         #8C8C8C;
+    --stone:         #A8A8A8;
+    --muted:         #C8C8C8;
+    --on-dark:       #FFFFFF;
+    --on-dark-muted: rgba(255, 255, 255, 0.72);
+
+    /* Semantic */
+    --success: #2D9D78;
+    --warning: #E8924F;
+    --error:   #D54F44;
+
+    /* Typography */
+    --font:      "Inter", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Helvetica, sans-serif;
+    --font-kr:   "Pretendard Variable", Pretendard, "Inter", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+    /* Radius */
+    --r-xs:   4px;
+    --r-sm:   6px;
+    --r-md:   8px;
+    --r-lg:  12px;
+    --r-xl:  16px;
+    --r-xxl: 20px;
+    --r-3xl: 24px;
+    --r-full: 9999px;
+
+    /* Spacing */
+    --xxs:  4px;
+    --xs:   8px;
+    --sm:  12px;
+    --md:  16px;
+    --lg:  20px;
+    --xl:  28px;
+    --xxl: 36px;
+    --section:    64px;
+    --section-lg: 96px;
+    --hero:      120px;
+
+    /* Shadows */
+    --sh-1: 0 1px 2px rgba(15, 15, 15, 0.04);
+    --sh-2: 0 4px 12px rgba(15, 15, 15, 0.08);
+    --sh-3: 0 24px 48px -8px rgba(15, 15, 15, 0.30);
+    --sh-4: 0 16px 48px -8px rgba(15, 15, 15, 0.16);
+
+    --max: 1280px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+  body {
+    margin: 0;
+    background: var(--canvas);
+    color: var(--charcoal);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    word-break: keep-all;
+    line-break: strict;
+    overflow-wrap: break-word;
+  }
+
+  ::selection { background: var(--primary); color: var(--on-primary); }
+
+  a { color: var(--link-blue); text-decoration: none; }
+  a:hover { color: var(--link-blue-pressed); }
+  code { font-family: var(--font-mono); font-size: 0.9em; }
+
+  /* ─── Promo Banner ─────────────────────────────────── */
+  .promo-banner {
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    padding: 10px var(--md);
+    border-bottom: 1px solid var(--hairline);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .promo-banner .pip {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .promo-banner a {
+    color: var(--ink);
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+  }
+
+  /* ─── Top Nav ──────────────────────────────────────── */
+  .top-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--canvas);
+    border-bottom: 1px solid var(--hairline);
+    height: 64px;
+    transform: translateY(0);
+    transition: transform .28s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+  }
+  .top-nav.nav-hidden {
+    transform: translateY(-100%);
+  }
+  body { padding-top: 64px; }
+  @media (max-width: 760px) {
+    body { padding-top: 56px; }
+  }
+  .nav-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 var(--xxl);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--xxl);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: var(--ink-deep);
+  }
+  .nav-logo .mark {
+    width: 28px; height: 28px;
+    background: var(--ink-deep);
+    color: var(--canvas);
+    border-radius: var(--r-md);
+    display: grid; place-items: center;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: -0.04em;
+  }
+  .nav-links {
+    display: flex; gap: 4px;
+    list-style: none; margin: 0; padding: 0;
+    justify-content: center;
+  }
+  .nav-links a {
+    display: block;
+    padding: 8px 12px;
+    color: var(--charcoal);
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: var(--r-sm);
+    transition: background .15s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { background: var(--surface); color: var(--ink); }
+  .nav-links a.active { color: var(--primary-deep); }
+  .nav-cta {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px;
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-md);
+    background: var(--surface-soft);
+  }
+  .lang-btn {
+    border: 0;
+    border-radius: var(--r-sm);
+    background: transparent;
+    color: var(--slate);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    padding: 8px 10px;
+    white-space: nowrap;
+  }
+  .lang-btn.active {
+    background: var(--ink-deep);
+    color: var(--on-dark);
+  }
+  .nav-cta .ghost {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--charcoal);
+    border-radius: var(--r-sm);
+  }
+  .nav-cta .ghost:hover { background: var(--surface); }
+
+  .english-page { display: none; }
+  body.lang-en > .hero,
+  body.lang-en > .hero-spacer,
+  body.lang-en > .stat-strip,
+  body.lang-en > section:not(.english-page),
+  body.lang-en > footer {
+    display: none;
+  }
+  body.lang-en > .english-page { display: block; }
+
+  /* ─── Buttons ──────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.3;
+    padding: 10px 18px;
+    border-radius: var(--r-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s, transform .12s;
+    text-decoration: none;
+    white-space: nowrap;
+    word-break: keep-all;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-primary {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .btn-primary:hover { background: var(--primary-pressed); color: var(--on-primary); }
+
+  .btn-dark {
+    background: var(--ink-deep);
+    color: var(--on-dark);
+  }
+  .btn-dark:hover { background: var(--charcoal); color: var(--on-dark); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--hairline-strong);
+  }
+  .btn-secondary:hover { background: var(--surface); color: var(--ink); }
+
+  .btn-on-dark {
+    background: var(--on-dark);
+    color: var(--ink);
+  }
+  .btn-on-dark:hover { background: var(--surface); color: var(--ink); }
+
+  .btn-secondary-on-dark {
+    background: transparent;
+    color: var(--on-dark);
+    border-color: var(--on-dark-muted);
+  }
+  .btn-secondary-on-dark:hover { background: rgba(255,255,255,0.08); color: var(--on-dark); border-color: var(--on-dark); }
+
+  .btn-lg { padding: 12px 22px; font-size: 15px; }
+
+  /* ─── Hero Band ────────────────────────────────────── */
+  .hero {
+    position: relative;
+    background: var(--brand-navy);
+    color: var(--on-dark);
+    padding: var(--hero) var(--md) 0;
+    overflow: hidden;
+  }
+  .hero-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+    margin-bottom: 28px;
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: var(--r-full);
+    background: rgba(255,255,255,0.04);
+    white-space: nowrap;
+  }
+  .hero-kicker .blink {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--brand-green);
+    animation: blink 2s infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.3; }
+  }
+  .hero-title {
+    font-family: var(--font-kr);
+    font-size: clamp(48px, 7.5vw, 80px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 24px;
+    color: var(--on-dark);
+  }
+  .hero-title .accent { color: var(--brand-purple-300); }
+  .hero-subtitle {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--on-dark-muted);
+    margin: 0 auto 36px;
+    max-width: 640px;
+  }
+  .hero-buttons {
+    display: flex; gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 80px;
+  }
+
+  /* Decorative dots + wires */
+  .hero-decor {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .hero-decor .dot {
+    position: absolute;
+    border-radius: 50%;
+  }
+  .hero-decor .sticky {
+    position: absolute;
+    width: 26px; height: 26px;
+    border-radius: var(--r-xs);
+    transform: rotate(var(--rot, -6deg));
+    box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+  }
+  .hero-decor .wire {
+    position: absolute;
+    width: 100%; height: 100%;
+    inset: 0;
+    opacity: 0.25;
+  }
+
+  /* Workspace mockup card — breaks out of hero */
+  .mockup-wrap {
+    position: relative;
+    z-index: 3;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--md);
+    transform: translateY(80px);
+  }
+  .mockup-card {
+    background: var(--canvas);
+    border-radius: var(--r-lg);
+    border: 1px solid var(--hairline);
+    box-shadow: var(--sh-3);
+    overflow: hidden;
+  }
+  .mockup-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--hairline);
+    background: var(--surface-soft);
+  }
+  .mockup-traffic {
+    display: flex; gap: 6px;
+  }
+  .mockup-traffic span {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--hairline-strong);
+  }
+  .mockup-traffic span:nth-child(1) { background: #FF5F57; }
+  .mockup-traffic span:nth-child(2) { background: #FEBC2E; }
+  .mockup-traffic span:nth-child(3) { background: #28C840; }
+  .mockup-url {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--steel);
+    background: var(--surface);
+    padding: 6px 12px;
+    border-radius: var(--r-md);
+    border: 1px solid var(--hairline);
+    text-align: center;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .mockup-share {
+    font-size: 12px;
+    color: var(--steel);
+    font-weight: 500;
+  }
+  .mockup-page {
+    padding: 28px 32px;
+  }
+  .mockup-icon {
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .mockup-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    line-height: 1.2;
+  }
+  .mockup-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    font-size: 13px;
+    color: var(--steel);
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+  .mockup-meta span { white-space: nowrap; }
+  .mockup-meta .sep { color: var(--muted); padding: 0 2px; }
+  .mockup-tabs {
+    display: flex; gap: 6px;
+    border-bottom: 1px solid var(--hairline);
+    margin-bottom: 20px;
+  }
+  .mockup-tabs .tab {
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--slate);
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .mockup-tabs .tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+  .mockup-board {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(150px, 1fr));
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .mockup-col {
+    background: var(--surface);
+    border-radius: var(--r-md);
+    padding: 10px;
+    min-height: 220px;
+  }
+  .mockup-col-head {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mockup-col-head .num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    background: var(--canvas);
+    padding: 1px 6px;
+    border-radius: var(--r-xs);
+    color: var(--slate);
+    border: 1px solid var(--hairline);
+  }
+  .mockup-card-mini {
+    background: var(--canvas);
+    padding: 10px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--hairline);
+    box-shadow: var(--sh-1);
+    margin-bottom: 6px;
+  }
+  .mockup-card-mini .ttl {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+  .mockup-card-mini .meta {
+    font-size: 10px;
+    color: var(--steel);
+    font-family: var(--font-mono);
+  }
+  .mockup-card-mini .tag {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: var(--r-xs);
+    white-space: nowrap;
+  }
+  .tag-purple  { background: var(--tint-lavender); color: var(--brand-purple-800); }
+  .tag-orange  { background: var(--tint-peach);    color: var(--brand-orange-deep); }
+  .tag-green   { background: var(--tint-mint);     color: var(--brand-green); }
+  .tag-pink    { background: var(--tint-rose);     color: var(--brand-pink-deep); }
+  .tag-sky     { background: var(--tint-sky);      color: #2A6FB7; }
+  .tag-yellow  { background: var(--tint-yellow);   color: #8B6B17; }
+  .tag-cream   { background: var(--tint-cream);    color: var(--brand-brown); }
+
+  /* Spacer below hero so mockup floats */
+  .hero-spacer {
+    height: 100px;
+    background: linear-gradient(to bottom, var(--brand-navy) 0%, var(--brand-navy) 50%, var(--canvas) 50%);
+  }
+
+  /* ─── Logo / metric strip ──────────────────────────── */
+  .stat-strip {
+    background: var(--canvas);
+    padding: var(--section) var(--md) 0;
+  }
+  .stat-strip-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--md);
+    padding: 28px var(--xxl);
+    background: var(--surface);
+    border-radius: var(--r-lg);
+  }
+  .stat-strip .stat .num {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ink-deep);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-strip .stat .label {
+    font-size: 13px;
+    color: var(--slate);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .stat-strip .stat .num em {
+    color: var(--primary);
+    font-style: normal;
+  }
+
+  /* ─── Section base ─────────────────────────────────── */
+  section.block {
+    padding: var(--section-lg) var(--md);
+  }
+  .container {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 18px;
+    white-space: nowrap;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 18px; height: 1px;
+    background: currentColor;
+  }
+  .h2 {
+    font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 20px;
+  }
+  .h2 .accent { color: var(--primary); }
+  .h3 {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 12px;
+  }
+  .lead {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--slate);
+    max-width: 720px;
+    margin: 0 0 var(--xxl);
+  }
+  .section-head { text-align: center; margin-bottom: 56px; }
+  .section-head .lead { margin-left: auto; margin-right: auto; }
+
+  /* ─── Run-of-show grid (8 chapter tiles) ───────────── */
+  .ros-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 12px;
+  }
+  .ros-tile {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: 18px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+    display: flex; flex-direction: column;
+    min-height: 180px;
+  }
+  .ros-tile:hover {
+    border-color: var(--ink-deep);
+    transform: translateY(-3px);
+    box-shadow: var(--sh-2);
+  }
+  .ros-tile .num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 6px;
+    white-space: nowrap;
+  }
+  .ros-tile .time {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--steel);
+    font-family: var(--font-mono);
+    margin-bottom: 14px;
+    white-space: nowrap;
+  }
+  .ros-tile .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+  .ros-tile .desc {
+    font-size: 12px;
+    color: var(--slate);
+    line-height: 1.45;
+    margin-top: auto;
+  }
+  .ros-tile.tint-peach    { background: var(--tint-peach); border-color: transparent; }
+  .ros-tile.tint-rose     { background: var(--tint-rose); border-color: transparent; }
+  .ros-tile.tint-mint     { background: var(--tint-mint); border-color: transparent; }
+  .ros-tile.tint-lavender { background: var(--tint-lavender); border-color: transparent; }
+  .ros-tile.tint-sky      { background: var(--tint-sky); border-color: transparent; }
+  .ros-tile.tint-yellow   { background: var(--tint-yellow); border-color: transparent; }
+  .ros-tile.tint-cream    { background: var(--tint-cream); border-color: transparent; }
+
+  /* ─── Chapter section ──────────────────────────────── */
+  .chapter-section {
+    padding: var(--section-lg) 24px;
+    border-top: 1px solid var(--hairline-soft);
+  }
+  .chapter-section:first-of-type { border-top: 0; }
+  .chapter-grid {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 32px;
+  }
+  .chapter-aside {
+    position: sticky;
+    top: 88px;
+    align-self: start;
+  }
+  .chapter-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--primary);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .chapter-time-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--charcoal);
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 3px 8px;
+    border-radius: var(--r-full);
+    white-space: nowrap;
+  }
+  .chapter-time-pill .clk {
+    width: 5px; height: 5px;
+    background: var(--primary);
+    border-radius: 50%;
+  }
+  .chapter-aside-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 12px;
+  }
+  .chapter-aside-note {
+    font-size: 11px;
+    color: var(--slate);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .chapter-body { max-width: 1040px; }
+  .chapter-h2 {
+    font-size: clamp(36px, 4.5vw, 48px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 16px;
+  }
+  .chapter-h2 .accent { color: var(--primary); }
+  .chapter-lead {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--slate);
+    margin: 0 0 var(--section);
+  }
+
+  /* ─── Sub-block (within chapter) ───────────────────── */
+  .sub {
+    margin-top: var(--xxl);
+  }
+  .sub h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+  }
+  .sub h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+  .sub p {
+    margin: 0 0 14px;
+    color: var(--charcoal);
+  }
+  .sub strong { color: var(--ink); font-weight: 600; }
+
+  .sub-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--primary);
+    background: var(--tint-lavender);
+    padding: 3px 8px;
+    border-radius: var(--r-xs);
+    margin-bottom: 8px;
+    white-space: nowrap;
+  }
+
+  /* ─── Pastel feature card ──────────────────────────── */
+  .feat-card {
+    border-radius: var(--r-lg);
+    padding: 32px;
+    margin: 24px 0;
+    color: var(--charcoal);
+    box-shadow: var(--sh-1);
+  }
+  .feat-card .ttl {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+  .feat-card.peach    { background: var(--tint-peach); }
+  .feat-card.rose     { background: var(--tint-rose); }
+  .feat-card.mint     { background: var(--tint-mint); }
+  .feat-card.lavender { background: var(--tint-lavender); }
+  .feat-card.sky      { background: var(--tint-sky); }
+  .feat-card.yellow   { background: var(--tint-yellow); }
+  .feat-card.cream    { background: var(--tint-cream); }
+
+  /* Reference cards (compact "이런 것도 있어요" attachments) */
+  .ref-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 12px 0 24px;
+  }
+  .ref-card {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-md);
+    padding: 20px 22px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--charcoal);
+  }
+  .ref-card .ref-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 6px;
+  }
+  .ref-card .ref-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.005em;
+  }
+  .ref-card .ref-name code {
+    background: var(--canvas);
+    padding: 1px 6px;
+    border-radius: var(--r-xs);
+    font-size: 0.9em;
+    color: var(--brand-purple-800);
+    font-weight: 500;
+  }
+  .ref-card p { margin: 0 0 12px; }
+  .ref-card .ref-cmd {
+    display: block;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    padding: 6px 10px;
+    border-radius: var(--r-xs);
+    font-size: 12px;
+    color: var(--charcoal);
+    word-break: break-all;
+    font-family: var(--font-mono);
+  }
+  @media (max-width: 760px) {
+    .ref-row { grid-template-columns: 1fr; }
+  }
+
+  /* Image slider (horizontal scroll + snap) */
+  .slider-section {
+    margin: 32px 0;
+  }
+  .slider-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 32px 0;
+    align-items: stretch;
+  }
+  .slider-cols .slider-section {
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .slider-cols .slider-section .image-slider {
+    flex: 1;
+  }
+  /* Single-image variant — fits card width, natural aspect */
+  .image-slider.single-fit .slide {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .image-slider.single-fit .slide img {
+    width: 100%;
+    height: auto;
+    max-height: 360px;
+    object-fit: contain;
+  }
+  @media (max-width: 900px) {
+    .slider-cols { grid-template-columns: 1fr; }
+  }
+  .slider-section .slider-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 4px;
+    letter-spacing: -0.005em;
+  }
+  .slider-section .slider-sub {
+    font-size: 13px;
+    color: var(--slate);
+    margin: 0 0 14px;
+  }
+  .image-slider {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px 0 18px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-left: 4px;
+  }
+  .image-slider .slide {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    cursor: zoom-in;
+    border-radius: var(--r-md);
+    border: 1px solid var(--hairline);
+    overflow: hidden;
+    padding: 0;
+    background: var(--canvas);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s;
+    display: block;
+  }
+  .image-slider .slide:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sh-2);
+    border-color: var(--hairline-strong);
+  }
+  .image-slider .slide:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  .image-slider .slide img {
+    display: block;
+    height: 280px;
+    width: auto;
+    object-fit: cover;
+  }
+  .image-slider::-webkit-scrollbar { height: 8px; }
+  .image-slider::-webkit-scrollbar-track {
+    background: var(--hairline-soft);
+    border-radius: 4px;
+  }
+  .image-slider::-webkit-scrollbar-thumb {
+    background: var(--hairline-strong);
+    border-radius: 4px;
+  }
+  .image-slider::-webkit-scrollbar-thumb:hover { background: var(--steel); }
+
+  @media (max-width: 760px) {
+    .image-slider .slide img { height: 220px; }
+  }
+
+  /* Lightbox modal */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 15, 15, 0.94);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 56px;
+    cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    border-radius: var(--r-md);
+  }
+  .lightbox button {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s, transform .15s;
+    font-family: var(--font);
+  }
+  .lightbox button:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: scale(1.05);
+  }
+  .lightbox-close {
+    top: 20px; right: 20px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    font-size: 22px;
+    line-height: 1;
+  }
+  .lightbox-prev,
+  .lightbox-next {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    font-size: 26px;
+    line-height: 1;
+  }
+  .lightbox-prev { left: 24px; }
+  .lightbox-next { right: 24px; }
+  .lightbox-prev:hover,
+  .lightbox-next:hover { transform: translateY(-50%) scale(1.05); }
+  .lightbox-counter {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 6px 14px;
+    border-radius: var(--r-full);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  /* Design system example (Apple reference) */
+  .design-example {
+    margin: 28px 0;
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    background: var(--canvas);
+  }
+  .design-example-header {
+    background: var(--surface);
+    padding: 22px 26px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .design-example-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary);
+    background: var(--tint-lavender);
+    padding: 3px 8px;
+    border-radius: var(--r-xs);
+    margin-bottom: 10px;
+  }
+  .design-example-header h4 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .design-example-header p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.55;
+  }
+  .design-example-header p mark {
+    background: linear-gradient(180deg, transparent 55%, #FFE066 55%);
+    padding: 0 3px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .design-example-body {
+    padding: 26px 30px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--charcoal);
+  }
+  .design-example-body h5 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 22px 0 8px;
+    letter-spacing: -0.005em;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--hairline-soft);
+  }
+  .design-example-body h5:first-child { margin-top: 0; }
+  .design-example-body ul {
+    margin: 6px 0 14px;
+    padding-left: 20px;
+  }
+  .design-example-body li { margin-bottom: 5px; }
+  .design-example-body code {
+    background: var(--surface);
+    padding: 1px 6px;
+    border-radius: var(--r-xs);
+    font-size: 0.92em;
+    color: var(--brand-purple-800);
+    font-family: var(--font-mono);
+  }
+  .design-example-body mark {
+    background: linear-gradient(180deg, transparent 55%, #FFE066 55%);
+    padding: 0 3px;
+    color: var(--ink);
+    font-weight: 500;
+    border-radius: 1px;
+  }
+  .design-example-body .swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid var(--hairline);
+    margin-right: 4px;
+    vertical-align: -1px;
+  }
+
+  /* Toggle disclosure (<details>) — used for "더 알아보기" expandable rows */
+  details.toggle-card {
+    margin: 16px 0 0;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  details.toggle-card[open] {
+    border-color: var(--hairline-strong);
+  }
+  details.toggle-card > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--surface-soft);
+    transition: background .15s;
+  }
+  details.toggle-card > summary::-webkit-details-marker { display: none; }
+  details.toggle-card > summary::marker { content: ""; }
+  details.toggle-card > summary:hover { background: var(--surface); }
+  details.toggle-card > summary .chev {
+    width: 18px; height: 18px;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--steel);
+    font-size: 16px;
+    font-weight: 500;
+    transition: transform .25s ease;
+  }
+  details.toggle-card[open] > summary .chev { transform: rotate(180deg); color: var(--primary); }
+  details.toggle-card > summary .ttl-row {
+    display: flex; align-items: center; gap: 8px;
+    flex: 1; min-width: 0;
+  }
+  details.toggle-card > summary .ttl-row .icon { font-size: 14px; line-height: 1; }
+  details.toggle-card .toggle-body {
+    padding: 18px 20px 20px;
+    border-top: 1px solid var(--hairline);
+  }
+  details.toggle-card .toggle-body table.compare { margin: 0; }
+
+  /* Optional/aside section — visually separated from core content */
+  .optional-section {
+    margin: 56px 0 0;
+    padding: 32px 28px 26px;
+    background: var(--surface-soft);
+    border: 1px dashed var(--hairline-strong);
+    border-radius: var(--r-lg);
+    position: relative;
+  }
+  .optional-section::before {
+    content: "OPTIONAL · 참고용";
+    position: absolute;
+    top: -11px;
+    left: 24px;
+    background: var(--canvas);
+    color: var(--steel);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    padding: 3px 12px;
+    border: 1px solid var(--hairline-strong);
+    border-radius: var(--r-full);
+  }
+  .optional-section .optional-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 6px;
+    letter-spacing: -0.005em;
+  }
+  .optional-section .optional-title::before {
+    content: "📎";
+    font-size: 16px;
+    line-height: 1;
+  }
+  .optional-section .optional-sub {
+    font-size: 13px;
+    color: var(--slate);
+    margin: 0 0 18px;
+    line-height: 1.55;
+  }
+  .optional-section .ref-row {
+    margin: 0;
+  }
+  .optional-section .ref-card {
+    background: var(--canvas);
+  }
+
+  /* Recap summary card (term + description rows) */
+  .recap {
+    background: var(--surface);
+    border-left: 3px solid var(--primary);
+    border-radius: var(--r-md);
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .recap-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .recap-title::before {
+    content: "💡";
+    font-size: 16px;
+    line-height: 1;
+  }
+  .recap-list {
+    display: grid;
+    gap: 0;
+    margin-bottom: 14px;
+  }
+  .recap-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 18px;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .recap-row:last-child { border-bottom: 0; }
+  .recap-term {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--brand-purple-800);
+    font-size: 13px;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .recap-desc {
+    font-size: 14px;
+    color: var(--charcoal);
+    line-height: 1.5;
+  }
+  .recap-foot {
+    font-size: 13px;
+    color: var(--charcoal);
+    padding-top: 14px;
+    border-top: 1px solid var(--hairline);
+    line-height: 1.55;
+    margin: 0;
+  }
+  .recap-foot strong { color: var(--ink); font-weight: 600; }
+  @media (max-width: 480px) {
+    .recap-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+      padding: 10px 0;
+    }
+  }
+
+  /* Explain grid (2-col mechanism cards, with full-row option) */
+  .explain-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 24px 0 0;
+  }
+  .explain-grid .feat-card.full-row {
+    grid-column: 1 / -1;
+  }
+  .explain-grid .feat-card {
+    margin: 0;
+    padding: 24px 26px;
+    overflow: hidden;
+  }
+  .explain-grid .feat-card .illust {
+    display: block;
+    width: calc(100% + 52px);
+    height: auto;
+    margin: 12px -26px 18px;
+    object-fit: contain;
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    cursor: zoom-in;
+    transition: filter .18s ease;
+  }
+  .explain-grid .feat-card .illust:hover {
+    filter: brightness(1.04);
+  }
+  .explain-grid .feat-card .ttl {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .explain-grid .feat-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 10px;
+  }
+  .explain-grid .feat-card .ex {
+    font-size: 13px;
+    margin: 12px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid rgba(15, 15, 15, 0.10);
+    color: var(--charcoal);
+  }
+  .explain-grid .feat-card .ex strong { color: var(--ink); }
+  .explain-grid .feat-card code {
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1px 6px;
+    border-radius: var(--r-xs);
+    font-size: 0.9em;
+  }
+  @media (max-width: 760px) {
+    .explain-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Bold yellow banner */
+  .yellow-bold-banner {
+    background: var(--tint-yellow-bold);
+    color: var(--ink-deep);
+    border-radius: var(--r-lg);
+    padding: 56px 48px;
+    margin: 32px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .yellow-bold-banner .ybh {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    max-width: 720px;
+  }
+  .yellow-bold-banner p {
+    font-size: 17px;
+    color: var(--charcoal);
+    max-width: 640px;
+    margin: 0 0 20px;
+  }
+  .yellow-bold-banner .ybh strong {
+    background: var(--ink-deep);
+    color: var(--tint-yellow-bold);
+    padding: 0 8px;
+    margin-right: 4px;
+    border-radius: var(--r-xs);
+  }
+  .yellow-bold-banner .decor {
+    position: absolute;
+    bottom: -20px; right: -10px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle at center, rgba(15,15,15,0.04) 30%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ─── Tables ───────────────────────────────────────── */
+  table.compare {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--canvas);
+    border-radius: var(--r-md);
+    border: 1px solid var(--hairline);
+    overflow: hidden;
+    margin: 24px 0;
+    font-size: 14px;
+  }
+  table.compare thead th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--steel);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 14px 20px;
+    background: var(--surface-soft);
+    border-bottom: 1px solid var(--hairline);
+  }
+  table.compare tbody td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--hairline-soft);
+    vertical-align: top;
+    color: var(--charcoal);
+    line-height: 1.5;
+  }
+  table.compare tbody tr:last-child td { border-bottom: 0; }
+  table.compare tbody td:first-child {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  table.compare td code {
+    background: var(--surface);
+    padding: 1px 6px;
+    border-radius: var(--r-xs);
+    font-size: 12px;
+    color: var(--brand-purple-800);
+  }
+  table.compare .yes  { color: var(--primary); font-weight: 600; }
+  table.compare .maybe { color: var(--steel); }
+
+  /* ─── Code block ───────────────────────────────────── */
+  .codebox {
+    background: var(--ink-deep);
+    color: #E8E6E3;
+    border-radius: var(--r-lg);
+    padding: 22px 26px;
+    margin: 20px 0;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    position: relative;
+  }
+  .codebox::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 14px; right: 14px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+  }
+  .codebox pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; }
+
+  /* ─── Prompt card (lighter, on-page) ───────────────── */
+  .prompt-card {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: 28px 32px;
+    margin: 16px 0;
+    box-shadow: var(--sh-1);
+  }
+  .prompt-card .pc-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .prompt-card .pc-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .prompt-card pre {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--charcoal);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* ─── Pricing-tier-style scenario row ──────────────── */
+  .tiers-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin: 32px auto;
+    max-width: 560px;
+  }
+  .tier {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: 28px 24px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .tier.featured {
+    background: var(--surface-soft);
+    border: 2px solid var(--primary);
+  }
+  .tier .tier-tag {
+    position: absolute;
+    top: -12px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border-radius: var(--r-full);
+  }
+  .tier .tier-letter {
+    width: 36px; height: 36px;
+    background: var(--ink-deep);
+    color: var(--canvas);
+    border-radius: var(--r-md);
+    display: grid; place-items: center;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 14px;
+  }
+  .tier.featured .tier-letter { background: var(--primary); }
+  .tier h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  .tier .tier-sub {
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .tier .tier-data {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    color: var(--charcoal);
+    padding: 4px 8px;
+    border-radius: var(--r-xs);
+    margin-bottom: 16px;
+    word-break: break-all;
+  }
+  .tier .tier-list {
+    list-style: none;
+    padding: 0; margin: 0;
+    font-size: 13px;
+    color: var(--charcoal);
+  }
+  .tier .tier-list li {
+    padding: 6px 0;
+    display: flex; gap: 8px; align-items: start;
+    border-top: 1px solid var(--hairline-soft);
+  }
+  .tier .tier-list li:first-child { border-top: 0; }
+  .tier .tier-list li::before {
+    content: "✓";
+    color: var(--primary);
+    font-weight: 700;
+    margin-top: 1px;
+  }
+
+  /* ─── Step list (for hands-on phases) ──────────────── */
+  .steps {
+    list-style: none;
+    margin: 24px 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .steps > li {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: 20px 22px;
+    counter-increment: step;
+  }
+  .steps {
+    counter-reset: step;
+  }
+  .steps > li::before {
+    content: "Phase " counter(step);
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--primary);
+    background: var(--tint-lavender);
+    padding: 3px 8px;
+    border-radius: var(--r-xs);
+    margin-bottom: 10px;
+  }
+  .steps.stack {
+    grid-template-columns: 1fr;
+    max-width: 580px;
+  }
+  .steps h4 { margin: 0 0 6px; font-size: 16px; font-weight: 600; color: var(--ink); }
+  .steps p { margin: 0; font-size: 14px; color: var(--slate); line-height: 1.5; }
+  .steps p + p { margin-top: 6px; }
+  .steps .step-extra {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--hairline-strong);
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+  .steps .step-extra strong { color: var(--ink); font-weight: 600; }
+  .steps .step-extra .label {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--primary);
+    background: var(--tint-lavender);
+    padding: 2px 7px;
+    border-radius: var(--r-xs);
+    margin-right: 6px;
+    vertical-align: 1px;
+  }
+
+  /* ─── Skill flow strip ─────────────────────────────── */
+  .flow-strip {
+    display: grid;
+    grid-template-columns: 1fr 24px 1fr 24px 1fr;
+    gap: 0;
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    margin: 24px 0;
+  }
+  .flow-strip .step {
+    padding: 24px 22px;
+    background: var(--canvas);
+  }
+  .flow-strip .step:nth-child(1) { background: var(--tint-peach); }
+  .flow-strip .step:nth-child(3) { background: var(--tint-yellow); }
+  .flow-strip .step:nth-child(5) { background: var(--tint-mint); }
+  .flow-strip .arrow {
+    background: var(--canvas);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--steel);
+    font-size: 18px;
+    border-left: 1px solid var(--hairline);
+    border-right: 1px solid var(--hairline);
+  }
+  .flow-strip .name {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--brand-purple-800);
+    margin-bottom: 6px;
+  }
+  .flow-strip .step:nth-child(3) .name { color: var(--brand-orange-deep); }
+  .flow-strip .step:nth-child(5) .name { color: var(--brand-green); }
+  .flow-strip .desc {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  /* ─── Checklist ────────────────────────────────────── */
+  .checklist {
+    list-style: none;
+    margin: 16px 0;
+    padding: 0;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid var(--hairline-soft);
+    font-size: 15px;
+    color: var(--charcoal);
+    line-height: 1.55;
+  }
+  .checklist li:first-child { border-top: 0; }
+  .checklist li::before {
+    content: "";
+    flex-shrink: 0;
+    width: 18px; height: 18px;
+    border-radius: var(--r-xs);
+    border: 1.5px solid var(--hairline-strong);
+    background: var(--canvas);
+    margin-top: 3px;
+  }
+  .checklist li code {
+    background: var(--surface);
+    padding: 2px 6px;
+    border-radius: var(--r-xs);
+    color: var(--brand-purple-800);
+  }
+
+  /* ─── Callout (light surface) ──────────────────────── */
+  .callout {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface);
+    border-left: 3px solid var(--primary);
+    border-radius: var(--r-md);
+    padding: 16px 20px;
+    margin: 20px 0;
+    color: var(--charcoal);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .callout::before {
+    content: "💡";
+    flex-shrink: 0;
+    font-size: 20px;
+    line-height: 1;
+    align-self: center;
+  }
+  .callout > * { margin: 0; }
+  .callout strong { color: var(--ink); font-weight: 600; }
+
+  /* Deep-learning callout — for "심화 학습" expandable lessons */
+  .deep-callout {
+    background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-mid) 100%);
+    color: var(--on-dark);
+    border-radius: var(--r-lg);
+    padding: 28px 32px;
+    margin: 28px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .deep-callout::before {
+    content: "";
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(156,108,228,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .deep-callout .deep-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brand-purple-300);
+    background: rgba(156, 108, 228, 0.15);
+    border: 1px solid rgba(156, 108, 228, 0.4);
+    padding: 4px 10px;
+    border-radius: var(--r-full);
+    margin-bottom: 16px;
+  }
+  .deep-callout .deep-tag::before {
+    content: "🧠";
+    font-size: 13px;
+    line-height: 1;
+  }
+  .deep-callout h4 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--on-dark);
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+  .deep-callout > p {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0 0 22px;
+    line-height: 1.65;
+    max-width: 760px;
+    position: relative;
+    z-index: 1;
+  }
+  .deep-callout > p strong {
+    color: var(--brand-purple-300);
+    font-weight: 700;
+  }
+  .deep-callout .deep-block {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--r-md);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .deep-callout .deep-block:last-child { margin-bottom: 0; }
+  .deep-callout .deep-block-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--on-dark);
+    margin: 0 0 10px;
+    letter-spacing: -0.005em;
+  }
+  .deep-callout .deep-block-title .num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--brand-purple);
+    color: var(--on-primary);
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .deep-callout .deep-block p {
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0 0 8px;
+    line-height: 1.65;
+  }
+  .deep-callout .deep-block p:last-child { margin-bottom: 0; }
+  .deep-callout .deep-block strong { color: var(--on-dark); font-weight: 600; }
+  .deep-callout .deep-block code {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--brand-purple-300);
+    padding: 1px 6px;
+    border-radius: var(--r-xs);
+    font-size: 0.9em;
+  }
+  .deep-callout .deep-block ul {
+    margin: 6px 0 0;
+    padding-left: 18px;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+  .deep-callout .deep-block li { margin-bottom: 4px; }
+  .deep-callout .deep-flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    align-items: center;
+    gap: 8px;
+    margin: 14px 0 10px;
+  }
+  .deep-callout .deep-flow .step {
+    background: rgba(156, 108, 228, 0.15);
+    border: 1px solid rgba(156, 108, 228, 0.4);
+    border-radius: var(--r-sm);
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--on-dark);
+    line-height: 1.35;
+  }
+  .deep-callout .deep-flow .arrow {
+    color: var(--brand-purple-300);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  @media (max-width: 760px) {
+    .deep-callout { padding: 22px; }
+    .deep-callout .deep-flow {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .deep-callout .deep-flow .arrow { transform: rotate(90deg); padding: 4px 0; }
+  }
+
+  /* Tip callout — softer alternative to .callout */
+  .tip-callout {
+    background: var(--tint-yellow);
+    border-left: 3px solid var(--brand-yellow);
+    border-radius: var(--r-md);
+    padding: 16px 20px;
+    margin: 20px 0;
+    color: var(--charcoal);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .tip-callout .tip-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #8B6B17;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+    margin-bottom: 10px;
+  }
+  .tip-callout .tip-head::before {
+    content: "💡";
+    font-size: 14px;
+    line-height: 1;
+  }
+  .tip-callout ul {
+    margin: 0;
+    padding-left: 18px;
+    line-height: 1.65;
+  }
+  .tip-callout li { margin-bottom: 4px; }
+  .tip-callout li:last-child { margin-bottom: 0; }
+  .tip-callout strong { color: var(--ink); font-weight: 700; }
+  .tip-callout code {
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1px 6px;
+    border-radius: var(--r-xs);
+    font-size: 0.9em;
+  }
+
+  /* Image attachment placeholder (Notion file block) */
+  .att-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-md);
+    font-size: 13px;
+    color: var(--charcoal);
+    margin: 6px 0;
+    text-decoration: none;
+  }
+  .att-link:hover { background: var(--surface-soft); border-color: var(--hairline-strong); color: var(--ink); }
+  .att-link::before {
+    content: "📎";
+    font-size: 14px;
+  }
+  .att-link code { color: var(--brand-purple-800); }
+
+  .sample-disclaimer {
+    max-width: 560px;
+    margin: 12px auto 0;
+    padding: 12px 16px;
+    background: var(--tint-lavender, rgba(124, 92, 255, 0.08));
+    border: 1px solid var(--hairline);
+    border-left: 3px solid var(--brand-purple-800, #6E59A5);
+    border-radius: var(--r-md);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--charcoal);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sample-disclaimer strong { color: var(--ink); }
+
+  .result-preview {
+    margin-top: 24px;
+    padding: 20px;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-md);
+  }
+  .result-preview-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .result-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    background: var(--tint-lavender, rgba(124, 92, 255, 0.12));
+    color: var(--brand-purple-800, #6E59A5);
+    border-radius: var(--r-xs);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .result-caption {
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.5;
+  }
+  .result-preview-shot {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    cursor: zoom-in;
+    overflow: hidden;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .result-preview-shot:hover {
+    border-color: var(--hairline-strong);
+    transform: translateY(-1px);
+  }
+  .result-preview-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ─── CTA banner light ─────────────────────────────── */
+  .cta-light {
+    max-width: var(--max);
+    margin: var(--section-lg) auto;
+    background: var(--surface);
+    border-radius: var(--r-lg);
+    padding: 64px 48px;
+    text-align: center;
+  }
+  .cta-light h3 {
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+  .cta-light p {
+    font-size: 16px;
+    color: var(--slate);
+    max-width: 560px;
+    margin: 0 auto 28px;
+  }
+  .cta-light .row {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  }
+  .cta-light .cta-qa-note {
+    margin: 28px auto 0;
+    font-size: 14px;
+    color: var(--slate);
+    max-width: 560px;
+  }
+
+  /* ─── Footer ───────────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--hairline);
+    background: var(--canvas);
+    padding: 64px var(--md) 32px;
+  }
+  .footer-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr repeat(4, 1fr);
+    gap: 40px;
+  }
+  .footer-brand .b {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 18px; font-weight: 700;
+    color: var(--ink-deep);
+    margin-bottom: 12px;
+  }
+  .footer-brand .b .mark {
+    width: 28px; height: 28px;
+    background: var(--ink-deep);
+    color: var(--canvas);
+    border-radius: var(--r-md);
+    display: grid; place-items: center;
+    font-weight: 800;
+    font-size: 13px;
+  }
+  .footer-brand p {
+    font-size: 14px;
+    color: var(--slate);
+    max-width: 320px;
+    margin: 0 0 20px;
+  }
+  footer h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 12px;
+    letter-spacing: -0.005em;
+  }
+  footer ul { list-style: none; padding: 0; margin: 0; }
+  footer ul li { padding: 4px 0; }
+  footer ul a {
+    color: var(--steel);
+    font-size: 14px;
+    text-decoration: none;
+  }
+  footer ul a:hover { color: var(--ink); }
+  .footer-colophon {
+    max-width: var(--max);
+    margin: 48px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    font-size: 13px;
+    color: var(--steel);
+  }
+  .footer-colophon a { color: var(--steel); }
+
+  /* ─── Responsive ───────────────────────────────────── */
+  @media (max-width: 1100px) {
+    .ros-grid { grid-template-columns: repeat(4, 1fr); }
+    .tiers-row { grid-template-columns: repeat(2, 1fr); }
+    .chapter-grid { grid-template-columns: 150px 1fr; gap: 28px; }
+    .chapter-body { max-width: none; }
+    .mockup-board { grid-template-columns: repeat(8, 180px); overflow-x: auto; }
+    .footer-inner { grid-template-columns: 1.5fr 1fr 1fr; }
+  }
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    .nav-cta .ghost { display: none; }
+    .nav-cta .btn-primary { display: none; }
+    .lang-toggle { order: -1; }
+    .lang-btn { padding: 7px 8px; font-size: 12px; }
+    .top-nav { height: 56px; }
+    .nav-inner { padding: 0 var(--md); gap: var(--md); }
+    .promo-banner { font-size: 12px; padding: 8px var(--md); }
+    .hero { padding: 64px var(--md) 0; }
+    .hero-buttons { margin-bottom: 60px; }
+    .mockup-wrap { transform: translateY(40px); }
+    .stat-strip { padding-top: 60px; }
+    .stat-strip-inner { grid-template-columns: repeat(2, 1fr); padding: 22px; }
+    section.block { padding: 64px var(--md); }
+    .ros-grid { grid-template-columns: 1fr 1fr; }
+    .chapter-section { padding: 64px var(--md); }
+    .chapter-grid { grid-template-columns: 1fr; gap: 28px; }
+    .chapter-aside { position: static; }
+    .tiers-row { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .flow-strip { grid-template-columns: 1fr; }
+    .flow-strip .arrow { padding: 10px 0; transform: rotate(90deg); border-left: 0; border-right: 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .yellow-bold-banner { padding: 36px 28px; }
+  }
+
+  @media print {
+    .top-nav, .promo-banner, footer { display: none; }
+    .hero, .yellow-bold-banner, .feat-card { background: white !important; color: black !important; }
+    .chapter-section { page-break-before: always; padding: 24px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Top nav ───────────────────────────────────────── -->
+<header class="top-nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <span class="mark">F</span>
+      <span>F&amp;F · CN</span>
+    </a>
+    <nav>
+      <ul class="nav-links" id="nav">
+        <li><a href="#ros">강의 개요</a></li>
+        <li><a href="#ch2">설계 프레임워크</a></li>
+        <li><a href="#scenarios">시나리오 A</a></li>
+        <li><a href="#ch4">핸즈온</a></li>
+        <li><a href="#ch7">배포</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button class="lang-btn active" type="button" data-lang="ko">Korean</button>
+        <button class="lang-btn" type="button" data-lang="en">English</button>
+      </div>
+      <a href="sample_data.xlsx" download class="ghost" data-i18n="nav-materials">실습자료 받기</a>
+      <a href="#ros" class="btn btn-primary" data-i18n="nav-start">워크숍 시작</a>
+    </div>
+  </div>
+</header>
+
+<section class="english-page" aria-label="English version">
+  <section class="hero">
+    <div class="hero-decor" aria-hidden="true">
+      <span class="dot" style="width:14px;height:14px;background:var(--brand-pink);top:14%;left:8%;"></span>
+      <span class="sticky" style="background:var(--brand-orange);top:20%;left:18%;--rot:-9deg;"></span>
+      <span class="dot" style="width:10px;height:10px;background:var(--brand-green);top:30%;left:6%;"></span>
+      <span class="dot" style="width:18px;height:18px;background:var(--brand-yellow);top:55%;left:12%;"></span>
+      <span class="sticky" style="background:var(--brand-purple-300);top:68%;left:7%;--rot:8deg;"></span>
+      <span class="dot" style="width:12px;height:12px;background:var(--brand-teal);top:18%;right:10%;"></span>
+      <span class="sticky" style="background:var(--brand-pink);top:30%;right:6%;--rot:6deg;"></span>
+      <span class="dot" style="width:16px;height:16px;background:var(--brand-purple-300);top:50%;right:14%;"></span>
+      <span class="sticky" style="background:var(--brand-yellow);top:62%;right:9%;--rot:-7deg;"></span>
+      <span class="dot" style="width:9px;height:9px;background:var(--brand-orange);top:78%;right:18%;"></span>
+      <svg class="wire" viewBox="0 0 1440 600" preserveAspectRatio="none">
+        <path d="M -20 420 Q 240 360 480 420 T 960 420 T 1480 420" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="none"/>
+        <path d="M -20 480 Q 320 540 640 480 T 1280 480 T 1480 480" stroke="rgba(156,108,228,0.4)" stroke-width="1" fill="none"/>
+        <path d="M -20 80 Q 360 130 720 80 T 1440 100" stroke="rgba(255,255,255,0.18)" stroke-width="1" fill="none"/>
+      </svg>
+    </div>
+    <div class="hero-inner">
+      <span class="hero-kicker"><span class="blink"></span>F&amp;F CHINA · CLAUDE CODE WORKSHOP</span>
+      <h1 class="hero-title">Build Your Own <span class="accent">Dashboard</span></h1>
+      <p class="hero-subtitle">From data to dashboard to executive reporting in one workflow.<br>First-time users will leave with one working dashboard and one auto-generated PowerPoint report.</p>
+      <div class="hero-buttons">
+        <a href="#en-ros" class="btn btn-primary btn-lg">Start the Workshop</a>
+        <a href="sample_data.xlsx" class="btn btn-secondary-on-dark btn-lg" download>Download Sample Data</a>
+      </div>
+    </div>
+  </section>
+  <div class="hero-spacer"></div>
+
+  <div class="stat-strip">
+    <div class="stat-strip-inner">
+      <div class="stat"><div class="num">120<em>min</em></div><div class="label">Workshop length · 7 chapters</div></div>
+      <div class="stat"><div class="num">1<em>scenario</em></div><div class="label">Guided hands-on track</div></div>
+      <div class="stat"><div class="num">2<em>outputs</em></div><div class="label">Dashboard deployment + PPT</div></div>
+      <div class="stat"><div class="num">5<em>steps</em></div><div class="label">Start with a PLAN worksheet</div></div>
+    </div>
+  </div>
+
+  <section class="block" id="en-ros">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Today's Run-of-Show</span>
+        <h2 class="h2">A 120-minute journey across <span class="accent">7 chapters</span></h2>
+        <p class="lead">We will move through one consistent workflow: receive the data, structure the plan, build the interface, and package the result as a business report.</p>
+      </div>
+      <div class="ros-grid">
+        <a class="ros-tile tint-peach" href="#en-ch0"><div class="num">00</div><div class="time">0-10'</div><div class="title">Opening</div><div class="desc">Environment check and output preview</div></a>
+        <a class="ros-tile tint-rose" href="#en-ch1"><div class="num">01</div><div class="time">10-25'</div><div class="title">Use Case</div><div class="desc">F&amp;F Korea cases and core mechanisms</div></a>
+        <a class="ros-tile tint-yellow" href="#en-ch2"><div class="num">02</div><div class="time">25-40'</div><div class="title">PLAN</div><div class="desc">Five-step worksheet and recommended scenario</div></a>
+        <a class="ros-tile tint-mint" href="#en-ch3"><div class="num">03</div><div class="time">40-55'</div><div class="title">Skill Tour</div><div class="desc">frontend-design · pptx · xlsx</div></a>
+        <a class="ros-tile tint-lavender" href="#en-ch4"><div class="num">04</div><div class="time">55-95'</div><div class="title">Hands-on 1</div><div class="desc">Build a data-driven dashboard</div></a>
+        <a class="ros-tile tint-sky" href="#en-ch5"><div class="num">05</div><div class="time">95-110'</div><div class="title">Hands-on 2</div><div class="desc">Deploy the dashboard and generate PPT</div></a>
+        <a class="ros-tile tint-lavender" href="#en-ch7"><div class="num">06</div><div class="time">110-120'</div><div class="title">Deploy</div><div class="desc">Internal deployment through DCS AI</div></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter-section" id="en-ch0">
+    <div class="chapter-grid">
+      <aside class="chapter-aside"><div class="chapter-num">Part Zero</div><span class="chapter-time-pill"><span class="clk"></span>0-10' · 10'</span><div class="chapter-aside-title">Opening</div><p class="chapter-aside-note">We align the environment first so everyone can enter the hands-on session without friction.</p></aside>
+      <div class="chapter-body">
+        <span class="eyebrow">Opening · Setup Check</span>
+        <h2 class="chapter-h2">Use the first 10 minutes to <span class="accent">remove blockers before hands-on work begins.</span></h2>
+        <p class="chapter-lead">Most first-time issues come from environment setup, not from the actual workflow. We will resolve those early.</p>
+        <div class="sub"><span class="sub-eyebrow">0-A</span><h3>Initial Readiness Check</h3><p>Before the workshop starts, confirm that every participant has the same baseline setup. If anything fails, the instructor team will provide one-on-one support.</p><ul class="checklist"><li>Can <code>claude</code> run successfully from the terminal?</li><li>Is <code>/plugin marketplace add obra/superpowers-marketplace</code> recognized?</li><li>Has <code>sample_data.xlsx</code> been downloaded?</li></ul><div class="callout">The first operating principle is simple: no participant should be blocked before the actual work begins.</div></div>
+        <div class="feat-card peach"><span class="sub-eyebrow" style="background:rgba(0,0,0,0.06);color:var(--ink);">0-B</span><h3 class="ttl">Session Deliverables</h3><p style="font-size:18px;line-height:1.5;color:var(--charcoal);margin:0;">By the end of the workshop, each participant should have two practical outputs: one personal dashboard and one auto-generated PowerPoint report.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter-section" id="en-ch1">
+    <div class="chapter-grid">
+      <aside class="chapter-aside"><div class="chapter-num">Part One</div><span class="chapter-time-pill"><span class="clk"></span>10-25' · 15'</span><div class="chapter-aside-title">Use Case</div></aside>
+      <div class="chapter-body">
+        <span class="eyebrow">Use Case + Claude Code Core Concepts</span>
+        <h2 class="chapter-h2">Start with the output.<br><span class="accent">Keep the concepts concise.</span></h2>
+        <div class="sub"><span class="sub-eyebrow">1-1</span><h3>F&amp;F Korea Use Cases</h3><p><strong>Report-generation workflow automation</strong> is already being used in Korea to create and share HTML-based business reports.</p><p><strong>CEO reporting · PPT to HTML</strong></p><p style="margin:14px 0 6px;font-size:13px;color:var(--slate);"><strong style="color:var(--ink);">Case 1.</strong> Global Marketing report material</p><a class="att-link" href="KARINA_EDITION_VOL2_GLMKT_UNIFIED%20AI%20DASHBOARD%20(1)/KARINA_EDITION_VOL2_UNIFIED_DASHBOARD.html" target="_blank"><code>KARINA EDITION VOL.2 — UNIFIED DASHBOARD</code></a><p style="margin:16px 0 6px;font-size:13px;color:var(--slate);"><strong style="color:var(--ink);">Case 2.</strong> FnCo Influencer Dashboard CEO Report</p><a class="att-link" href="fnco_if_ceo-main/ceoreport.html" target="_blank"><code>FnCo IF — CEO REPORT</code></a></div>
+        <div class="sub"><span class="sub-eyebrow">1-2</span><h3>Claude Code Extension Mechanisms</h3><p>Claude Code is supported by five operating mechanisms. <strong>Knowing the basics is enough to produce a useful business report today; our main focus is mastering Skills.</strong></p><table class="compare"><thead><tr><th>Mechanism</th><th>Business explanation</th><th>Today</th></tr></thead><tbody><tr><td>Skills</td><td>Markdown instructions that make Claude better at a specific task</td><td class="yes">Primary use</td></tr><tr><td>Plugins</td><td>Installable packages that bundle skills and tools</td><td class="yes">Setup use</td></tr><tr><td>Memory</td><td>Persistent notes Claude can reference across sessions</td><td class="maybe">Concept only</td></tr><tr><td>MCP</td><td>Connections to external data and tools such as DBs, Slack, and Figma</td><td class="maybe">Concept only</td></tr><tr><td>Hooks</td><td>Automated triggers before or after work steps</td><td class="maybe">Concept only</td></tr></tbody></table><div class="callout"><strong>Mastering Skills alone is enough for today's workshop objective.</strong></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter-section" id="en-ch2" style="background:var(--surface-soft);">
+    <div class="chapter-grid">
+      <aside class="chapter-aside"><div class="chapter-num">Part Two</div><span class="chapter-time-pill"><span class="clk"></span>25-40' · 15'</span><div class="chapter-aside-title">Plan Framework</div><p class="chapter-aside-note">Starting without a plan often produces generic AI-looking outputs. A five-minute PLAN protects the quality of the final design.</p></aside>
+      <div class="chapter-body">
+        <span class="eyebrow">Start with PLAN · The foundation of output quality</span>
+        <h2 class="chapter-h2">Before execution, <span class="accent">a five-minute plan</span> determines the quality of the full deliverable.</h2>
+        <p class="chapter-lead">A clear plan improves the final dashboard, report structure, and visual consistency.</p>
+        <div class="sub"><h3>Five-Step PLAN Worksheet</h3><p>Fill in these five fields before asking Claude to build anything.</p><div class="codebox" data-label="WORKSHEET"><pre>1. Objective
+   Who will use this, when, and for what decision?
+   Example: Marketing team reviews channel ROI every Monday.
+
+2. Data
+   What data: sales, marketing, inventory, VOC, knowledge graph.
+   Source: Excel, Tmall API, Douyin API, JD, internal ERP.
+   Format: CSV, Excel, JSON.
+
+3. Screen Sketch
+   3-5 core metrics for one screen.
+   Candidate chart types: bar, line, map, heatmap.
+
+4. Report Format
+   PPT, HTML, or Excel.
+   Identify the target audience.
+
+5. Deployment
+   Local file only, internal URL, or team distribution.</pre></div></div>
+        <div class="sub">
+          <span class="sub-eyebrow">2-1</span>
+          <h3>How to plan: Plan Mode</h3>
+          <div class="feat-card sky" style="margin:20px 0;">
+            <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:#2A6FB7;">CLAUDE CODE BUILT-IN</span>
+            <h4 class="ttl">Use Plan Mode without any additional installation</h4>
+            <p style="margin:0 0 10px;">After installing Claude Code through the VS Code extension, press <code style="background:var(--canvas);padding:2px 8px;border-radius:var(--r-xs);">Shift + Tab</code> twice to enter Plan Mode. You can also type <code>/plan</code> in the chat.</p>
+            <p style="margin:0;">In Plan Mode, Claude shows the plan first and does not write code until you approve it. This is the safest operating mode for new users.</p>
+          </div>
+
+          <div class="slider-cols">
+            <div class="slider-section">
+              <h4 class="slider-title">Method 1 · VS Code Extension</h4>
+              <p class="slider-sub">Press <code style="background:var(--canvas);padding:1px 6px;border-radius:var(--r-xs);">Shift + Tab</code> twice to enter Plan Mode — three-step flow.</p>
+              <div class="image-slider" id="en-planmode-vscode">
+                <button class="slide" type="button" aria-label="Expand VS Code Plan Mode step 1">
+                  <img src="planmode/plan1.png" alt="VS Code · Plan Mode step 1 — entry" />
+                </button>
+                <button class="slide" type="button" aria-label="Expand VS Code Plan Mode step 2">
+                  <img src="planmode/plan2.png" alt="VS Code · Plan Mode step 2 — drafting the plan" />
+                </button>
+                <button class="slide" type="button" aria-label="Expand VS Code Plan Mode step 3">
+                  <img src="planmode/plan3.png" alt="VS Code · Plan Mode step 3 — review and approve" />
+                </button>
+              </div>
+            </div>
+
+            <div class="slider-section">
+              <h4 class="slider-title">Method 2 · From the terminal</h4>
+              <p class="slider-sub">In the terminal version of Claude Code, type <code style="background:var(--canvas);padding:1px 6px;border-radius:var(--r-xs);">/plan</code> in the chat to switch modes.</p>
+              <div class="image-slider single-fit" id="en-planmode-terminal">
+                <button class="slide" type="button" aria-label="Expand terminal Plan Mode">
+                  <img src="planmode/plan4.png" alt="Terminal · entering Plan Mode with the /plan command" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="en-scenarios">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">2-2 · Fashion Business Scenario</span>
+        <h2 class="h2">Recommended scenario:<br><span class="accent">follow this path</span> for hands-on work.</h2>
+        <p class="lead">Use <code style="background:var(--surface);padding:2px 8px;border-radius:var(--r-xs);">sample_data.xlsx</code>. With Plan Mode on, we will complete one PLAN worksheet together.</p>
+        <div style="display:flex;justify-content:center;margin-bottom:8px;"><a class="att-link" href="sample_data.xlsx" download style="max-width:560px;"><code>sample_data.xlsx</code> · click to download</a></div>
+        <div class="sample-disclaimer"><strong>This file is not actual business data.</strong><span>If you use real data, please download sales data through the Knowledge Graph environment.</span></div>
+      </div>
+      <div class="tiers-row"><div class="tier featured"><span class="tier-tag">Recommended Scenario</span><div class="tier-letter">A</div><h4>Tmall / Douyin<br>Weekly Sales</h4><p class="tier-sub">Review sales performance by channel and category</p><code class="tier-data">sample_data.xlsx</code><ul class="tier-list"><li>Week-over-week growth rate</li><li>Top 10 products by sales</li><li>Category × channel heatmap</li></ul></div></div>
+      <div style="margin:48px 0 0;"><h3 style="font-size:22px;font-weight:600;color:var(--ink);letter-spacing:-0.01em;margin:0 0 6px;">Sample Prompt — Start with Plan Mode</h3><p style="font-size:14px;color:var(--slate);margin:0 0 16px;">Turn on Plan Mode, paste the prompt below, and let Claude show the proposed design plan before writing code.</p><div class="prompt-card"><div class="pc-head"><span class="pc-title">Scenario A · Tmall / Douyin Weekly Sales</span><span class="sub-eyebrow" style="margin:0;background:var(--tint-lavender);color:var(--brand-purple-800);">Recommended</span></div><pre>Start in Plan Mode.
+
+Analyze sample_data.xlsx and create a design plan for a weekly sales dashboard that helps the team review channel ROI every Monday.
+
+Include:
+- 3-5 core metrics, including weekly sales by channel, week-over-week growth, top 10 products by sales, and a category × channel heatmap.
+- Candidate chart types: bar, line, and heatmap.
+- Style direction: minimal and business-ready; avoid generic AI dashboard styling.
+- Data flow: read XLSX, transform data, then visualize.
+- Screen layout sketch with top, middle, and bottom sections.
+
+After I review the plan and say OK, proceed with dashboard implementation.</pre></div></div>
+    </div>
+  </section>
+
+  <section class="chapter-section" id="en-ch2b">
+    <div class="chapter-grid">
+      <aside class="chapter-aside">
+        <div class="chapter-num">Concept Deep-Dive</div>
+        <span class="chapter-time-pill"><span class="clk"></span>Deep-dive · 5'</span>
+        <div class="chapter-aside-title">5 Core Concepts Made Simple</div>
+        <p class="chapter-aside-note">A quick glossary before we dive into using Skills hands-on.</p>
+      </aside>
+      <div class="chapter-body">
+        <span class="eyebrow">Concept Deep-Dive</span>
+        <h2 class="chapter-h2">The 5 core features of Claude Code,<br/><span class="accent">explained in plain terms.</span></h2>
+
+        <div class="sub">
+          <p>These terms can feel confusing at first. Here is a short guide with analogies and examples.</p>
+
+          <div class="explain-grid">
+
+            <div class="feat-card lavender">
+              <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:var(--brand-purple-800);">SKILLS</span>
+              <img class="illust" src="gpt%20images/skill_en.png" alt="Skill concept illustration" />
+              <h4 class="ttl">A "how to do this kind of task" manual</h4>
+              <p>A checklist you write for Claude so it follows a specific rule whenever a certain type of task comes up. Turn it on and Claude automatically applies that expertise.</p>
+              <p>Example: enabling the <code>frontend-design</code> skill makes Claude apply rules to produce designs that do not look AI-generated.</p>
+              <p class="ex"><strong>Used directly today:</strong> <code>frontend-design</code> · <code>pptx</code> · <code>xlsx</code></p>
+            </div>
+
+            <div class="feat-card mint">
+              <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:var(--brand-green);">PLUGINS</span>
+              <img class="illust" src="gpt%20images/plugin_en.png" alt="Plugin concept illustration" />
+              <h4 class="ttl">Bundle skills and tools, install once</h4>
+              <p>A <strong>package</strong> that groups several skills and commands together. Like a VS Code extension or a mobile app — install once and the tools inside are ready to use.</p>
+              <p>Example: installing the <code>superpowers</code> plugin adds brainstorming, writing-plans, and other skills at the same time.</p>
+              <p class="ex"><strong>Used directly today:</strong> <code>/plugin install</code> to set up the workshop environment</p>
+            </div>
+
+            <div class="feat-card yellow">
+              <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:#8B6B17;">MEMORY</span>
+              <img class="illust" src="gpt%20images/memory_en.png" alt="Memory concept illustration" />
+              <h4 class="ttl">A notepad Claude remembers across chats</h4>
+              <p>Whatever you teach Claude once is <strong>remembered in the next conversation</strong>. It is saved to a <code>MEMORY.md</code> file you can manage per project.</p>
+              <p>Example: write "our brand tone is minimal" once, and Claude will keep that tone in future sessions without being reminded.</p>
+              <p class="ex"><strong>Concept only today:</strong> useful for repeating and automated workflows in the next phase</p>
+            </div>
+
+            <div class="feat-card peach">
+              <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:var(--brand-orange-deep);">HOOKS</span>
+              <img class="illust" src="gpt%20images/hook_en.png" alt="Hook concept illustration" />
+              <h4 class="ttl">Auto-start and auto-finish triggers</h4>
+              <p>Pre-registered actions that Claude runs <strong>before or after</strong> a specific event. Once configured, they execute automatically without further attention.</p>
+              <p>Example: auto-lint every time a file is saved, or auto-refresh the weekly report every Monday morning.</p>
+              <p class="ex"><strong>Concept only today:</strong> the engine behind "just swap the data next week and the report rebuilds itself"</p>
+            </div>
+
+            <div class="feat-card sky full-row">
+              <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:#2A6FB7;">MCP</span>
+              <img class="illust" src="gpt%20images/mcp_en.png" alt="MCP concept illustration" />
+              <h4 class="ttl">A USB port that connects Claude to company systems</h4>
+              <p>A standard protocol that connects Claude to <strong>external systems (Notion, Slack, databases, Figma, etc.)</strong>. Once connected, Claude can read and write to those systems directly.</p>
+              <p>Example: auto-organize Notion pages, post Slack messages, pull sales numbers directly from the database, or fetch Figma designs.</p>
+              <p class="ex"><strong>Concept only today:</strong> the foundation for full automation in the next quarter</p>
+            </div>
+
+          </div>
+
+          <div class="recap">
+            <div class="recap-title">In One Line</div>
+            <div class="recap-list">
+              <div class="recap-row">
+                <span class="recap-term">Skills</span>
+                <span class="recap-desc">Expertise manual</span>
+              </div>
+              <div class="recap-row">
+                <span class="recap-term">Plugins</span>
+                <span class="recap-desc">Bundled skill installation</span>
+              </div>
+              <div class="recap-row">
+                <span class="recap-term">Memory</span>
+                <span class="recap-desc">Persistent notes</span>
+              </div>
+              <div class="recap-row">
+                <span class="recap-term">MCP</span>
+                <span class="recap-desc">Connector to external systems</span>
+              </div>
+              <div class="recap-row">
+                <span class="recap-term">Hooks</span>
+                <span class="recap-desc">Automatic triggers</span>
+              </div>
+            </div>
+            <p class="recap-foot">Today we will use <strong>Skills and Plugins</strong> hands-on, and get familiar with the rest as concepts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter-section" id="en-ch3">
+    <div class="chapter-grid">
+      <aside class="chapter-aside"><div class="chapter-num">Part Three</div><span class="chapter-time-pill"><span class="clk"></span>40-55' · 15'</span><div class="chapter-aside-title">Skill Quick Tour</div><p class="chapter-aside-note">Avoid the common AI-dashboard look: purple gradients, generic Inter-heavy cards, and oversized rounded corners.</p></aside>
+      <div class="chapter-body">
+        <span class="eyebrow">Apply Skills</span>
+        <h2 class="chapter-h2">Use Skills to create a <span class="accent">business-ready dashboard design.</span></h2>
+        <div class="yellow-bold-banner"><h3 class="ybh">Without explicit direction, dashboards often become <strong>generic AI-looking designs.</strong></h3><p>To move beyond that, provide three inputs: a design reference, your brand tone, and examples of what to avoid versus what to follow.</p><div class="decor"></div></div>
+        <figure style="margin:24px 0;text-align:center;"><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;align-items:stretch;"><img src="images_fin/ai-default-design-1.png" alt="Generic AI dashboard example 1" style="width:100%;height:320px;object-fit:cover;object-position:top center;border-radius:var(--r-md);border:1px solid var(--hairline);"><img src="images_fin/ai-default-design-2.png" alt="Generic AI dashboard example 2" style="width:100%;height:320px;object-fit:cover;object-position:top center;border-radius:var(--r-md);border:1px solid var(--hairline);"></div><figcaption style="margin-top:10px;font-size:0.9em;color:var(--charcoal);">Generic AI design examples</figcaption></figure>
+        <div class="sub">
+          <span class="sub-eyebrow">3-1</span>
+          <h3>Four ways to avoid a generic AI result</h3>
+          <ol class="steps stack">
+            <li>
+              <h4>Activate the frontend-design skill</h4>
+              <p>Start with <code>/frontend-design</code> or add <strong>"Use the frontend-design skill actively."</strong> to your prompt.</p>
+              <p class="step-extra"><span class="label">Why it works</span>This skill is essentially Anthropic's pre-built manual for avoiding "AI signatures." Turning it on automatically organizes font pairing, color palette, spacing system, and design tokens. It's the most-validated design skill with 277K+ installs.</p>
+            </li>
+            <li>
+              <h4>Provide a concrete reference</h4>
+              <p>Instead of "make it pretty," point to a <strong>specific site or layout</strong>. Pick a reference that matches your tone from collections like awesome-design-md or skills.sh, then attach the URL or screenshot.</p>
+              <p style="margin-top:6px;font-size:0.9em;"><a href="https://github.com/VoltAgent/awesome-design-md" target="_blank" rel="noopener">https://github.com/VoltAgent/awesome-design-md</a></p>
+
+              <div class="slider-section" style="margin:14px 0 0;">
+                <h4 class="slider-title">awesome-design-md gallery</h4>
+                <p class="slider-sub">Scroll horizontally to browse tone and layout references. Click any image to expand.</p>
+                <div class="image-slider" id="en-awesome-slider">
+                  <button class="slide" type="button" aria-label="Expand awesome-design-md 1">
+                    <img src="awesome_design/awesome-design-md_1.png" alt="awesome-design-md 1" />
+                  </button>
+                  <button class="slide" type="button" aria-label="Expand awesome-design-md 2">
+                    <img src="awesome_design/awesome-design-md_2.png" alt="awesome-design-md 2" />
+                  </button>
+                  <button class="slide" type="button" aria-label="Expand awesome-design-md 3">
+                    <img src="awesome_design/awesome-design-md_3.png" alt="awesome-design-md 3" />
+                  </button>
+                  <button class="slide" type="button" aria-label="Expand awesome-design-md 4">
+                    <img src="awesome_design/awesome-design-md_4.png" alt="awesome-design-md 4" />
+                  </button>
+                  <button class="slide" type="button" aria-label="Expand awesome-design-md 5">
+                    <img src="awesome_design/awesome-design-md_5.png" alt="awesome-design-md 5" />
+                  </button>
+                </div>
+              </div>
+
+              <p class="step-extra"><span class="label">Practical tip</span>Your existing company assets are great references too. Brand guidelines, store photos, brochures, or lookbook pages attached to the prompt let Claude follow that tone. Internal materials are often more accurate than external references.</p>
+
+              <details class="toggle-card" style="margin-top:14px;">
+                <summary>
+                  <span class="ttl-row"><span class="icon">🍎</span><span>Apple.com design system — how to format a system so AI can follow it (example)</span></span>
+                  <span class="chev" aria-hidden="true">▾</span>
+                </summary>
+                <div class="toggle-body" style="padding:0;">
+                  <div class="design-example" style="margin:0;border:0;border-radius:0;">
+                    <div class="design-example-header" style="border-radius:0;">
+                      <span class="design-example-tag">Reference · Real design system example</span>
+                      <h4>Apple.com design system — how to format it so AI can follow</h4>
+                      <p>A document summarizing the design system Apple.com actually uses. <mark>Yellow highlights</mark> mark the spots you should replace with your own brand/product values. Build your company's design guide in the same shape and reuse it across every prompt for consistent output.</p>
+                    </div>
+                    <div class="design-example-body">
+
+                      <h5>① Overview · One-line concept</h5>
+                      <p><mark>"A minimal catalog wrapped in nearly invisible UI around product photography"</mark> — Apple stacks full-bleed product tiles that alternate between light and dark. Nothing competes with the product.</p>
+
+                      <h5>② Brand &amp; Accent · Single accent color</h5>
+                      <ul>
+                        <li>Action Blue: <mark><span class="swatch" style="background:#0066cc;"></span><code>#0066cc</code></mark> — every interactive element (links, CTAs, focus). <strong>No second brand color.</strong></li>
+                        <li>Focus Blue: <mark><code>#0071e3</code></mark> — keyboard focus ring only</li>
+                        <li>Sky Link Blue: <mark><code>#2997ff</code></mark> — used only on dark tiles</li>
+                      </ul>
+
+                      <h5>③ Surface · Canvas tones</h5>
+                      <ul>
+                        <li>Pure White: <span class="swatch" style="background:#ffffff;"></span><code>#ffffff</code></li>
+                        <li>Parchment (signature off-white): <mark><span class="swatch" style="background:#f5f5f7;"></span><code>#f5f5f7</code></mark> — alternates with light tiles</li>
+                        <li>Near-Black Tile: <mark><span class="swatch" style="background:#272729;"></span><code>#272729</code></mark> — dark tiles / full-bleed product stages</li>
+                        <li>Pure Black: <code>#000000</code> — global nav bar only</li>
+                      </ul>
+
+                      <h5>④ Text · Ink tones</h5>
+                      <ul>
+                        <li>Near-Black Ink: <mark><code>#1d1d1f</code></mark> — every headline and body text. <strong>Pure #000 is not used</strong> (photographic feel, not print).</li>
+                        <li>Body on dark: <code>#ffffff</code></li>
+                        <li>Body muted (on dark): <code>#cccccc</code></li>
+                      </ul>
+
+                      <h5>⑤ Typography · Font system</h5>
+                      <ul>
+                        <li>Display: <mark><code>SF Pro Display</code></mark> — for headlines 19px and above (Apple's own font)</li>
+                        <li>Body / UI: <mark><code>SF Pro Text</code></mark> — for body text under 20px</li>
+                        <li>Substitute: prefer the system stack <code>system-ui, -apple-system</code>; in non-Apple environments, <mark>Inter</mark> is the closest match</li>
+                      </ul>
+
+                      <h5>⑥ Type Scale · Hierarchy</h5>
+                      <ul>
+                        <li>Hero Display: <mark>56px / 600 / line 1.07 / tracking -0.28px</mark> — Apple's signature "tight" headline</li>
+                        <li>Tile Display: <mark>40px / 600 / line 1.10</mark> — product tile headlines</li>
+                        <li>Body: <mark>17px / 400 / line 1.47 / tracking -0.374px</mark> — <strong>17px, not 16px</strong>, Apple's readability standard</li>
+                        <li>Caption: 14px / 400 / -0.224px</li>
+                        <li>Weight ladder: <strong>300 / 400 / 600 / 700</strong> — <strong>500 intentionally excluded</strong></li>
+                      </ul>
+
+                      <h5>⑦ Spacing &amp; Layout · Rhythm</h5>
+                      <ul>
+                        <li>Base unit: 8px (4 / 8 / 12 / 16 / 20 / 24 / 32 / 48 / 80)</li>
+                        <li>Section vertical padding: <mark>80px</mark> (inside product tiles)</li>
+                        <li>Gap between tiles: <strong>0px</strong> — the color change is the divider</li>
+                        <li>Max content width: <mark>980px (text), 1440px (grid)</mark></li>
+                      </ul>
+
+                      <h5>⑧ Elevation · Shadow philosophy</h5>
+                      <ul>
+                        <li>Exactly <strong>one</strong> shadow: <mark><code>rgba(0, 0, 0, 0.22) 3px 5px 30px</code></mark></li>
+                        <li>Applied to: <strong>product imagery only</strong>. Never on cards, buttons, or text.</li>
+                        <li>UI hierarchy is expressed through (a) surface color change and (b) backdrop-blur</li>
+                      </ul>
+
+                      <h5>⑨ Border Radius · Corners</h5>
+                      <ul>
+                        <li>None (0px): full-bleed tiles (no corner rounding)</li>
+                        <li>Small (8px): dark utility buttons (Sign In, Bag)</li>
+                        <li>Large (18px): store utility cards</li>
+                        <li>Pill (9999px): <strong>primary action — blue pill CTAs</strong>, search input, configurator chips</li>
+                      </ul>
+
+                      <h5>⑩ Photography Direction · Shot tone</h5>
+                      <p><mark>"Product photography is the star, UI disappears."</mark> Full-bleed 21:9 or 16:9 hero imagery. Product renders sit on transparent PNG with just the system shadow for weight. No decorative gradients — atmosphere comes entirely from photography.</p>
+
+                      <h5>⑪ Don'ts · Forbidden patterns</h5>
+                      <ul>
+                        <li>No second accent color — every "click me" is the single Action Blue</li>
+                        <li>No shadows on cards, buttons, or text — shadow is reserved for product imagery</li>
+                        <li>No decorative gradient backgrounds — atmosphere comes from photography</li>
+                        <li>No weight 500 in body — the ladder is 300 / 400 / 600 / 700</li>
+                        <li>No corner rounding on full-bleed tiles — color change is the divider</li>
+                        <li>Do not drop body line-height below 1.47 — the editorial leading is part of the brand</li>
+                      </ul>
+
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </li>
+            <li>
+              <h4>Define the brand tone</h4>
+              <p>"Our brand is <strong>minimal / classic / street</strong>" — pinning down even one adjective changes the result.</p>
+              <p class="step-extra"><span class="label">Fashion industry application</span>MLB is "street classic," Discovery is "outdoor casual" — define your brand tone as a <strong>single word</strong> and embed it in the prompt. The clearer the tone, the steadier the output stays across multiple runs.</p>
+            </li>
+            <li>
+              <h4>Include Bad vs. Good examples</h4>
+              <p>Telling Claude what to <strong>avoid</strong> is surprisingly effective at preventing it.</p>
+              <p class="step-extra"><span class="label">Example</span>"No purple gradients, no Inter font, no oversized radii on every corner" — being explicit blocks those directions. Attaching one Bad example and one Good example side by side improves accuracy further.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="tip-callout">
+          <div class="tip-head">TIP · Optional skills worth pairing</div>
+          <ul>
+            <li><strong>web-design-guidelines</strong> — Automatic UI quality check (133K+ installs)</li>
+            <li><strong>superpowers</strong> — Multi-agent workflow (40K+ stars, advanced)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter-section" id="en-ch4" style="background:var(--surface-soft);">
+    <div class="chapter-grid">
+      <aside class="chapter-aside"><div class="chapter-num">Part Four</div><span class="chapter-time-pill"><span class="clk"></span>55-95' · 40'</span><div class="chapter-aside-title">Hands-on 1 · Coach Mode</div><p class="chapter-aside-note">This is the time to build at your own pace. Raise your hand whenever you are blocked.</p></aside>
+      <div class="chapter-body">
+        <span class="eyebrow">Hands-on 1 · Dashboard Implementation</span>
+        <h2 class="chapter-h2">From data to <span class="accent">a working screen.</span></h2>
+        <ol class="steps"><li><h4>Write the PLAN (5 min)</h4><p>Use the PLAN created earlier as the foundation for the dashboard.</p></li><li><h4>Check the data and run the first prompt (10 min)</h4><p>Place <code>sample_data.xlsx</code> in the Claude Code working folder and paste the scenario prompt.</p></li><li><h4>Build and refine the screen (20 min)</h4><p>Work at your own pace. Ask for help after five minutes of being blocked.</p></li><li><h4>Quality check (5 min)</h4><p>Review the UI and check Chinese font rendering to avoid tofu-box issues.</p></li></ol>
+        <div class="sub"><h3>Scenario Prompt Template</h3><p>Copy only the prompt for the scenario you selected.</p><div class="prompt-card"><div class="pc-head"><span class="pc-title">Scenario A · Tmall / Douyin Weekly Sales</span><span class="sub-eyebrow" style="margin:0;background:var(--tint-lavender);color:var(--brand-purple-800);">Recommended</span></div><pre>Analyze sample_data.xlsx and create a single-file HTML weekly sales dashboard for reviewing channel ROI every Monday.
+
+Core metrics:
+- Weekly sales by channel (Tmall / Douyin)
+- Week-over-week growth rate
+- Top 10 products by sales
+- Category × channel heatmap
+
+Charts: bar, line, and heatmap.
+Style: minimal and business-ready; avoid generic AI styling.
+Use the frontend-design skill and xlsx skill.</pre></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter-section" id="en-ch5">
+    <div class="chapter-grid">
+      <aside class="chapter-aside"><div class="chapter-num">Part Five</div><span class="chapter-time-pill"><span class="clk"></span>95-110' · 15'</span><div class="chapter-aside-title">Hands-on 2 · Deploy + PPT</div><p class="chapter-aside-note">Share the dashboard with your team and generate an executive PPT in the same workflow.</p></aside>
+      <div class="chapter-body">
+        <span class="eyebrow">Hands-on 2 · Dashboard Deployment + Report PPT</span>
+        <h2 class="chapter-h2">From dashboard deployment to <span class="accent">executive PPT</span> in one flow.</h2>
+        <div class="sub">
+          <span class="sub-eyebrow">5-1</span>
+          <h3>pptx Skill Concept</h3>
+          <p>How the official Anthropic <strong>pptx skill</strong> works:</p>
+          <ul>
+            <li>Converts HTML to PPTX while preserving the original design</li>
+            <li>Attach a company .pptx template — master slides and fonts are used as-is</li>
+            <li>Charts are generated as editable native PowerPoint charts</li>
+          </ul>
+        </div>
+
+        <div class="sub">
+          <span class="sub-eyebrow">5-2</span>
+          <h3>PPT Automation Practice</h3>
+          <p>Convert the dashboard you just built into an executive PPT automatically.</p>
+          <div class="prompt-card">
+            <div class="pc-head">
+              <span class="pc-title">Prompt · pptx automation</span>
+              <span class="sub-eyebrow" style="margin:0;">End-to-End</span>
+            </div>
+<pre>Create an executive PowerPoint report from the key insights
+in the dashboard we just built.
+
+Structure:
+1. Cover page with title and date
+2. Executive Summary with three bullets
+3. Core metrics using editable native charts
+4. Channel-level analysis
+5. Recommended next actions
+
+Requirements:
+- Use the pptx skill
+- Use editable native PPT charts</pre>
+          </div>
+
+          <div class="result-preview">
+            <div class="result-preview-head">
+              <span class="result-tag">Output Example</span>
+              <span class="result-caption">A 5-slide executive PPT</span>
+            </div>
+            <button class="slide result-preview-shot" type="button" aria-label="Expand PPT automation result">
+              <img src="ppt/ppt_result.png" alt="PPT automation result — 5-slide preview" />
+            </button>
+          </div>
+
+          <div class="tip-callout">
+            <div class="tip-head">TIP · For easier chart editing</div>
+            <p style="margin:0 0 12px;">Call the <strong><code>pptx</code> skill directly</strong>, not <strong>claude-design</strong> — chart editing becomes far more flexible.<br>When you go through claude-design the chart ends up embedded as a flat image, while calling the pptx skill directly produces native PowerPoint charts whose data, legends, and axes you can edit inside PowerPoint.</p>
+            <button class="slide result-preview-shot" type="button" aria-label="Expand pptx skill direct call result" style="display:block;margin:0;">
+              <img src="ppt/ppt.png" alt="pptx skill direct call — editable native PPT charts" style="width:100%;height:auto;display:block;border-radius:var(--r-md);" />
+            </button>
+          </div>
+        </div>
+
+        <div class="sub">
+          <span class="sub-eyebrow">5-3</span>
+          <h3>Deep Learning — Build your own Agent and Hook</h3>
+          <details class="toggle-card" style="margin:0;">
+            <summary>
+              <span class="ttl-row"><span class="icon">🧠</span><span>Open the weekly-automation guide — Agent + Hook setup</span></span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="toggle-body" style="padding:0;background:transparent;border-top:0;">
+          <div class="deep-callout" style="margin-top:0;border-radius:0 0 var(--r-md) var(--r-md);">
+            <span class="deep-tag">Deep Learning · How to create Subagent + Hook</span>
+            <h4>Generate the weekly report automatically with an Agent file and a Hook config</h4>
+            <p>The "data swap regenerates the report" pattern boils down to two things: <strong>how you define the Agent</strong> and <strong>how you wire the Hook</strong>. Each is just one file.</p>
+
+            <div class="deep-block">
+              <div class="deep-block-title"><span class="num">0</span>What is an Agent</div>
+              <p>An Agent is <strong>"a small Claude pre-configured to do one specific job well"</strong>. You place it next to the main Claude and delegate: "handle that part separately."</p>
+              <p style="margin-top:10px;"><strong>How is it different from the main Claude</strong></p>
+              <ul>
+                <li><strong>Narrow scope</strong> — Not a general-purpose assistant; the instructions are scoped to one task (e.g. weekly report generation)</li>
+                <li><strong>Separate context</strong> — Runs in its own workspace, leaving the main conversation clean</li>
+                <li><strong>Invoked on demand</strong> — Only wakes up when the main Claude says "use the weekly-report agent"; otherwise dormant</li>
+                <li><strong>Scoped tool permissions</strong> — One agent might use only Read/Write, another can use Bash — each gets exactly what it needs</li>
+              </ul>
+              <p style="margin-top:10px;"><strong>Why create one</strong></p>
+              <ul>
+                <li>Repeating the same task means re-pasting the same long prompt every time. With an agent, <strong>one line invokes it.</strong></li>
+                <li>Saves the main Claude's context budget — complex work delegated keeps the main chat lightweight</li>
+                <li><strong>Consistent quality across people</strong> — different teammates no longer write different prompts for the same task</li>
+                <li>Becomes a <strong>component of an unattended pipeline</strong> when combined with hooks and schedulers</li>
+              </ul>
+              <p style="margin-top:10px;"><strong>Example in this workshop</strong></p>
+              <p>Weekly sales data (xlsx) → dashboard (HTML) → report (PPT) → internal sharing link. Instead of a person typing those 4 steps every week, write them once into an agent called <code>weekly-report</code>. Next week the user just says "use the weekly-report agent to build this week's report."</p>
+            </div>
+
+            <div class="deep-block">
+              <div class="deep-block-title"><span class="num">1</span>Create an Agent — One markdown file is all you need</div>
+              <p>A subagent is not a separate program — it is a <strong>markdown file</strong>. Drop a <code>.md</code> file into <code>~/.claude/agents/</code> (global) or <code>.claude/agents/</code> (project), and Claude Code picks it up automatically.</p>
+              <p style="margin-top:10px;"><strong>① Create the file</strong></p>
+              <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:12px 14px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.6;overflow-x:auto;">
+                <span style="color:var(--brand-purple-300);">.claude/agents/</span>weekly-report.md
+              </div>
+              <p><strong>② File contents (YAML frontmatter + body)</strong></p>
+              <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:14px 16px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.7;overflow-x:auto;white-space:pre;">---
+name: weekly-report
+description: Reads weekly sales data and generates an HTML dashboard plus a PPT report. Use when weekly report automation is required.
+tools: Read, Write, Edit, Bash
+---
+
+# Role
+You are the weekly report automation agent for F&amp;F China.
+
+# Steps
+1. Find the most recent xlsx in <span style="color:var(--brand-purple-300);">./sample_data/</span>
+2. Use the xlsx skill to aggregate by channel and category
+3. Use the frontend-design skill to build the HTML dashboard
+4. Use the pptx skill to produce a 5-slide executive PPT
+5. Output the resulting file paths</div>
+              <p style="margin-top:10px;"><strong>③ How to invoke</strong> — one line in the main Claude chat</p>
+              <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:12px 14px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.6;overflow-x:auto;">
+                "Use the <span style="color:var(--brand-purple-300);">weekly-report</span> agent to build this week's report"
+              </div>
+              <p style="margin-top:8px;">→ Claude reads <code>weekly-report.md</code>, runs the job in a separate context, and keeps the main chat clean.</p>
+            </div>
+
+            <div class="deep-block">
+              <div class="deep-block-title"><span class="num">2</span>Create a Hook — Register a command in settings.json</div>
+              <p>A hook is just an <strong>event + command</strong> entry in <code>.claude/settings.json</code> (project) or <code>~/.claude/settings.json</code> (global). There are 5 hook events:</p>
+              <ul>
+                <li><strong>PreToolUse</strong> — right before a tool call</li>
+                <li><strong>PostToolUse</strong> — right after a tool call (most common)</li>
+                <li><strong>UserPromptSubmit</strong> — when the user sends a message</li>
+                <li><strong>Stop</strong> — at the end of a conversation</li>
+                <li><strong>Notification</strong> — when a notification fires</li>
+              </ul>
+              <p style="margin-top:10px;"><strong>Example — Auto-build PPT whenever the dashboard HTML changes</strong></p>
+              <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:14px 16px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.7;overflow-x:auto;white-space:pre;">{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -File .claude/hooks/build-ppt.ps1"
+          }
+        ]
+      }
+    ]
+  }
+}</div>
+              <p style="margin-top:8px;">→ Every time Edit/Write saves a file, <code>build-ppt.ps1</code> runs. The matcher accepts a regex, so you can scope it down to specific files.</p>
+            </div>
+
+            <div class="deep-block">
+              <div class="deep-block-title"><span class="num">3</span>Write the Hook script — Use the info you receive</div>
+              <p>The script called by the hook receives a <strong>JSON event via standard input</strong>. Pull out which tool ran on which file and act on it.</p>
+              <p style="margin-top:10px;"><strong>Example — <code>.claude/hooks/build-ppt.ps1</code></strong></p>
+              <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:14px 16px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.7;overflow-x:auto;white-space:pre;"><span style="color:#888;"># Read the hook event from standard input</span>
+$stdin = [Console]::In.ReadToEnd()
+$event = $stdin | ConvertFrom-Json
+
+<span style="color:#888;"># Identify which file changed</span>
+$file = $event.tool_input.file_path
+
+<span style="color:#888;"># Only rebuild PPT when dashboard.html changes</span>
+if ($file -match 'dashboard\.html$') {
+    claude -p "Use weekly-report agent to rebuild the PPT" `
+        --output-format json --max-turns 10 2&gt;&amp;1 | Out-Null
+}
+
+exit 0</div>
+              <p style="margin-top:8px;">→ The hook spawns a second Claude in the background to handle PPT regeneration, so the main session keeps running uninterrupted.</p>
+            </div>
+
+            <div class="deep-block">
+              <div class="deep-block-title"><span class="num">4</span>Full automation — Weekly report every Monday 09:00</div>
+              <p>Combine with an OS scheduler (Windows Task Scheduler or cron) for time-based execution:</p>
+              <div class="deep-flow">
+                <div class="step">Mon 09:00<br/>OS scheduler</div>
+                <div class="arrow">→</div>
+                <div class="step">claude -p<br/>"weekly report"</div>
+                <div class="arrow">→</div>
+                <div class="step">weekly-report<br/>agent runs</div>
+                <div class="arrow">→</div>
+                <div class="step">Hook delivers<br/>PPT + notice</div>
+              </div>
+              <p style="margin-top:10px;"><strong>① OS scheduler (Windows example)</strong></p>
+              <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:12px 14px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.6;overflow-x:auto;">
+                schtasks /create /tn "WeeklyReport" /tr "claude -p 'Generate weekly report'" /sc weekly /d MON /st 09:00
+              </div>
+              <p style="margin-top:10px;"><strong>② Flow</strong></p>
+              <ul>
+                <li>Monday 9 AM → OS scheduler runs <code>claude -p</code></li>
+                <li>Claude auto-invokes the <code>weekly-report</code> agent</li>
+                <li>Agent reads data → builds dashboard → generates PPT</li>
+                <li>PostToolUse hook detects the output → posts the link to the internal messenger</li>
+              </ul>
+              <p style="margin-top:10px;">→ Once set up, a human only needs to check the resulting message.</p>
+            </div>
+
+            <div class="deep-block">
+              <div class="deep-block-title"><span class="num">5</span>Summary — Just create three files</div>
+              <ul>
+                <li><code>.claude/agents/weekly-report.md</code> — what the agent does</li>
+                <li><code>.claude/settings.json</code> — which event triggers what</li>
+                <li><code>.claude/hooks/build-ppt.ps1</code> — the actual script</li>
+              </ul>
+              <p style="margin-top:8px;">Inside the company security perimeter, combining with <strong>DCS AI MCP</strong> (next chapter) gives you a fully internal pipeline: data ingest → result upload, all on-prem.</p>
+              <p style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.12);"><strong style="color:var(--brand-purple-300);">💡 TIP</strong> — If this feels too complex, <strong>just drag the content from sections 0–5 above and hand it to Claude</strong>. Claude will create the files in order and finish the setup for you. One line is enough: "Build the weekly-report agent and hook based on the content above."</p>
+            </div>
+          </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter-section" id="en-ch7" style="background:var(--surface-soft);">
+    <div class="chapter-grid">
+      <aside class="chapter-aside"><div class="chapter-num">Part Six</div><span class="chapter-time-pill"><span class="clk"></span>110-120' · 10'</span><div class="chapter-aside-title">Deploy · DCS AI</div><p class="chapter-aside-note">Use DCS AI MCP to deploy and share materials securely inside the company environment.</p></aside>
+      <div class="chapter-body">
+        <span class="eyebrow">Deployment Method · DCS AI</span>
+        <h2 class="chapter-h2">Deploy internally through <span class="accent">DCS AI</span>.</h2>
+        <p class="chapter-lead">When F&amp;F's internal DCS AI infrastructure is connected to Claude Code through MCP, dashboards and report materials can be uploaded to the internal environment through a single chat instruction.</p>
+        <div class="sub">
+          <span class="sub-eyebrow">6-1</span>
+          <h3>Dashboard Deployment — Where and how to share</h3>
+          <p>Decide how to distribute today's HTML file to your team. Pick the option that fits your environment and policy.</p>
+          <table class="compare">
+            <thead><tr><th>Method</th><th>Timing</th><th>Use case</th></tr></thead>
+            <tbody>
+              <tr><td>Local HTML</td><td>Immediate</td><td>Personal review · instant use</td></tr>
+              <tr><td>HTML distribution</td><td>Policy dependent</td><td>Internal sharing</td></tr>
+              <tr><td>Messenger or email attachment</td><td>Takes time</td><td>1:1 · small-group sharing</td></tr>
+            </tbody>
+          </table>
+          <p>HTML is a single file — attach it and the recipient can open it directly in a browser. (Note: images may not be included, so please verify before sending.)<br>PPT goes as an attachment. HTML can be deployed through DCS AI and shared as a link with anyone who has the link.</p>
+        </div>
+
+        <div class="sub">
+          <span class="sub-eyebrow">6-2</span>
+          <h3>What is DCS AI?</h3>
+          <p>DCS AI is F&amp;F's internal AI infrastructure and tool environment. When connected through <strong>MCP (external system bridge)</strong>, Claude can work directly with approved internal resources.</p>
+          <ul>
+            <li>Runs in an authenticated internal environment — data and materials stay inside the company</li>
+            <li>Registers in Claude Code as <code>dcsai__*</code>-style tools automatically</li>
+          </ul>
+        </div>
+
+        <div class="sub">
+          <span class="sub-eyebrow">6-3</span>
+          <h3>Connection Method — 3 Steps</h3>
+          <ol class="steps stack" style="max-width:none;">
+            <li>
+              <h4>Install the DCS AI plugin</h4>
+              <p>Install the DCS AI MCP plugin from the Claude Code chat window. Restart Claude Code once and the tools register automatically.</p>
+              <div class="codebox" data-label="INSTALL" style="margin-top:10px;"><pre>/plugin install dcs-ai-common</pre></div>
+            </li>
+            <li>
+              <h4>Confirm internal authentication</h4>
+              <p>The first time, complete the internal SSO or DCS account authentication. Once done, Claude recognizes the DCS AI tool list.</p>
+              <p class="step-extra"><span class="label">Validation</span>Ask <code>"List the available DCS AI tools."</code> in the chat. If Knowledge Graph lookup, skill catalog, and artifact upload appear, the connection is ready.</p>
+            </li>
+            <li>
+              <h4>Run the deployment prompt</h4>
+              <p>Upload today's output (HTML dashboard + PPT) to the DCS AI artifact repository and receive an internal sharing link.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="sub">
+          <span class="sub-eyebrow">6-4</span>
+          <h3>Deployment Prompt Example</h3>
+          <p>Paste the prompt below into the chat. If Plan Mode is on, Claude shows the deployment plan first and only uploads after you approve it.</p>
+          <div class="prompt-card">
+            <div class="pc-head">
+              <span class="pc-title">Prompt · DCS AI deployment</span>
+              <span class="sub-eyebrow" style="margin:0;background:var(--tint-lavender);color:var(--brand-purple-800);">Internal Deployment</span>
+            </div>
+<pre>please deploy dashboard with dcs-ai-cli</pre>
+          </div>
+
+          <div class="slider-section">
+            <h4 class="slider-title">Deployment Flow — 2 Steps</h4>
+            <p class="slider-sub">See how DCS AI deployment progresses on screen. Click any image to expand.</p>
+            <div class="image-slider" id="en-deploy-slider">
+              <button class="slide" type="button" aria-label="Expand deployment step 1">
+                <img src="deploy/deploy%201.webp" alt="DCS AI deployment step 1 — upload" />
+              </button>
+              <button class="slide" type="button" aria-label="Expand deployment step 2">
+                <img src="deploy/deploy%202.webp" alt="DCS AI deployment step 2 — internal sharing link generated" />
+              </button>
+            </div>
+          </div>
+
+          <div class="callout">After upload, DCS AI returns an internal sharing link. Paste the URL into the internal messenger or email to share with your team. <strong>Nothing leaves the company environment.</strong></div>
+        </div>
+
+        <div class="sub">
+          <span class="sub-eyebrow">6-5</span>
+          <h3>Use Scenarios</h3>
+          <table class="compare">
+            <thead><tr><th>Situation</th><th>DCS AI usage</th></tr></thead>
+            <tbody>
+              <tr><td>Weekly auto-update</td><td>Pull latest sales data from Knowledge Graph → refresh dashboard → re-upload as an artifact</td></tr>
+              <tr><td>Share with multiple teams</td><td>Upload once to artifact storage → distribute one internal link to many team members</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-light">
+    <h3>Wrapping up the session</h3>
+    <p>Did you finish today's session with one personal dashboard and one report PPT in hand? <br><br>Take the parts we did not cover today — Claude Code's hooks, MCP, memory, and more — and apply them to your real work to build your own agent.</p>
+    <p class="cta-qa-note">Q&amp;A will continue through the internal messenger. Thank you!</p>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand"><div class="b"><span class="mark">F</span><span>F&amp;F · CN</span></div><p>Claude Code training operated by the F&amp;F China PROCESS AX TEAM. A 120-minute practical session from data to dashboard.</p></div>
+      <div><h4>Workshop</h4><ul><li><a href="#en-ros">Run-of-Show</a></li><li><a href="#en-ch0">Opening</a></li><li><a href="#en-ch2">PLAN</a></li><li><a href="#en-ch3">Skill Tour</a></li><li><a href="#en-ch4">Hands-on 1</a></li><li><a href="#en-ch5">Hands-on 2</a></li><li><a href="#en-ch7">DCS AI Deployment</a></li></ul></div>
+      <div><h4>Scenario</h4><ul><li><a href="#en-scenarios">A · Weekly Sales (Recommended)</a></li></ul></div>
+      <div><h4>Resources</h4><ul><li><a href="#">Workshop PDF</a></li><li><a href="sample_data.xlsx" download>Sample Data (xlsx)</a></li><li><a href="#">Prompt Templates</a></li><li><a href="#">Output Storage Guide</a></li></ul></div>
+      <div><h4>F&amp;F</h4><ul><li><a href="#">About AX Team</a></li><li><a href="#">Training Curriculum</a></li><li><a href="#">F&amp;F Korea Cases</a></li><li><a href="mailto:hyoeun28@fnfcorp.com">Contact</a></li></ul></div>
+    </div>
+    <div class="footer-colophon"><span>© 2026 F&amp;F · CN · Claude Code Workshop</span><span>Set in Inter &amp; Pretendard</span><span>No. 001 / Vol. 01</span></div>
+  </footer>
+</section>
+
+<!-- ── Hero ──────────────────────────────────────────── -->
+<section class="hero">
+  <!-- Decorative scattered sticky-note dots + wires -->
+  <div class="hero-decor" aria-hidden="true">
+    <span class="dot" style="width:14px;height:14px;background:var(--brand-pink);top:14%;left:8%;"></span>
+    <span class="sticky" style="background:var(--brand-orange);top:20%;left:18%;--rot:-9deg;"></span>
+    <span class="dot" style="width:10px;height:10px;background:var(--brand-green);top:30%;left:6%;"></span>
+    <span class="dot" style="width:18px;height:18px;background:var(--brand-yellow);top:55%;left:12%;"></span>
+    <span class="sticky" style="background:var(--brand-purple-300);top:68%;left:7%;--rot:8deg;"></span>
+    <span class="dot" style="width:12px;height:12px;background:var(--brand-teal);top:18%;right:10%;"></span>
+    <span class="sticky" style="background:var(--brand-pink);top:30%;right:6%;--rot:6deg;"></span>
+    <span class="dot" style="width:16px;height:16px;background:var(--brand-purple-300);top:50%;right:14%;"></span>
+    <span class="sticky" style="background:var(--brand-yellow);top:62%;right:9%;--rot:-7deg;"></span>
+    <span class="dot" style="width:9px;height:9px;background:var(--brand-orange);top:78%;right:18%;"></span>
+    <svg class="wire" viewBox="0 0 1440 600" preserveAspectRatio="none">
+      <path d="M -20 420 Q 240 360 480 420 T 960 420 T 1480 420" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="none"/>
+      <path d="M -20 480 Q 320 540 640 480 T 1280 480 T 1480 480" stroke="rgba(156,108,228,0.4)" stroke-width="1" fill="none"/>
+      <path d="M -20 80 Q 360 130 720 80 T 1440 100" stroke="rgba(255,255,255,0.18)" stroke-width="1" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="hero-inner">
+    <span class="hero-kicker"><span class="blink"></span>F&amp;F CHINA · CLAUDE CODE WORKSHOP</span>
+    <h1 class="hero-title">나만의 <span class="accent">대시보드</span>를 <br/>만들어보다</h1>
+    <p class="hero-subtitle">데이터 → 화면 → 보고서까지 한 흐름으로. <br>처음 써보시는 분도 본인 대시보드 1개와 자동 PPT 1개를 들고 나갈 수 있도록 준비했습니다.</p>
+    <div class="hero-buttons">
+      <a href="#ros" class="btn btn-primary btn-lg">워크숍 시작하기</a>
+      <a href="sample_data.xlsx" download class="btn btn-secondary-on-dark btn-lg">실습 자료 받기</a>
+    </div>
+  </div>
+
+
+</section>
+<div class="hero-spacer"></div>
+
+<!-- ── Stat strip ────────────────────────────────────── -->
+<div class="stat-strip">
+  <div class="stat-strip-inner">
+    <div class="stat">
+      <div class="num">120<em>분</em></div>
+      <div class="label">강의 분량 · 7 chapters</div>
+    </div>
+    <div class="stat">
+      <div class="num">1<em>종</em></div>
+      <div class="label">핸즈온 시나리오</div>
+    </div>
+    <div class="stat">
+      <div class="num">2<em>개</em></div>
+      <div class="label">결과물 · 대시보드 배포 + PPT</div>
+    </div>
+    <div class="stat">
+      <div class="num">5<em>단계</em></div>
+      <div class="label">PLAN 워크시트로 시작</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Run-of-show grid ──────────────────────────────── -->
+<section class="block" id="ros">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Today's Run-of-Show</span>
+      <h2 class="h2">120분, <span class="accent">7개 챕터</span>로<br/>한 흐름으로 연결</h2>
+      <p class="lead">데이터를 받고, 설계를 짜고, 화면을 만들고, 보고서로 묶기까지.<br>같은 데이터, 같은 흐름으로 함께 진행합니다.</p>
+    </div>
+
+    <div class="ros-grid">
+      <a class="ros-tile tint-peach" href="#ch0">
+        <div class="num">00</div>
+        <div class="time">0–10'</div>
+        <div class="title">Opening</div>
+        <div class="desc">첫 실행 점검 + 결과물 데모</div>
+      </a>
+      <a class="ros-tile tint-rose" href="#ch1">
+        <div class="num">01</div>
+        <div class="time">10–25'</div>
+        <div class="title">Use Case</div>
+        <div class="desc">F&amp;F 한국 사례 + 4대 메커니즘</div>
+      </a>
+      <a class="ros-tile tint-yellow" href="#ch2">
+        <div class="num">02</div>
+        <div class="time">25–40'</div>
+        <div class="title">PLAN</div>
+        <div class="desc">5단계 워크시트 + 추천 시나리오</div>
+      </a>
+      <a class="ros-tile tint-mint" href="#ch3">
+        <div class="num">03</div>
+        <div class="time">40–55'</div>
+        <div class="title">Skill 투어</div>
+        <div class="desc">frontend-design · pptx · xlsx</div>
+      </a>
+      <a class="ros-tile tint-lavender" href="#ch4">
+        <div class="num">04</div>
+        <div class="time">55–95'</div>
+        <div class="title">Hands-on ①</div>
+        <div class="desc">데이터 → 대시보드 구현</div>
+      </a>
+      <a class="ros-tile tint-sky" href="#ch5">
+        <div class="num">05</div>
+        <div class="time">95–110'</div>
+        <div class="title">Hands-on ②</div>
+        <div class="desc">대시보드 배포 + 보고서 PPT 생성</div>
+      </a>
+      <a class="ros-tile tint-lavender" href="#ch7">
+        <div class="num">06</div>
+        <div class="time">110–120'</div>
+        <div class="title">Deploy</div>
+        <div class="desc">DCS AI로 사내 배포</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 00 ────────────────────────────────────── -->
+<section class="chapter-section" id="ch0">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part Zero</div>
+      <span class="chapter-time-pill"><span class="clk"></span>0–10' · 10'</span>
+      <div class="chapter-aside-title">Opening</div>
+      <p class="chapter-aside-note">오프닝에 앞서, 막힘 없이 핸즈온까지 진입할 수 있도록 함께 점검해요.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">Opening · 세팅 확인하기</span>
+      <h2 class="chapter-h2">처음 10분,<br/><span class="accent">막힘 없이 핸즈온까지 진입</span>할 수 있도록 함께 점검해요</h2>
+      <p class="chapter-lead">오늘은 처음 써보는 분이 많을 거예요. 핸즈온에서 막히는 첫 원인은 보통 환경 세팅 문제..</p>
+
+      <div class="sub">
+        <span class="sub-eyebrow">0-A</span>
+        <h3>첫 실행 점검</h3>
+        <p>핸즈온 시작 전에 모두 같은 환경 세팅이 되어 있는지 확인합니다. 잘 안 되는 부분이 있으면 보조강사가 1:1로 도와드립니다.</p>
+        <ul class="checklist">
+          <li>터미널에서 <code>claude</code> 입력 → 정상 실행되는가</li>
+          <li><code>/plugin marketplace add obra/superpowers-marketplace</code> 명령어가 인식되는가</li>
+          <li>샘플 데이터 <code>sample_data.xlsx</code> 를 다운로드 받았는가</li>
+        </ul>
+        <div class="callout">잘 안 되는 부분이 있으면 강사·보조강사가 함께 도와드립니다. <strong>누구도 막히지 않고 시작하기</strong>가 오늘의 첫 약속입니다.</div>
+      </div>
+
+
+      <div class="feat-card peach">
+        <span class="sub-eyebrow" style="background:rgba(0,0,0,0.06);color:var(--ink);">0-B</span>
+        <h3 class="ttl">오늘 세션의 결과물</h3>
+        <p style="font-size:18px;line-height:1.5;color:var(--charcoal);margin:0;">오늘 워크숍이 끝났을 때 가져가실 결과물 두 가지 : <br>① 본인 대시보드 1개 + ② 자동 생성된 보고서 PPT 1개.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 01 ────────────────────────────────────── -->
+<section class="chapter-section" id="ch1">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part One</div>
+      <span class="chapter-time-pill"><span class="clk"></span>10–25' · 15'</span>
+      <div class="chapter-aside-title">Use Case</div>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">Use Case + Claude Code 핵심 개념</span>
+      <h2 class="chapter-h2">결과물 먼저,<br/><span class="accent">개념은 짧게.</span></h2>
+
+      <div class="sub">
+        <span class="sub-eyebrow">1-1</span>
+        <h3>F&amp;F 한국 사례</h3>
+        <p><strong>보고서 생성 워크플로우 자동화</strong> — 현재 한국에서는 많은 담당자 분들이 HTML(웹)형태의 보고서를 만들고 활용하고 있습니다.</p>
+        <p><strong>CEO Report · 보고서 PPT → HTML</strong></p>
+        <p style="margin:14px 0 6px;font-size:13px;color:var(--slate);"><strong style="color:var(--ink);">사례 1.</strong> 글로벌 마케팅팀 보고자료</p>
+        <a class="att-link" href="KARINA_EDITION_VOL2_GLMKT_UNIFIED%20AI%20DASHBOARD%20(1)/KARINA_EDITION_VOL2_UNIFIED_DASHBOARD.html" target="_blank"><code>KARINA EDITION VOL.2 — UNIFIED DASHBOARD</code></a>
+        <p style="margin:16px 0 6px;font-size:13px;color:var(--slate);"><strong style="color:var(--ink);">사례 2.</strong> FnCo 인플루언서 대시보드 CEO Report</p>
+        <a class="att-link" href="fnco_if_ceo-main/ceoreport.html" target="_blank"><code>FnCo IF — CEO REPORT</code></a>
+      </div>
+
+      <div class="sub">
+        <span class="sub-eyebrow">1-2</span>
+        <h3>Claude Code의 확장 메커니즘</h3>
+        <p>Claude Code를 이루는 5가지 시스템입니다. <strong>Claude Code의 기본 기능들만 알아도 쉽게 보고서 생성이 가능합니다. 오늘은 Skills 마스터가 목표.</strong></p>
+        <table class="compare">
+          <thead>
+            <tr><th>메커니즘</th><th>한 줄 설명</th><th>오늘 워크숍</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Skills</td><td>특정 작업을 잘하게 만드는 지침서 (markdown)</td><td class="yes">✓ 메인 활용</td></tr>
+            <tr><td>Plugins</td><td>스킬·도구를 묶어서 한 번에 설치하는 패키지</td><td class="yes">✓ 설치에 사용</td></tr>
+            <tr><td>Memory</td><td>대화·세션을 넘어 Claude가 기억하는 노트</td><td class="maybe">개념만</td></tr>
+            <tr><td>MCP</td><td>외부 데이터·도구 연결 (DB, Slack, Figma 등)</td><td class="maybe">개념만</td></tr>
+            <tr><td>Hooks</td><td>작업 전후 자동 실행 트리거</td><td class="maybe">개념만</td></tr>
+          </tbody>
+        </table>
+        <div class="callout"><strong>오늘은 Skills 하나만 마스터해도 충분합니다.</strong></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 02 ────────────────────────────────────── -->
+<section class="chapter-section" id="ch2" style="background:var(--surface-soft);">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part Two</div>
+      <span class="chapter-time-pill"><span class="clk"></span>25–40' · 15'</span>
+      <div class="chapter-aside-title">Plan Framework</div>
+      <p class="chapter-aside-note">Plan Mode 없이 시작하면 'AI 티 나는' 아쉬운 결과물이 나오기 쉽습니다. 5분의 PLAN이 40분의 디자인을 살립니다.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">PLAN부터 시작하기 · 결과물 퀄리티의 출발점</span>
+      <h2 class="chapter-h2">본격적인 시작에 앞서 <br/><span class="accent">5분 계획이 </span>전체의 완성도를 좌우합니다.</h2>
+      <p class="chapter-lead">이번 워크숍에서 가장 중요한 파트입니다. PLAN을 한 장 미리 적어두면, 마지막 디자인의 완성도가 크게 달라집니다.</p>
+
+      <div class="sub">
+        <h3>5단계 PLAN 워크시트</h3>
+        <p>한 장짜리 워크시트입니다. 5칸을 차례로 채우면 끝나요.</p>
+        <div class="codebox" data-label="WORKSHEET">
+<pre>1️⃣ 목적
+   "누가 / 언제 / 어떤 의사결정을 위해 보는가?"
+   예: 마케팅팀이 매주 월요일 캠페인 ROI 점검
+
+2️⃣ 데이터
+   - 어떤 데이터?  매출 / 마케팅 / 재고 / VOC / KG(지식그래프)
+   - 어디서?       Excel · Tmall(天猫) API · Douyin(抖音) API · JD(京东) · 사내 ERP
+   - 형태?         CSV / Excel / JSON
+
+3️⃣ 화면 스케치 (손그림 OK)
+   - 한 화면에 들어갈 핵심 지표 3-5개
+   - 차트 타입 (막대 / 라인 / 지도)
+
+4️⃣ 보고서 형식
+   - PPT? HTML? 엑셀?
+   - 누구에게 전달?
+
+5️⃣ 배포
+   - 본인 PC에서만? URL로 공유?</pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <span class="sub-eyebrow">2-1</span>
+        <h3>plan 짜는 방법 — Plan Mode</h3>
+
+        <div class="feat-card sky" style="margin:20px 0;">
+          <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:#2A6FB7;">CLAUDE CODE 빌트인</span>
+          <h4 class="ttl">Plan Mode — 설치 없이 바로 사용</h4>
+          <p style="margin:0 0 10px;"> VS Code 확장 프로그램으로 Claude Code 설치 후 <strong>즉시 사용 가능</strong>합니다. <code style="background:var(--canvas);padding:2px 8px;border-radius:var(--r-xs);">Shift + Tab</code> 두 번 → Plan Mode 진입.
+          <br>혹은 터미널에 /plan 이라고 적으시면 모드가 변경됩니다</p>
+          <p style="margin:0 0 10px;">Plan Mode가 켜진 상태에서는 Claude가 <strong>먼저 계획을 화면에 보여주고, OK를 받기 전까지 절대 코드를 쓰지 않습니다.</strong> "이대로 진행할까요?"라고 물어보고, 사용자가 승인해야 그때부터 실제 작업이 시작됩니다.</p>
+        </div>
+
+        <div class="slider-cols">
+          <div class="slider-section">
+            <h4 class="slider-title">방법 1 · VS Code 확장 프로그램</h4>
+            <p class="slider-sub">VS Code 툴바에 Extensions을 클릭 후, "cluade code for VS code" install 클릭.<code style="background:var(--canvas);padding:1px 6px;border-radius:var(--r-xs);"><br>Shift + Tab</code>을 클릭하여 Plan Mode 진입</p>
+            <div class="image-slider" id="planmode-vscode">
+              <button class="slide" type="button" aria-label="VS Code Plan Mode 1단계 확대">
+                <img src="planmode/plan1.png" alt="VS Code · Plan Mode 1단계 — 진입" />
+              </button>
+              <button class="slide" type="button" aria-label="VS Code Plan Mode 2단계 확대">
+                <img src="planmode/plan2.png" alt="VS Code · Plan Mode 2단계 — 계획 작성" />
+              </button>
+              <button class="slide" type="button" aria-label="VS Code Plan Mode 3단계 확대">
+                <img src="planmode/plan3.png" alt="VS Code · Plan Mode 3단계 — 계획 확인 후 승인" />
+              </button>
+            </div>
+          </div>
+
+          <div class="slider-section">
+            <h4 class="slider-title">방법 2 · 터미널에서 켜기</h4>
+            <p class="slider-sub">터미널에 Claude 세팅 후 <code style="background:var(--canvas);padding:1px 6px;border-radius:var(--r-xs);">/plan</code> 입력하여 계획 모드 전환</p>
+            <div class="image-slider single-fit" id="planmode-terminal">
+              <button class="slide" type="button" aria-label="터미널 Plan Mode 확대">
+                <img src="planmode/plan4.png" alt="터미널 · /plan 명령으로 Plan Mode 진입" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Scenarios as pricing-tier row ─────────────────── -->
+<section class="block" id="scenarios">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">2-2 · 패션 업계 시나리오</span>
+      <h2 class="h2">추천 시나리오,<br/><span class="accent">이대로 따라가며</span> 핸즈온.</h2>
+      <p class="lead">샘플 데이터는 <code style="background:var(--surface);padding:2px 8px;border-radius:var(--r-xs);">sample_data.xlsx</code> 를 사용합니다. Plan Mode를 켠 상태로 아래 시나리오의 PLAN 워크시트 1장을 함께 채워봅니다.</p>
+      <div style="display:flex;justify-content:center;margin-bottom:8px;">
+        <a class="att-link" href="sample_data.xlsx" download style="max-width:560px;">
+          <code>sample_data.xlsx</code> · 클릭해서 다운로드
+        </a>
+      </div>
+      <div class="sample-disclaimer">
+        <strong>이 파일은 실제 데이터가 아닙니다.</strong>
+        <span>실제 데이터를 활용하실 분들께서는 <strong>지식그래프</strong>를 활용하여 매출 데이터를 다운받아 주세요.</span>
+      </div>
+    </div>
+
+    <div class="tiers-row">
+      <div class="tier featured">
+        <span class="tier-tag">추천 시나리오</span>
+        <div class="tier-letter">A</div>
+        <h4>MLB CN 전주<br/>주간 매출</h4>
+        <p class="tier-sub">채널×카테고리 매출 흐름 점검</p>
+        <code class="tier-data">sample_data.xlsx</code>
+        <ul class="tier-list">
+          <li>전주 대비 증감률</li>
+          <li>Top10 상품 (매출 기준)</li>
+          <li>카테고리×채널 히트맵</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin:48px 0 0;">
+      <h3 style="font-size:22px;font-weight:600;color:var(--ink);letter-spacing:-0.01em;margin:0 0 6px;">예시 프롬프트 — Plan Mode로 계획부터</h3>
+      <p style="font-size:14px;color:var(--slate);margin:0 0 16px;"><code style="background:var(--surface);padding:1px 6px;border-radius:var(--r-xs);">Shift + Tab</code> 두 번으로 Plan Mode를 켠 다음 아래 프롬프트를 복사해 붙여넣으세요. Claude가 먼저 <strong>설계안(계획)</strong>을 보여주고, 사용자가 OK하기 전엔 코드를 쓰지 않습니다.</p>
+
+      <div class="prompt-card">
+        <div class="pc-head">
+          <span class="pc-title">Scenario A · MLB Weekly Sales</span>
+          <span class="sub-eyebrow" style="margin:0;background:var(--tint-lavender);color:var(--brand-purple-800);">추천 시나리오</span>
+        </div>
+<pre>Plan Mode를 켠 상태에서 시작합니다.
+
+샘플 데이터(sample_data.xlsx)를 분석해서
+"매주 월요일 채널 ROI를 점검하기 위한" 주간 매출 대시보드의 설계안을 만들어줘.
+
+계획에 포함할 내용:
+- 핵심 지표 3-5개
+  · 채널별 주간 매출 합계
+  · 전주 대비 증감률
+  · Top10 상품 (매출 기준)
+  · 카테고리×채널 히트맵
+- 차트 타입 후보: 막대 + 라인 + 히트맵
+- 스타일 방향: AI 기본 스타일 금지, 미니멀
+- 데이터 흐름 (xlsx로 CSV 읽기 → 가공 → 시각화)
+- 화면 레이아웃 스케치 (위/중/아래 영역 구성)
+
+설계안을 검토하고 OK라고 하면, 그때 대시보드 구현 진행해.</pre>
+      </div>
+
+    </div>
+
+    <aside class="optional-section">
+      <h4 class="optional-title">참고 — Plan을 도와주는 유용한 스킬도 있어요</h4>
+      <p class="optional-sub">고급자용 plan 도구들입니다. <strong>오늘 직접 쓰진 않고</strong>, 다음 단계로 알아두는 정도면 충분합니다.</p>
+
+      <div class="ref-row">
+        <div class="ref-card">
+          <span class="ref-tag">참고 · ATTACHMENT 1</span>
+          <div class="ref-name">Superpowers — <code>brainstorming</code> skill</div>
+          <p>Jesse Vincent (obra) 제작, 476,000+ 설치. 한 번에 한 질문씩 소크라테스식으로 묻고, 항상 2-3가지 대안 제시. YAGNI 원칙으로 design 문서 생성 후 진행 ("철의 법칙").</p>
+          <code class="ref-cmd">/plugin install superpowers@superpowers-marketplace</code>
+          <p style="margin:14px 0 6px;font-size:13px;color:var(--charcoal);"><strong>쓰는 법 — 3단계</strong></p>
+          <ol style="margin:0;padding-left:18px;font-size:13px;color:var(--charcoal);line-height:1.65;">
+            <li>위 명령어로 설치 → Claude Code 재시작.</li>
+            <li>채팅창에 <code style="background:var(--surface);padding:1px 6px;border-radius:var(--r-xs);">/brainstorm</code> 입력 후 만들고 싶은 것을 한 줄로 적기. <span style="color:var(--slate);">(예: "주간 매출 대시보드를 만들고 싶어")</span></li>
+            <li>AI가 한 번에 한 질문씩 던지면 답변 → 마지막에 <code style="background:var(--surface);padding:1px 6px;border-radius:var(--r-xs);">design.md</code> 초안이 생성됨. 검토 후 "OK"라고 답하면 그때부터 코드 작성.</li>
+          </ol>
+          <p style="margin:8px 0 0;font-size:12px;color:var(--slate);">💡 막막할 때 효과 큼 — 요구사항을 AI가 먼저 질문해서 끌어내 줌.</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-tag">참고 · ATTACHMENT 2</span>
+          <div class="ref-name">Antigravity — Awesome Skills 패키지</div>
+          <p>22,000+ stars, 1,234개 skill 통합. brainstorming · architecture · debugging-strategies · doc-coauthoring · create-pr 등 plan 관련 skill 모음.</p>
+          <code class="ref-cmd">npx antigravity-awesome-skills --claude</code>
+          <p style="margin:14px 0 6px;font-size:13px;color:var(--charcoal);"><strong>쓰는 법 — 3단계</strong></p>
+          <ol style="margin:0;padding-left:18px;font-size:13px;color:var(--charcoal);line-height:1.65;">
+            <li>위 명령어로 한 번에 1,234개 skill 설치 → Claude Code 재시작.</li>
+            <li>상황에 맞는 skill 호출. <span style="color:var(--slate);">(예: 기획은 <code style="background:var(--surface);padding:1px 6px;border-radius:var(--r-xs);">/brainstorming</code>, 구조 설계는 <code style="background:var(--surface);padding:1px 6px;border-radius:var(--r-xs);">/architecture</code>, 디버깅은 <code style="background:var(--surface);padding:1px 6px;border-radius:var(--r-xs);">/debugging-strategies</code>)</span></li>
+            <li>필요한 skill만 골라 쓰면 됨 — 한꺼번에 다 쓸 필요 없음.</li>
+          </ol>
+          <p style="margin:8px 0 0;font-size:12px;color:var(--slate);">💡 다양한 작업이 반복될 때 유리 — 매번 따로 설치할 필요 X.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ── Concepts Deep-dive (before Skill Tour) ───────── -->
+<section class="chapter-section" id="ch2b">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">개념 풀어보기</div>
+      <span class="chapter-time-pill"><span class="clk"></span>Deep-dive · 5'</span>
+      <div class="chapter-aside-title">5가지 개념, 비유로 풀기</div>
+      <p class="chapter-aside-note">Skill을 본격적으로 쓰기 전에 용어 한 번만 정리하고 갑니다.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">개념 deep-dive</span>
+      <h2 class="chapter-h2">클러드 코드의 핵심 기능 5가지를<br/><span class="accent">쉽게 풀어보면.</span></h2>
+
+      <div class="sub">
+        <p>처음 들으면 헷갈리는 용어들입니다. 비유와 예시를 곁들여 정리하면 이렇습니다.</p>
+
+        <div class="explain-grid">
+
+          <div class="feat-card lavender">
+            <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:var(--brand-purple-800);">SKILLS · 스킬</span>
+            <img class="illust" src="gpt%20images/skill.png" alt="Skill 개념 일러스트" />
+            <h4 class="ttl">"이런 일은 이렇게" 매뉴얼</h4>
+            <p>Claude에게 <strong>"특정 작업을 할 때 이 룰을 따르라"</strong>고 미리 적어둔 체크리스트입니다. 스킬을 켜면 Claude가 그 분야의 노하우를 자동으로 따라줍니다.</p>
+            <p>예) <code>frontend-design</code> 스킬을 켜면 Claude가 'AI 티 안 나는 디자인'을 만드는 룰을 자동 적용합니다.</p>
+            <p class="ex"><strong>오늘 직접 사용:</strong> <code>frontend-design</code> · <code>pptx</code> · <code>xlsx</code></p>
+          </div>
+
+          <div class="feat-card mint">
+            <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:var(--brand-green);">PLUGINS · 플러그인</span>
+            <img class="illust" src="gpt%20images/plugin.png" alt="Plugin 개념 일러스트" />
+            <h4 class="ttl">스킬·도구를 묶어 한 번에 설치</h4>
+            <p>여러 스킬과 명령어를 하나로 묶어서 배포하는 <strong>패키지</strong>입니다. VS Code 확장 프로그램이나 휴대폰 앱처럼, 한 번 설치하면 그 안의 도구들을 바로 쓸 수 있어요.</p>
+            <p>예) <code>superpowers</code> 플러그인 하나를 설치하면 brainstorming, writing-plans 등 여러 스킬이 한꺼번에 추가됩니다.</p>
+            <p class="ex"><strong>오늘 직접 사용:</strong> <code>/plugin install</code>로 워크숍 환경 세팅</p>
+          </div>
+
+          <div class="feat-card yellow">
+            <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:#8B6B17;">MEMORY · 메모리</span>
+            <img class="illust" src="gpt%20images/memory.png" alt="Memory 개념 일러스트" />
+            <h4 class="ttl">대화를 넘어 기억하는 메모장</h4>
+            <p>한 번 알려준 내용을 Claude가 <strong>다음 대화에서도 기억</strong>합니다. <code>MEMORY.md</code>라는 파일에 자동 저장돼서 프로젝트별로 관리할 수 있어요.</p>
+            <p>예) "우리 회사 톤은 미니멀"이라고 한 번 적어두면, 다음 대화에서 다시 알려주지 않아도 그 톤으로 작업해줍니다.</p>
+            <p class="ex"><strong>오늘은 개념만:</strong> 다음 단계의 반복·자동화 작업에서 활용</p>
+          </div>
+
+          <div class="feat-card peach">
+            <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:var(--brand-orange-deep);">HOOKS · 훅</span>
+            <img class="illust" src="gpt%20images/hook.png" alt="Hook 개념 일러스트" />
+            <h4 class="ttl">자동 시작·자동 마무리 알람</h4>
+            <p>Claude가 <strong>어떤 일을 시작할 때 / 끝낼 때</strong> 자동으로 같이 돌릴 작업을 미리 등록해두는 것입니다. 한번 등록하면 매번 신경 안 써도 자동으로 실행됩니다.</p>
+            <p>예) 파일 저장될 때마다 자동 검사, 매주 월요일 아침 보고서 자동 새로고침.</p>
+            <p class="ex"><strong>오늘은 개념만:</strong> "다음 주엔 데이터만 갈아끼우면 끝" 자동화의 핵심</p>
+          </div>
+
+          <div class="feat-card sky full-row">
+            <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:#2A6FB7;">MCP</span>
+            <img class="illust" src="gpt%20images/mcp.png" alt="MCP 개념 일러스트" />
+            <h4 class="ttl">회사 시스템에 연결하는 USB 포트</h4>
+            <p>Claude를 <strong>외부 시스템(Notion · Slack · DB · Figma 등)</strong>에 직접 연결시키는 표준 규격입니다. MCP가 연결되면 Claude가 그 시스템을 직접 읽고 쓸 수 있어요.</p>
+            <p>예) Notion 페이지 자동 정리, Slack 메시지 발송, DB에서 매출 직접 조회, Figma 시안 가져오기.</p>
+            <p class="ex"><strong>오늘은 개념만:</strong> 다음 분기 자동화 단계에서 본격 활용</p>
+          </div>
+
+        </div>
+
+        <div class="recap">
+          <div class="recap-title">한 줄 정리</div>
+          <div class="recap-list">
+            <div class="recap-row">
+              <span class="recap-term">Skills</span>
+              <span class="recap-desc">노하우 매뉴얼</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-term">Plugins</span>
+              <span class="recap-desc">스킬 묶음 설치</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-term">Memory</span>
+              <span class="recap-desc">기억 노트</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-term">MCP</span>
+              <span class="recap-desc">외부 시스템 연결선</span>
+            </div>
+            <div class="recap-row">
+              <span class="recap-term">Hooks</span>
+              <span class="recap-desc">자동 트리거</span>
+            </div>
+          </div>
+          <p class="recap-foot">오늘은 <strong>Skills · Plugins</strong>만 직접 써보고, 나머지는 어떤 도구인지 알아가는 시간입니다.</p>
+        </div>
+
+        <details class="toggle-card">
+          <summary>
+            <span class="ttl-row"><span class="icon">📚</span><span>오늘 쓸 4대 Anthropic 공식 Skill — 자세히 보기</span></span>
+            <span class="chev" aria-hidden="true">▾</span>
+          </summary>
+          <div class="toggle-body">
+            <table class="compare">
+              <thead>
+                <tr><th>Skill</th><th>용도</th><th>패션 업무 적용</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>frontend-design</td><td>"AI스럽지 않은" UI 만들기 — 277K+ 설치</td><td>모든 대시보드</td></tr>
+                <tr><td>pptx</td><td>보고용 PPT 자동 생성 (HTML→PPTX)</td><td>주간·월간 보고</td></tr>
+                <tr><td>xlsx</td><td>매출·재고 엑셀 데이터 분석 + 차트</td><td>데이터 전처리</td></tr>
+                <tr><td>docx / pdf</td><td>텍스트 보고서 자동화</td><td>분석 리포트</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 03 ────────────────────────────────────── -->
+<section class="chapter-section" id="ch3">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part Three</div>
+      <span class="chapter-time-pill"><span class="clk"></span>40–55' · 15'</span>
+      <div class="chapter-aside-title">Skill 빠른 투어</div>
+      <p class="chapter-aside-note">AI 티가 나는 3가지 패턴 — 보라 그라데이션 / Inter / 둥근 카드. 이 셋이 보이면 한 번 더 다듬는 걸 권합니다.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">Skill 적용해보기</span>
+      <h2 class="chapter-h2">Skill 활용해서 <br/><span class="accent">대시보드 디자인하기.</span></h2>
+
+      <!-- High-emphasis bold-yellow banner per design system -->
+      <div class="yellow-bold-banner">
+        <h3 class="ybh">별도 지시없이 대시보드를 제작하면<br><strong>'AI스러운 디자인'</strong>이 나옵니다.</h3>
+        <p>어디서 본 듯한 화면 (Inter 폰트 + 둥근 카드) 이른바 'AI 티 나는' 결과가 나옵니다. 이걸 벗어나려면 프롬프트에 세 가지를 직접 넣어주세요. <br><strong>① 참고할 레퍼런스, ② 우리 브랜드 톤, ③ 피할 예시(Bad)와 따를 예시(Good).</strong></p>
+        <div class="decor"></div>
+      </div>
+
+      <figure style="margin:24px 0;text-align:center;">
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;align-items:stretch;">
+          <img src="images_fin/ai-default-design-1.png" alt="기본 AI 디자인 예시 1" style="width:100%;height:320px;object-fit:cover;object-position:top center;border-radius:var(--r-md);border:1px solid var(--hairline);" />
+          <img src="images_fin/ai-default-design-2.png" alt="기본 AI 디자인 예시 2" style="width:100%;height:320px;object-fit:cover;object-position:top center;border-radius:var(--r-md);border:1px solid var(--hairline);" />
+        </div>
+        <figcaption style="margin-top:10px;font-size:0.9em;color:var(--charcoal);">기본 AI 디자인</figcaption>
+      </figure>
+
+      <div class="sub">
+        <span class="sub-eyebrow">3-1</span>
+        <h3>"AI스럽지 않게" 만드는 4가지 탈출 전략</h3>
+        <ol class="steps stack">
+          <li>
+            <h4>frontend-design skill 강제 활성화</h4>
+            <p><code>/frontend-design</code> 명령어로 시작하거나, 프롬프트에 <strong>"frontend-design skill을 적극 활용해줘"</strong> 한 줄을 추가합니다.</p>
+            <p class="step-extra"><span class="label">왜 효과적인가</span>이 skill 자체가 Anthropic이 'AI 시그니처 회피' 룰을 학습시켜둔 매뉴얼입니다. 켜기만 해도 폰트 페어링·컬러 팔레트·여백 체계·디자인 토큰을 자동으로 정돈해줘요. 277K+ 다운로드를 받은 가장 검증된 디자인 skill입니다.</p>
+          </li>
+          <li>
+            <h4>레퍼런스 명시</h4>
+            <p>"예쁘게 만들어줘" 대신 <strong>"이 사이트 스타일로"</strong>처럼 구체적인 시안을 짚어줍니다. awesome-design-md, skills.sh 같은 모음에서 본인 톤과 비슷한 시안을 골라 URL이나 이미지로 첨부.</p>
+            <p style="margin-top:6px;font-size:0.9em;"><a href="https://github.com/VoltAgent/awesome-design-md" target="_blank" rel="noopener">https://github.com/VoltAgent/awesome-design-md</a></p>
+
+            <div class="slider-section" style="margin:14px 0 0;">
+              <h4 class="slider-title">awesome-design-md 갤러리</h4>
+              <p class="slider-sub">좌우로 스크롤하며 톤·레이아웃 레퍼런스를 살펴보세요. 이미지를 클릭하면 크게 볼 수 있습니다.</p>
+              <div class="image-slider" id="awesome-slider">
+                <button class="slide" type="button" aria-label="awesome-design-md 1 확대">
+                  <img src="awesome_design/awesome-design-md_1.png" alt="awesome-design-md 1" />
+                </button>
+                <button class="slide" type="button" aria-label="awesome-design-md 2 확대">
+                  <img src="awesome_design/awesome-design-md_2.png" alt="awesome-design-md 2" />
+                </button>
+                <button class="slide" type="button" aria-label="awesome-design-md 3 확대">
+                  <img src="awesome_design/awesome-design-md_3.png" alt="awesome-design-md 3" />
+                </button>
+                <button class="slide" type="button" aria-label="awesome-design-md 4 확대">
+                  <img src="awesome_design/awesome-design-md_4.png" alt="awesome-design-md 4" />
+                </button>
+                <button class="slide" type="button" aria-label="awesome-design-md 5 확대">
+                  <img src="awesome_design/awesome-design-md_5.png" alt="awesome-design-md 5" />
+                </button>
+              </div>
+            </div>
+
+            <p class="step-extra"><span class="label">실무 팁</span>회사가 이미 가진 자료도 좋은 레퍼런스가 됩니다. 브랜드 가이드, 매장 사진, 기존 브로셔, 룩북 페이지를 그대로 첨부하면 Claude가 그 톤을 따라가요. 외부 시안보다 내부 자료가 더 정확한 경우가 많습니다.</p>
+
+            <details class="toggle-card" style="margin-top:14px;">
+              <summary>
+                <span class="ttl-row"><span class="icon">🍎</span><span>Apple.com 디자인 시스템 — 이렇게 정리해두면 AI가 따라가기 쉬워요 (예시)</span></span>
+                <span class="chev" aria-hidden="true">▾</span>
+              </summary>
+              <div class="toggle-body" style="padding:0;">
+                <div class="design-example" style="margin:0;border:0;border-radius:0;">
+                  <div class="design-example-header" style="border-radius:0;">
+                    <span class="design-example-tag">참고 자료 · 실제 디자인 시스템 예시</span>
+                    <h4>Apple.com 디자인 시스템 — 이렇게 정리해두면 AI가 따라가기 쉬워요</h4>
+                    <p>실제 Apple.com이 어떤 디자인 시스템을 따르는지 정리한 문서입니다. <mark>노란색 하이라이트</mark>로 표시한 부분이 본인 브랜드/제품에 맞게 바꿔야 할 자리예요. 같은 구조로 우리 회사 디자인 가이드를 만들어두면, 프롬프트에 한 번 첨부할 때마다 일관된 결과가 나옵니다.</p>
+                  </div>
+                  <div class="design-example-body">
+
+                    <h5>① Overview · 한 줄 컨셉</h5>
+                    <p><mark>"제품 사진을 거의 보이지 않는 UI로 감싸는 미니멀 카탈로그"</mark> — Apple은 모든 페이지를 풀블리드 제품 타일이 light/dark 번갈아 쌓이는 구조로 잡는다. 어떤 요소도 제품과 경쟁하지 않는다.</p>
+
+                    <h5>② Brand &amp; Accent · 단일 액센트 컬러</h5>
+                    <ul>
+                      <li>Action Blue: <mark><span class="swatch" style="background:#0066cc;"></span><code>#0066cc</code></mark> — 모든 인터랙티브 요소(링크, CTA, 포커스). <strong>두 번째 브랜드 컬러는 없음.</strong></li>
+                      <li>Focus Blue: <mark><code>#0071e3</code></mark> — 키보드 포커스 링 전용</li>
+                      <li>Sky Link Blue: <mark><code>#2997ff</code></mark> — dark 타일 위에서만 사용</li>
+                    </ul>
+
+                    <h5>③ Surface · 캔버스 톤</h5>
+                    <ul>
+                      <li>Pure White: <span class="swatch" style="background:#ffffff;"></span><code>#ffffff</code></li>
+                      <li>Parchment (시그니처 off-white): <mark><span class="swatch" style="background:#f5f5f7;"></span><code>#f5f5f7</code></mark> — light 타일 교대용</li>
+                      <li>Near-Black Tile: <mark><span class="swatch" style="background:#272729;"></span><code>#272729</code></mark> — dark 타일 / 풀블리드 제품 진열대</li>
+                      <li>Pure Black: <code>#000000</code> — 글로벌 nav 바에만</li>
+                    </ul>
+
+                    <h5>④ Text · 잉크 톤</h5>
+                    <ul>
+                      <li>Near-Black Ink: <mark><code>#1d1d1f</code></mark> — 모든 헤드라인·본문. <strong>순수 #000은 안 씀</strong> (인쇄가 아닌 사진 같은 느낌).</li>
+                      <li>Body On Dark: <code>#ffffff</code></li>
+                      <li>Body Muted (dark 위): <code>#cccccc</code></li>
+                    </ul>
+
+                    <h5>⑤ Typography · 폰트 시스템</h5>
+                    <ul>
+                      <li>Display: <mark><code>SF Pro Display</code></mark> — 19px 이상 헤드라인용 (Apple 자체 폰트)</li>
+                      <li>Body / UI: <mark><code>SF Pro Text</code></mark> — 20px 미만 본문용</li>
+                      <li>대체 폰트: 시스템 스택 <code>system-ui, -apple-system</code> 우선, 비-Apple 환경에선 <mark>Inter</mark>가 가장 가까움</li>
+                    </ul>
+
+                    <h5>⑥ Type Scale · 위계</h5>
+                    <ul>
+                      <li>Hero Display: <mark>56px / 600 / line 1.07 / tracking -0.28px</mark> — Apple 시그니처 "tight" 헤드라인</li>
+                      <li>Tile Display: <mark>40px / 600 / line 1.10</mark> — 제품 타일 헤드라인</li>
+                      <li>Body: <mark>17px / 400 / line 1.47 / tracking -0.374px</mark> — <strong>16px가 아닌 17px</strong>, Apple만의 readability 기준</li>
+                      <li>Caption: 14px / 400 / -0.224px</li>
+                      <li>Weight ladder: <strong>300 / 400 / 600 / 700</strong> — <strong>500은 의도적으로 제외</strong></li>
+                    </ul>
+
+                    <h5>⑦ Spacing &amp; Layout · 리듬</h5>
+                    <ul>
+                      <li>Base unit: 8px (4 / 8 / 12 / 16 / 20 / 24 / 32 / 48 / 80)</li>
+                      <li>Section vertical padding: <mark>80px</mark> (제품 타일 안쪽)</li>
+                      <li>타일 사이 gap: <strong>0px</strong> — 색상 변화 자체가 구분선</li>
+                      <li>Max content width: <mark>980px (텍스트), 1440px (그리드)</mark></li>
+                    </ul>
+
+                    <h5>⑧ Elevation · 그림자 철학</h5>
+                    <ul>
+                      <li>그림자는 <strong>딱 하나</strong>: <mark><code>rgba(0, 0, 0, 0.22) 3px 5px 30px</code></mark></li>
+                      <li>적용 대상: <strong>제품 사진</strong>에만. 카드·버튼·텍스트엔 절대 안 씀</li>
+                      <li>UI 위계는 (a) 표면 색 변화 + (b) backdrop-blur로 표현</li>
+                    </ul>
+
+                    <h5>⑨ Border Radius · 모서리</h5>
+                    <ul>
+                      <li>None (0px): 풀블리드 타일 (모서리 라운딩 없음)</li>
+                      <li>Small (8px): dark 유틸리티 버튼 (Sign In, Bag)</li>
+                      <li>Large (18px): 스토어 유틸리티 카드</li>
+                      <li>Pill (9999px): <strong>primary 액션 — 파란 pill CTA</strong>, 검색 input, 설정 chip</li>
+                    </ul>
+
+                    <h5>⑩ Photography Direction · 촬영 톤</h5>
+                    <p><mark>"제품 사진이 주인공, UI는 사라진다"</mark>. 풀블리드 21:9 또는 16:9 히어로 이미지. 제품 렌더는 PNG 투명 배경에 표면 위 그림자 하나만 받아서 무게감을 만든다. 데코레이션 그라데이션은 <strong>없음</strong> — 분위기는 모두 사진에서 온다.</p>
+
+                    <h5>⑪ Don'ts · 금지 사항</h5>
+                    <ul>
+                      <li>두 번째 액센트 컬러 추가 금지 — 모든 "click me"는 단일 Action Blue</li>
+                      <li>카드·버튼·텍스트에 그림자 추가 금지 — 그림자는 제품 사진 전용</li>
+                      <li>장식용 그라데이션 배경 금지 — 분위기는 사진에서</li>
+                      <li>본문에 weight 500 금지 — 사다리는 300 / 400 / 600 / 700</li>
+                      <li>풀블리드 타일 모서리 라운딩 금지 — 색 변화가 구분선</li>
+                      <li>본문 line-height 1.47 미만으로 줄이지 않기 — editorial 페이스의 일부</li>
+                    </ul>
+
+                  </div>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li>
+            <h4>브랜드 톤 명시</h4>
+            <p>"우리 회사는 <strong>미니멀 / 클래식 / 스트리트</strong>" — 형용사 한 단어라도 못 박는 것이 결과물의 차이를 만듭니다.</p>
+            <p class="step-extra"><span class="label">패션 업계 적용</span>MLB는 "스트리트 클래식", Discovery는 "아웃도어 캐주얼" 처럼 본인 브랜드의 톤을 <strong>한 단어로</strong> 정의해 프롬프트에 박아넣습니다. 톤이 명확할수록 Claude의 결과물이 흔들리지 않고, 여러 번 돌려도 일관성이 유지됩니다.</p>
+          </li>
+          <li>
+            <h4>Bad vs Good 예시 주입</h4>
+            <p>피해야 할 패턴을 <strong>직접</strong> 알려줘야 그쪽으로 안 그립니다. "이런 건 금지" 리스트의 회피 효과가 의외로 큽니다.</p>
+            <p class="step-extra"><span class="label">예시</span>"보라 그라데이션 금지, Inter 폰트 금지, 모든 모서리에 큰 radius 금지"처럼 명시적으로 적어두면 그 방향으로 가지 않습니다. Bad 예시 1장 + Good 예시 1장을 함께 첨부하면 더 정확하게 따라와요.</p>
+          </li>
+        </ol>
+
+      </div>
+
+      <div class="tip-callout">
+        <div class="tip-head">TIP · 함께 쓰면 좋은 옵션 Skill</div>
+        <ul>
+          <li><strong>web-design-guidelines</strong> — UI 품질 자동 검사 (133K+ 설치)</li>
+          <li><strong>superpowers</strong> — 멀티 에이전트 워크플로우 (40K+ stars, 고급자용)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 04 ────────────────────────────────────── -->
+<section class="chapter-section" id="ch4" style="background:var(--surface-soft);">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part Four</div>
+      <span class="chapter-time-pill"><span class="clk"></span>55–95' · 40'</span>
+      <div class="chapter-aside-title">Hands-on ① · Coach Mode</div>
+      <p class="chapter-aside-note">이 40분은 본인 페이스로 직접 만들어 보는 시간. 막히는 부분이 있으면 언제든 손을 들어주세요.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">핸즈온 ① · 대시보드 구현</span>
+      <h2 class="chapter-h2">Plan을 기반으로<br/><span class="accent">데이터를 대시보드로,</span> 직접 만들어보기.</h2>
+
+      <ol class="steps">
+        <li>
+          <h4>PLAN 작성</h4>
+          <p>앞서 sample data로 생성된 PLAN을 바탕으로 대시보드를 만들어봅니다.</p>
+        </li>
+        <li>
+          <h4>Plan 확인 + 첫 프롬프트</h4>
+          <p>Claude가 제안한 Plan을 기반으로 터미널에 <code>/frontend-design</code> skill을 활용하여 아래 프롬프트 템플릿을 복사해 대시보드(html)를 만듭니다. *1차 결과물</p>
+        </li>
+        <li>
+          <h4>디자인 다듬기</h4>
+          <p>https://github.com/VoltAgent/awesome-design-md 에서 사용하고 싶은 브랜드의 <code>design.md</code>코드를 활용해서 대시보드의 디자인을 업데이트해봅니다. *2차 결과물</p>
+        </li>
+        <li>
+          <h4>품질 체크</h4>
+          <p>화면 이미지를 직접 확인해보고 ex.중문 폰트 깨짐(豆腐 박스) html 파일을 직접 수정해봅니다.</p>
+        </li>
+      </ol>
+
+      <div class="sub">
+        <h3>시나리오 프롬프트 템플릿</h3>
+        <div class="prompt-card">
+          <div class="pc-head">
+            <span class="pc-title">Scenario A · MLB Weekly Sales</span>
+          </div>
+<pre>sample_data.xlsx 를 분석해서
+"매주 월요일 채널 ROI를 점검하기 위한"
+주간 매출 대시보드를 HTML 단일 파일로 만들어줘.
+
+핵심 지표 (3-5개):
+- 채널별(天猫 / 抖音) 주간 매출 합계
+- 전주 대비 증감률
+- Top10 상품 (매출 기준)
+- 카테고리×채널 히트맵
+
+차트:  막대 + 라인 + 히트맵
+스타일: AI 기본 스타일 금지, 미니멀
+frontend-design skill, xlsx skill 활용</pre>
+        </div>
+
+      </div>
+
+      <div class="sub">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 05 ────────────────────────────────────── -->
+<section class="chapter-section" id="ch5">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part Five</div>
+      <span class="chapter-time-pill"><span class="clk"></span>95–110' · 15'</span>
+      <div class="chapter-aside-title">Hands-on ② · 배포 + PPT</div>
+      <p class="chapter-aside-note">대시보드를 팀에 공유하고, 임원 보고용 PPT까지 한 번에. "다음 주엔 데이터만 갈아끼우면 끝"이 오늘의 약속입니다.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">핸즈온 ② · 보고서 PPT 생성</span>
+      <h2 class="chapter-h2"><br/><span class="accent">보고용 PPT까지,</span><br/>한 번에.</h2>
+
+      <div class="sub">
+        <span class="sub-eyebrow">5-1</span>
+        <h3>pptx skill 개념</h3>
+        <p>Anthropic 공식 <strong>pptx skill</strong> 작동 원리:</p>
+        <ul>
+          <li>HTML → PPTX 변환 (디자인 그대로)</li>
+          <li>회사 템플릿 .pptx 첨부 → 마스터 슬라이드·폰트 그대로 사용</li>
+          <li>차트는 편집 가능한 네이티브 PPT 차트로 생성</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <span class="sub-eyebrow">5-2</span>
+        <h3>PPT 자동 생성 실습</h3>
+        <p>방금 만든 대시보드 → 임원 보고용 PPT로 자동 변환.</p>
+        <div class="prompt-card">
+          <div class="pc-head">
+            <span class="pc-title">Prompt · pptx 자동화</span>
+            <span class="sub-eyebrow" style="margin:0;">End-to-End</span>
+          </div>
+<pre>방금 만든 대시보드의 핵심 인사이트를 가지고
+임원 보고용 PowerPoint를 만들어줘.
+
+구성:
+1. 표지 (타이틀, 날짜)
+2. Executive Summary (3 bullet)
+3. 핵심 지표 (네이티브 차트)
+4. 채널별 상세 분석
+5. 다음 액션 제안
+
+요구사항:
+- pptx skill 사용
+- 차트는 편집 가능한 네이티브 차트로</pre>
+        </div>
+
+        <div class="result-preview">
+          <div class="result-preview-head">
+            <span class="result-tag">결과물 예시</span>
+            <span class="result-caption">5장 분량의 보고용 PPT</span>
+          </div>
+          <button class="slide result-preview-shot" type="button" aria-label="PPT 자동 생성 결과 확대">
+            <img src="ppt/ppt_result.png" alt="PPT 자동 생성 결과 — 5장 슬라이드 미리보기" />
+          </button>
+        </div>
+
+        <div class="tip-callout">
+          <div class="tip-head">TIP · 그래프 편집을 쉽게 하려면</div>
+          <p style="margin:0 0 12px;"><strong>claude-design</strong>이 아닌 <strong><code>pptx</code> skill을 직접 호출</strong>해야 그래프 수정이 보다 편리하게 가능합니다.<br> claude-design을 거치면 그래프가 이미지로 박혀버리는 반면, pptx skill로 직접 호출하면 PowerPoint에서 데이터·범례·축까지 그대로 편집할 수 있어요.</p>
+          <button class="slide result-preview-shot" type="button" aria-label="pptx skill 직접 호출 결과 확대" style="display:block;margin:0;">
+            <img src="ppt/ppt.png" alt="pptx skill 직접 호출 — 네이티브 PPT 차트 편집 가능" style="width:100%;height:auto;display:block;border-radius:var(--r-md);" />
+          </button>
+        </div>
+      </div>
+
+      <div class="sub">
+        <span class="sub-eyebrow">5-3</span>
+        <h3>심화 학습 — Agent와 Hook을 직접 만들어 보기</h3>
+        <details class="toggle-card" style="margin:0;">
+          <summary>
+            <span class="ttl-row"><span class="icon">🧠</span><span>매주 자동 보고서 만들기 — Agent + Hook 자동화 가이드 펼치기</span></span>
+            <span class="chev" aria-hidden="true">▾</span>
+          </summary>
+          <div class="toggle-body" style="padding:0;background:transparent;border-top:0;">
+        <div class="deep-callout" style="margin-top:0;border-radius:0 0 var(--r-md) var(--r-md);">
+          <span class="deep-tag">심화 학습 · Subagent + Hook 만드는 법</span>
+          <h4>Agent 파일과 Hook 설정으로 매주 보고서를 자동 생성</h4>
+          <p>"매주 데이터만 바꾸면 보고서가 알아서 생성되는" 구조의 핵심은 <strong>Agent를 어떻게 정의하느냐</strong>와 <strong>Hook을 어떻게 트리거하느냐</strong>입니다. 둘 다 파일 하나만 추가하면 끝납니다.</p>
+
+          <div class="deep-block">
+            <div class="deep-block-title"><span class="num">0</span>Agent란 무엇인가</div>
+            <p>Agent는 <strong>"특정 일을 잘하도록 따로 설정해둔 작은 Claude"</strong>입니다. 본 Claude 옆에 두고 "이 부분은 너가 따로 처리해줘"라고 위임할 수 있는 보조 에이전트예요.</p>
+            <p style="margin-top:10px;"><strong>본 Claude와 무엇이 다른가</strong></p>
+            <ul>
+              <li><strong>역할이 좁다</strong> — 모든 일을 다 하지 않고, 한 가지 작업(예: 보고서 생성)만 잘하도록 지시문이 좁게 정의됨</li>
+              <li><strong>컨텍스트가 분리된다</strong> — 본 대화의 흐름을 어지럽히지 않고 별도 공간에서 작업 → 메인 대화창은 깔끔하게 유지</li>
+              <li><strong>호출 시점에만 동작</strong> — 본 Claude가 "weekly-report 에이전트 써줘"라고 명시할 때만 등장, 평소엔 잠들어 있음</li>
+              <li><strong>도구 권한을 따로 설정</strong> — 이 agent는 Read·Write만, 저 agent는 Bash까지 — 각자 필요한 도구만 가짐</li>
+            </ul>
+            <p style="margin-top:10px;"><strong>왜 만들어 쓰는가</strong></p>
+            <ul>
+              <li>같은 작업을 매번 똑같이 시키려면 매번 긴 프롬프트를 복붙해야 하는데, agent로 만들어두면 <strong>한 줄로 호출</strong>해 끝</li>
+              <li>본 Claude의 컨텍스트(메모리)를 아끼게 됨 — 복잡한 작업을 위임하면 메인 대화창은 가벼워짐</li>
+              <li>여러 사람이 같은 작업을 할 때 <strong>품질이 균일</strong>해짐 — 사람마다 프롬프트를 다르게 쓰지 않음</li>
+              <li>다음 단계의 자동화(Hook + 스케줄러) 와 결합하면 <strong>무인 파이프라인</strong>의 부품이 됨</li>
+            </ul>
+            <p style="margin-top:10px;"><strong>이번 워크숍에서의 예</strong></p>
+            <p>매주 매출 데이터(xlsx) → 대시보드(HTML) → 보고서(PPT) → 사내 공유 링크. 이 4단계를 사람이 매번 입력하지 않고 <code>weekly-report</code> 라는 agent 하나에 미리 적어두는 것. 그러면 다음 주엔 "weekly-report 에이전트로 이번 주 보고서 만들어줘" 한 줄이면 됩니다.</p>
+          </div>
+
+          <div class="deep-block">
+            <div class="deep-block-title"><span class="num">1</span>Agent 만들기 — 마크다운 파일 하나로 끝</div>
+            <p>Subagent는 별도 프로그램이 아니라 <strong>마크다운 파일</strong>입니다. <code>~/.claude/agents/</code>(전역) 또는 <code>.claude/agents/</code>(프로젝트별) 폴더에 <code>.md</code> 파일을 만들면 Claude Code가 자동 인식합니다.</p>
+            <p style="margin-top:10px;"><strong>① 파일 생성</strong></p>
+            <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:12px 14px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.6;overflow-x:auto;">
+              <span style="color:var(--brand-purple-300);">.claude/agents/</span>weekly-report.md
+            </div>
+            <p><strong>② 파일 내용 (YAML frontmatter + 본문)</strong></p>
+            <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:14px 16px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.7;overflow-x:auto;white-space:pre;">---
+name: weekly-report
+description: 매주 매출 데이터를 받아 HTML 대시보드 + PPT 보고서를 생성한다. 보고서 자동화가 필요할 때 사용.
+tools: Read, Write, Edit, Bash
+---
+
+# 역할
+당신은 F&amp;F 중국법인의 주간 보고서 자동화 에이전트입니다.
+
+# 작업 순서
+1. <span style="color:var(--brand-purple-300);">./sample_data/</span> 안의 가장 최근 xlsx 파일을 찾는다
+2. xlsx skill로 데이터를 읽고 채널별·카테고리별로 집계
+3. frontend-design skill로 HTML 대시보드를 생성
+4. pptx skill로 5장짜리 임원 보고용 PPT 생성
+5. 결과 경로를 출력</div>
+            <p style="margin-top:10px;"><strong>③ 호출 방법</strong> — 메인 Claude 채팅창에서 한 줄로 위임</p>
+            <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:12px 14px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.6;overflow-x:auto;">
+              "<span style="color:var(--brand-purple-300);">weekly-report</span> 에이전트로 이번 주 보고서 만들어줘"
+            </div>
+            <p style="margin-top:8px;">→ Claude가 <code>weekly-report.md</code>를 읽고 별도 컨텍스트에서 작업, 메인 대화는 깔끔하게 유지됩니다.</p>
+          </div>
+
+          <div class="deep-block">
+            <div class="deep-block-title"><span class="num">2</span>Hook 만들기 — settings.json에 명령어 등록</div>
+            <p>Hook은 <code>.claude/settings.json</code>(프로젝트) 또는 <code>~/.claude/settings.json</code>(전역)에 <strong>이벤트 + 실행 명령어</strong>를 적어두면 끝입니다. Hook이 발화되는 이벤트는 5가지:</p>
+            <ul>
+              <li><strong>PreToolUse</strong> — 도구 호출 직전</li>
+              <li><strong>PostToolUse</strong> — 도구 호출 직후 (가장 많이 씀)</li>
+              <li><strong>UserPromptSubmit</strong> — 사용자가 메시지 보낼 때</li>
+              <li><strong>Stop</strong> — 대화 종료 시</li>
+              <li><strong>Notification</strong> — 알림 발생 시</li>
+            </ul>
+            <p style="margin-top:10px;"><strong>예시 — 대시보드 HTML이 갱신되면 자동으로 PPT 생성</strong></p>
+            <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:14px 16px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.7;overflow-x:auto;white-space:pre;">{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -File .claude/hooks/build-ppt.ps1"
+          }
+        ]
+      }
+    ]
+  }
+}</div>
+            <p style="margin-top:8px;">→ Edit/Write 도구로 파일이 저장될 때마다 <code>build-ppt.ps1</code>이 자동 실행됩니다. matcher는 정규식이라 특정 파일만 트리거하도록 좁힐 수도 있어요.</p>
+          </div>
+
+          <div class="deep-block">
+            <div class="deep-block-title"><span class="num">3</span>Hook 스크립트 작성 — 받은 정보로 일하기</div>
+            <p>Hook이 호출하는 스크립트는 <strong>표준 입력으로 JSON</strong>을 받습니다. 어떤 도구가 어떤 파일에 작업했는지 그 JSON에서 꺼내 쓰면 됩니다.</p>
+            <p style="margin-top:10px;"><strong>예시 — <code>.claude/hooks/build-ppt.ps1</code></strong></p>
+            <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:14px 16px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.7;overflow-x:auto;white-space:pre;"><span style="color:#888;"># 표준 입력으로 들어온 hook event 읽기</span>
+$stdin = [Console]::In.ReadToEnd()
+$event = $stdin | ConvertFrom-Json
+
+<span style="color:#888;"># 어떤 파일이 변경됐는지 확인</span>
+$file = $event.tool_input.file_path
+
+<span style="color:#888;"># dashboard.html이 변경됐을 때만 PPT 재생성</span>
+if ($file -match 'dashboard\.html$') {
+    claude -p "weekly-report 에이전트로 PPT 다시 만들어줘" `
+        --output-format json --max-turns 10 2&gt;&amp;1 | Out-Null
+}
+
+exit 0</div>
+            <p style="margin-top:8px;">→ 본 Claude의 hook이 또 다른 Claude를 백그라운드로 spawn해서 PPT 작업을 위임. 메인 작업 흐름은 중단되지 않습니다.</p>
+          </div>
+
+          <div class="deep-block">
+            <div class="deep-block-title"><span class="num">4</span>전체 자동화 예시 — 매주 월요일 09:00 보고서</div>
+            <p>운영체제 스케줄러(Windows 작업 스케줄러 또는 cron)와 결합하면 시간 기반 자동 발화가 됩니다:</p>
+            <div class="deep-flow">
+              <div class="step">월 09:00<br/>OS 스케줄러</div>
+              <div class="arrow">→</div>
+              <div class="step">claude -p<br/>"주간 보고서"</div>
+              <div class="arrow">→</div>
+              <div class="step">weekly-report<br/>agent 실행</div>
+              <div class="arrow">→</div>
+              <div class="step">Hook이 PPT<br/>+ 알림 발송</div>
+            </div>
+            <p style="margin-top:10px;"><strong>① OS 스케줄러 (Windows 예시)</strong></p>
+            <div style="background:rgba(0,0,0,0.3);border-radius:var(--r-sm);padding:12px 14px;font-family:var(--font-mono);font-size:12.5px;color:#E8E6E3;margin:6px 0;line-height:1.6;overflow-x:auto;">
+              schtasks /create /tn "WeeklyReport" /tr "claude -p '주간 보고서 생성'" /sc weekly /d MON /st 09:00
+            </div>
+            <p style="margin-top:10px;"><strong>② 흐름</strong></p>
+            <ul>
+              <li>월요일 9시 → OS 스케줄러가 <code>claude -p</code> 명령 실행</li>
+              <li>Claude가 <code>weekly-report</code> 에이전트를 자동으로 호출</li>
+              <li>에이전트가 데이터 읽기 → 대시보드 생성 → PPT 생성 수행</li>
+              <li>PostToolUse hook이 결과 파일 감지 → 사내 메신저로 링크 발송</li>
+            </ul>
+            <p style="margin-top:10px;">→ 한 번 설정해두면 사람은 결과 메시지만 확인하면 됩니다.</p>
+          </div>
+
+          <div class="deep-block">
+            <div class="deep-block-title"><span class="num">5</span>요약 — 3개 파일만 생성하면 됩니다</div>
+            <ul>
+              <li><code>.claude/agents/weekly-report.md</code> — 무슨 일을 할지 정의</li>
+              <li><code>.claude/settings.json</code> — 어떤 이벤트에 무엇을 실행할지 등록</li>
+              <li><code>.claude/hooks/build-ppt.ps1</code> — 실제 실행할 스크립트</li>
+            </ul>
+            <p style="margin-top:8px;">사내 보안 환경에서는 <strong>DCS AI MCP</strong>(다음 챕터)와 조합해 데이터 가져오기·결과 업로드까지 사내에서 완결되는 무인 파이프라인을 구축할 수 있습니다.</p>
+            <p style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.12);"><strong style="color:var(--brand-purple-300);">💡 TIP</strong> — 위 내용이 어려우시면, <strong>위 0~5번 내용을 그대로 드래그해서 Claude에게 요청</strong>해보세요. Claude가 순차적으로 파일을 만들어주고 설정까지 완료해줍니다. "위 내용대로 weekly-report agent와 hook 만들어줘" 한 줄이면 끝.</p>
+          </div>
+        </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 07 ────────────────────────────────────── -->
+<section class="chapter-section" id="ch7" style="background:var(--surface-soft);">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part Six</div>
+      <span class="chapter-time-pill"><span class="clk"></span>110–120' · 10'</span>
+      <div class="chapter-aside-title">Deploy · DCS AI</div>
+      <p class="chapter-aside-note">사내 환경에서 안전하게 배포·공유하는 방법. DCS AI MCP를 Claude Code에 연결해 사용합니다.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">배포 방법 · DCS AI 활용</span>
+      <h2 class="chapter-h2">DCS AI로<br/><span class="accent">사내 배포</span>까지 한 번에.</h2>
+      <p class="chapter-lead">F&amp;F DCS AI를 Claude Code에 연결해두면, 채팅 한 줄로 대시보드·보고서 자료를 사내 환경에 배포할 수 있습니다.</p>
+
+      <div class="sub">
+        <span class="sub-eyebrow">6-1</span>
+        <h3>대시보드 배포 — 어디에 어떻게 공유할까</h3>
+        <p>오늘 만든 HTML 파일을 어떻게 팀에 공유할지 정합니다. 본인 환경·정책에 맞춰 골라 쓰면 됩니다.</p>
+        <table class="compare">
+          <thead><tr><th>방법</th><th>시간</th><th>용도</th></tr></thead>
+          <tbody>
+            <tr><td>로컬 HTML</td><td>1초</td><td>본인만 보기 · 즉시 사용</td></tr>
+            <tr><td>HTML 배포</td><td>정책 따름</td><td>내부 공유 가능</td></tr>
+            <tr><td>메신저·메일에 압축 파일 공유</td><td>시간 소요</td><td>1:1 · 소그룹 공유</td></tr>
+          </tbody>
+        </table>
+        <p>HTML은 단일 파일이라 그대로 첨부·공유하면 받는 사람이 브라우저로 바로 열 수 있습니다.(단, 이미지는 포함이 안 될 수 있으니 확인이 필요합니다)<br>PPT는 파일로 첨부, HTML은 DCS AI로 배포 링크를 공유하면 링크가 있는 사람들끼리 공유가 가능합니다.</p>
+      </div>
+
+      <div class="sub">
+        <span class="sub-eyebrow">6-2</span>
+        <h3>DCS AI란?</h3>
+        <p>F&amp;F가 사내에서 운영하는 AI 인프라/도구 묶음입니다. Claude Code의 <strong>MCP(외부 시스템 연결)</strong> 메커니즘으로 연결되면 Claude가 사내 리소스를 직접 다룰 수 있어요.</p>
+        <ul>
+          <li>사내 인증된 환경에서 동작 — 데이터·자료가 외부로 나가지 않음</li>
+          <li>Claude Code에서는 <code>dcsai__*</code> 형태의 도구로 자동 등록됨</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <span class="sub-eyebrow">6-3</span>
+        <h3>연결 방법 — 3단계</h3>
+        <ol class="steps stack" style="max-width:none;">
+          <li>
+            <h4>DCS AI 플러그인 설치</h4>
+            <p>Claude Code 채팅창에 아래 명령어로 DCS AI MCP 플러그인을 한 번 설치합니다. 이후 Claude Code를 한 번 재시작하면 도구가 자동으로 등록됩니다.</p>
+            <div class="codebox" data-label="INSTALL" style="margin-top:10px;">
+<pre>/plugin install dcs-ai-common</pre>
+            </div>
+          </li>
+          <li>
+            <h4>사내 인증 확인</h4>
+            <p>처음 한 번은 사내 인증 절차를 거칩니다. (사내 SSO / DCS 계정) 인증이 끝나면 Claude가 DCS AI 도구 목록을 인식합니다.</p>
+            <p class="step-extra"><span class="label">확인 방법</span>채팅창에 <code>"DCS AI 도구 목록 알려줘"</code>라고 물어보면 사용 가능한 기능을 나열해줍니다. 지식그래프 조회, 스킬 카탈로그, 아티팩트 업로드 등이 보이면 성공.</p>
+          </li>
+          <li>
+            <h4>배포 프롬프트 실행</h4>
+            <p>오늘 만든 결과물(HTML 대시보드 + PPT)을 DCS AI 아티팩트 저장소에 올리고, 사내 공유 링크를 받습니다.</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="sub">
+        <span class="sub-eyebrow">6-4</span>
+        <h3>배포 프롬프트 예시</h3>
+        <p>아래 프롬프트를 그대로 복사해 채팅창에 붙여넣으세요. Plan Mode가 켜져 있다면 먼저 배포 계획을 보여주고, OK 후 실제 업로드를 진행합니다.</p>
+
+        <div class="prompt-card">
+          <div class="pc-head">
+            <span class="pc-title">Prompt · DCS AI 배포</span>
+            <span class="sub-eyebrow" style="margin:0;background:var(--tint-lavender);color:var(--brand-purple-800);">사내 배포</span>
+          </div>
+<pre>please deploy dashboard with dcs-ai-cli</pre>
+        </div>
+
+        <div class="slider-section">
+          <h4 class="slider-title">배포 화면 흐름 — 2단계</h4>
+          <div class="image-slider" id="deploy-slider">
+            <button class="slide" type="button" aria-label="배포 1단계 확대">
+              <img src="deploy/deploy%201.webp" alt="DCS AI 배포 1단계 — 업로드 실행" />
+            </button>
+            <button class="slide" type="button" aria-label="배포 2단계 확대">
+              <img src="deploy/deploy%202.webp" alt="DCS AI 배포 2단계 — 사내 공유 링크 생성" />
+            </button>
+          </div>
+        </div>
+
+        <div class="callout">업로드가 끝나면 사내 공유 링크 한 줄이 출력됩니다. 사내 메신저·메일에 URL을 붙여넣어 팀원에게 공유하세요. <strong>외부로는 나가지 않아 보안 정책 안전.</strong></div>
+      </div>
+
+      <div class="sub">
+        <span class="sub-eyebrow">6-5</span>
+        <h3>활용 시나리오</h3>
+        <table class="compare">
+          <thead><tr><th>상황</th><th>DCS AI 활용</th></tr></thead>
+          <tbody>
+            <tr><td>매주 자동 업데이트</td><td>지식그래프 API에서 최신 매출 데이터 → 대시보드 자동 갱신 → 아티팩트로 재업로드</td></tr>
+            <tr><td>여러 팀 공유</td><td>아티팩트 저장소에 1회 업로드 → 사내 링크 1개로 다수 팀원에게 배포</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Final CTA banner light ────────────────────────── -->
+<section class="cta-light">
+  <h3>세션의 마무리</h3>
+  <p>대시보드 생성 세션을 통해 나만의 대시보드 1개 · 보고서 PPT 1개 생성이 완료되셨나요? <br><br>오늘 세션에서 직접 다루지 못한 claude code의 hook, mcp, memory 등 다양한 기능들을 이제 직접 업무에 활용하면서 나만의 에이전트를 만들어보세요!</p>
+  <p class="cta-qa-note">Q&amp;A는 사내 메신저로 부탁드립니다! 감사합니다.</p>
+</section>
+
+<!-- ── Footer ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="b">
+        <span class="mark">F</span>
+        <span>F&amp;F · CN</span>
+      </div>
+      <p>F&amp;F 중국법인 PROCESS AX TEAM이 운영하는 Claude Code 교육. 데이터에서 대시보드까지, 본인이 직접 만들어보는 120분.</p>
+    </div>
+    <div>
+      <h4>강의</h4>
+      <ul>
+        <li><a href="#ros">Run-of-Show</a></li>
+        <li><a href="#ch0">Opening</a></li>
+        <li><a href="#ch2">PLAN</a></li>
+        <li><a href="#ch3">Skill 투어</a></li>
+        <li><a href="#ch4">핸즈온 ①</a></li>
+        <li><a href="#ch5">핸즈온 ②</a></li>
+        <li><a href="#ch7">DCS AI 배포</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>시나리오</h4>
+      <ul>
+        <li><a href="#scenarios">A · 주간 매출 (추천)</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>자료</h4>
+      <ul>
+        <li><a href="#">교안 PDF</a></li>
+        <li><a href="sample_data.xlsx" download>샘플 데이터 (xlsx)</a></li>
+        <li><a href="#">프롬프트 템플릿</a></li>
+        <li><a href="#">결과물 보관 가이드</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>F&amp;F</h4>
+      <ul>
+        <li><a href="#">AX팀 소개</a></li>
+        <li><a href="#">교육 커리큘럼</a></li>
+        <li><a href="#">F&amp;F 한국 사례</a></li>
+        <li><a href="mailto:hyoeun28@fnfcorp.com">문의하기</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-colophon">
+    <span>© 2026 F&amp;F · CN · Claude Code Workshop</span>
+    <span>Set in Inter &amp; Pretendard</span>
+    <span>No. 001 / Vol. 01</span>
+  </div>
+</footer>
+
+<!-- Lightbox modal (shared for image sliders) -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="이미지 확대 보기">
+  <button class="lightbox-close" type="button" aria-label="닫기">×</button>
+  <button class="lightbox-prev" type="button" aria-label="이전 이미지">‹</button>
+  <button class="lightbox-next" type="button" aria-label="다음 이미지">›</button>
+  <img id="lightbox-img" alt="" />
+  <div class="lightbox-counter" id="lightbox-counter"></div>
+</div>
+
+<script>
+  // Language switcher
+  (() => {
+    const navItems = {
+      ko: [
+        ['강의 개요', '#ros'],
+        ['설계 프레임워크', '#ch2'],
+        ['시나리오 A', '#scenarios'],
+        ['핸즈온', '#ch4'],
+        ['배포', '#ch7']
+      ],
+      en: [
+        ['Overview', '#en-ros'],
+        ['Plan Framework', '#en-ch2'],
+        ['Scenario A', '#en-scenarios'],
+        ['Hands-on', '#en-ch4'],
+        ['Deploy', '#en-ch7']
+      ]
+    };
+    const uiText = {
+      ko: {
+        title: 'F&F CN · Claude Code · 나만의 대시보드',
+        materials: '실습자료 받기',
+        start: '워크숍 시작',
+        startHref: '#ros'
+      },
+      en: {
+        title: 'F&F CN · Claude Code · Build Your Own Dashboard',
+        materials: 'Download Sample Data',
+        start: 'Start Workshop',
+        startHref: '#en-ros'
+      }
+    };
+    const setLanguage = (lang) => {
+      const next = lang === 'en' ? 'en' : 'ko';
+      document.documentElement.lang = next;
+      document.body.classList.toggle('lang-en', next === 'en');
+      document.title = uiText[next].title;
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        const active = btn.dataset.lang === next;
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-pressed', String(active));
+      });
+      document.querySelectorAll('#nav a').forEach((link, idx) => {
+        const item = navItems[next][idx];
+        if (!item) return;
+        link.textContent = item[0];
+        link.href = item[1];
+      });
+      const materials = document.querySelector('[data-i18n="nav-materials"]');
+      const start = document.querySelector('[data-i18n="nav-start"]');
+      if (materials) materials.textContent = uiText[next].materials;
+      if (start) {
+        start.textContent = uiText[next].start;
+        start.href = uiText[next].startHref;
+      }
+      localStorage.setItem('cnClaudeEduLang', next);
+      window.dispatchEvent(new CustomEvent('languagechange'));
+    };
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+    });
+    const queryLang = new URLSearchParams(window.location.search).get('lang');
+    setLanguage(queryLang || localStorage.getItem('cnClaudeEduLang') || 'ko');
+  })();
+
+  // Active chapter highlight
+  (() => {
+    const getSections = () => {
+      const ids = document.body.classList.contains('lang-en')
+        ? ['#en-ch0','#en-ch2','#en-scenarios','#en-ch4','#en-ch7']
+        : ['#ch0','#ch2','#scenarios','#ch4','#ch7'];
+      return ids.map(id => document.querySelector(id)).filter(Boolean);
+    };
+    const topNav = document.querySelector('.top-nav');
+    let lastY = window.scrollY;
+    const NAV_HEIGHT = 64;
+    const SCROLL_THRESHOLD = 6;
+
+    const onScroll = () => {
+      const links = document.querySelectorAll('#nav a');
+      const sections = getSections();
+      const probe = window.innerHeight * 0.3;
+      let activeIdx = -1;
+      sections.forEach((s, i) => {
+        const r = s.getBoundingClientRect();
+        if (r.top < probe && r.bottom > probe) activeIdx = i;
+      });
+      links.forEach((a, i) => a.classList.toggle('active', i === activeIdx));
+
+      // Hide/show top nav based on scroll direction
+      if (topNav) {
+        const y = window.scrollY;
+        const delta = y - lastY;
+        if (Math.abs(delta) > SCROLL_THRESHOLD) {
+          if (delta > 0 && y > NAV_HEIGHT) {
+            // scrolling down — hide
+            topNav.classList.add('nav-hidden');
+          } else if (delta < 0) {
+            // scrolling up — show
+            topNav.classList.remove('nav-hidden');
+          }
+          lastY = y;
+        }
+        // Always show near the very top
+        if (y <= NAV_HEIGHT) {
+          topNav.classList.remove('nav-hidden');
+        }
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('languagechange', onScroll);
+    onScroll();
+  })();
+
+  // Lightbox + slider (any .image-slider on page) + standalone illustrations
+  (() => {
+    const sliders = document.querySelectorAll('.image-slider');
+    const illusts = document.querySelectorAll('.feat-card .illust');
+    if (!sliders.length && !illusts.length) return;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const counter = document.getElementById('lightbox-counter');
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+    const prevBtn = lightbox.querySelector('.lightbox-prev');
+    const nextBtn = lightbox.querySelector('.lightbox-next');
+    let currentSet = [];
+    let currentIdx = 0;
+
+    const open = (slidesArr, idx) => {
+      currentSet = slidesArr;
+      currentIdx = idx;
+      const node = currentSet[idx];
+      const img = node.tagName === 'IMG' ? node : node.querySelector('img');
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt || '';
+      const multi = currentSet.length > 1;
+      counter.style.display = multi ? '' : 'none';
+      prevBtn.style.display = multi ? '' : 'none';
+      nextBtn.style.display = multi ? '' : 'none';
+      if (multi) counter.textContent = `${idx + 1} / ${currentSet.length}`;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    };
+    const nav = (delta) => {
+      if (!currentSet.length) return;
+      const newIdx = (currentIdx + delta + currentSet.length) % currentSet.length;
+      open(currentSet, newIdx);
+    };
+
+    sliders.forEach(slider => {
+      const slides = [...slider.querySelectorAll('.slide')];
+      slides.forEach((s, i) => {
+        s.addEventListener('click', () => open(slides, i));
+      });
+    });
+
+    // Standalone illustrations (single image lightbox)
+    document.querySelectorAll('.feat-card .illust').forEach(img => {
+      img.addEventListener('click', () => open([img], 0));
+    });
+
+    // Standalone result preview (single image lightbox)
+    document.querySelectorAll('.result-preview-shot').forEach(btn => {
+      const img = btn.querySelector('img');
+      if (!img) return;
+      btn.addEventListener('click', () => open([img], 0));
+    });
+
+    closeBtn.addEventListener('click', close);
+    prevBtn.addEventListener('click', e => { e.stopPropagation(); nav(-1); });
+    nextBtn.addEventListener('click', e => { e.stopPropagation(); nav(1); });
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) close(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') nav(-1);
+      else if (e.key === 'ArrowRight') nav(1);
+    });
+  })();
+</script>
+
+</body>
+</html>

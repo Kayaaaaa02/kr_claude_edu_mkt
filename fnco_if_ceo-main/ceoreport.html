@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F&CO Influencer Dashboard v2.0 — Strategic Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+      background: #FFFFFF; color: #222; line-height: 1.8; overflow-x: hidden;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+    .accent { color: #6C5CE7; }
+
+    .tag {
+      display: inline-block; padding: 6px 20px; border-radius: 100px;
+      font-size: .75rem; font-weight: 700; letter-spacing: .06em;
+    }
+    .tag--purple { background: #6C5CE7; color: #fff; border: none; }
+    .tag--blue   { background: #6C5CE7; color: #fff; border: none; }
+    .tag--pink   { background: rgba(220,60,100,.08); color: #C0345A; border: 1px solid rgba(220,60,100,.15); }
+    .tag--green  { background: rgba(16,185,129,.08); color: #0E9F6E; border: 1px solid rgba(16,185,129,.15); }
+
+    /* ANIMATIONS */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left  { opacity: 0; transform: translateX(-30px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal-right { opacity: 0; transform: translateX(30px);  transition: opacity .6s ease, transform .6s ease; }
+    .reveal-left.visible, .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .stagger > *:nth-child(1) { transition-delay: .05s; }
+    .stagger > *:nth-child(2) { transition-delay: .12s; }
+    .stagger > *:nth-child(3) { transition-delay: .19s; }
+    .stagger > *:nth-child(4) { transition-delay: .26s; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(7,8,12,.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,.06); transition: background .4s, border-color .4s, box-shadow .4s;
+    }
+    nav.light-nav {
+      background: rgba(255,255,255,.95); border-bottom-color: #eee;
+      box-shadow: 0 1px 8px rgba(0,0,0,.04);
+    }
+    nav .inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 48px; max-width: 1200px; margin: 0 auto; }
+    nav .logo { font-weight: 800; font-size: 1rem; letter-spacing: -.02em; color: #fff; transition: color .4s; }
+    nav .logo span { color: #6C5CE7; }
+    nav.light-nav .logo { color: #222; }
+    nav ul { list-style: none; display: flex; gap: 32px; }
+    nav a { color: rgba(255,255,255,.55); text-decoration: none; font-size: .82rem; font-weight: 500; transition: color .3s; }
+    nav a:hover { color: #fff; }
+    nav.light-nav a { color: #888; }
+    nav.light-nav a:hover { color: #6C5CE7; }
+    nav.nav-hidden { transform: translateY(-100%); }
+    nav { transition: background .4s, border-color .4s, box-shadow .4s, transform .3s ease; }
+
+    /* PROGRESS BAR */
+    .progress-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 101;
+    }
+    .progress-bar-fill {
+      height: 100%; width: 0%; background: #6C5CE7;
+      transition: width .15s linear;
+    }
+
+    /* HERO — dark */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; position: relative; overflow: hidden; padding: 120px 40px 80px;
+      background: #07080C; color: #E4E7EC;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 600px 500px at 30% 20%, rgba(108,92,231,.18), transparent),
+        radial-gradient(ellipse 500px 400px at 70% 70%, rgba(0,210,255,.10), transparent);
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero .overline {
+      font-size: .75rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase;
+      color: #A29BFE; margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 900; line-height: 1.2;
+      letter-spacing: -.03em; margin-bottom: 24px;
+      background: linear-gradient(135deg, #fff 30%, #A29BFE 60%, #00D2FF);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero h3 {
+      font-size: 1rem; font-weight: 500; color: rgba(255,255,255,.5); margin-bottom: 20px;
+    }
+    .hero p { font-size: 1.05rem; color: rgba(255,255,255,.55); max-width: 620px; margin: 0 auto 40px; line-height: 1.8; }
+    .hero-divider {
+      width: 60px; height: 1px; background: rgba(255,255,255,.25);
+      margin: 0 auto 36px;
+    }
+    .hero .cycle { display: inline-flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .hero .cycle span {
+      padding: 8px 22px; border-radius: 100px; border: 1px solid rgba(108,92,231,.35);
+      background: rgba(108,92,231,.08); color: #A29BFE; font-weight: 600; font-size: .82rem;
+      transition: transform .25s, background .25s;
+    }
+    .hero .cycle span:hover { transform: scale(1.04); background: rgba(108,92,231,.18); }
+    .hero .cycle .arrow { color: rgba(255,255,255,.25); font-size: 1rem; border: none; background: none; }
+    /* cycle in light sections */
+    section:not(.hero) .cycle span {
+      background: #6C5CE7; border: none; color: #fff;
+    }
+    section:not(.hero) .cycle span:hover { opacity: .9; }
+    .scroll-hint { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); animation: float 2.5s ease-in-out infinite; }
+    .scroll-hint span { display: block; width: 24px; height: 38px; border-radius: 12px; border: 2px solid rgba(255,255,255,.2); position: relative; }
+    .scroll-hint span::after {
+      content: ''; width: 4px; height: 8px; border-radius: 2px; background: #6C5CE7;
+      position: absolute; left: 50%; top: 7px; transform: translateX(-50%);
+      animation: scrollDot 2.5s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
+    @keyframes scrollDot { 0%,100% { opacity: 1; top: 7px; } 50% { opacity: .3; top: 18px; } }
+
+    /* SECTIONS */
+    section { padding: 100px 0; position: relative; }
+    section + section { border-top: none; }
+
+    /* PART BANNER — clean minimal */
+    .part-banner {
+      padding: 40px 0 36px; margin-bottom: 56px; position: relative; overflow: hidden;
+      background: #fff !important; border-top: none !important; border-bottom: 1px solid #eee !important;
+    }
+    .part-banner .container { display: flex; align-items: center; gap: 20px; }
+    .part-banner .part-num {
+      font-size: 3.5rem; font-weight: 900; line-height: 1; letter-spacing: -.04em;
+      color: #6C5CE7 !important; opacity: 1 !important; flex-shrink: 0;
+    }
+    .part-banner .part-info { display: flex; flex-direction: column; gap: 2px; }
+    .part-banner .part-label {
+      font-size: .82rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+      color: #6C5CE7 !important;
+    }
+    .part-banner .part-title {
+      font-size: clamp(1.5rem, 3.5vw, 2rem); font-weight: 800; line-height: 1.3;
+      letter-spacing: -.02em; color: #222 !important;
+    }
+    /* Override all part color variations */
+    .part-banner--1, .part-banner--2, .part-banner--3, .part-banner--4, .part-banner--5 {
+      background: #fff !important; border-top: none !important; border-bottom: 1px solid #eee !important;
+    }
+
+    .section-label {
+      font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+      color: #6C5CE7; margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; line-height: 1.3;
+      letter-spacing: -.02em; margin-bottom: 16px; color: #222;
+    }
+    .section-desc { color: #888; font-size: .92rem; max-width: 900px; margin-bottom: 28px; line-height: 1.9; }
+
+    /* CARDS */
+    .card-grid { display: grid; gap: 24px; }
+    .card-grid--2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .card {
+      background: transparent; border: none; border-bottom: 1px solid #f0f0f0;
+      border-radius: 0; padding: 28px 0; position: relative; overflow: hidden;
+      transition: none;
+    }
+    .card:last-child { border-bottom: none; }
+    .card:hover { transform: none; box-shadow: none; }
+    .card::before { display: none; }
+    .card .icon {
+      width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; margin-bottom: 18px;
+    }
+    .card .icon--purple { background: rgba(108,92,231,.1); }
+    .card .icon--blue   { background: rgba(108,92,231,.08); }
+    .card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; color: #222; }
+    .card p  { font-size: .88rem; color: #666; line-height: 1.8; }
+
+    /* PICTOGRAM FLOW */
+    .picto-flow {
+      display: flex; align-items: flex-start; justify-content: center;
+      gap: 8px; margin-top: 18px; flex-wrap: wrap;
+    }
+    .picto-step {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      flex: 0 0 auto; min-width: 72px;
+    }
+    .picto-step svg { flex-shrink: 0; }
+    .picto-step span {
+      font-size: .72rem; font-weight: 600; color: #666;
+      text-align: center; line-height: 1.4;
+    }
+    .picto-arrow {
+      font-size: 1.1rem; font-weight: 700; color: #6C5CE7;
+      margin-top: 8px; flex-shrink: 0;
+    }
+
+    /* META */
+    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 36px; }
+    @media (max-width: 720px) { .meta-grid { grid-template-columns: 1fr; } }
+    .meta-box {
+      background: #FAFAFA; border: none; border-radius: 16px; padding: 32px 28px;
+    }
+    .meta-box h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: #222; }
+    .meta-box .sub { font-size: .78rem; color: #aaa; margin-bottom: 16px; }
+    .meta-box p { font-size: .88rem; color: #555; line-height: 1.8; }
+    .meta-box .example {
+      margin-top: 16px; padding: 14px 18px; border-radius: 10px;
+      background: rgba(108,92,231,.04); border-left: 3px solid #6C5CE7;
+      font-size: .82rem; color: #555;
+    }
+    .meta-box .example strong { color: #6C5CE7; }
+    .meta-highlight {
+      margin-top: 28px; padding: 28px 32px; border-radius: 14px;
+      background: #FAFAFA; border: none;
+    }
+    .meta-highlight h4 { font-size: .95rem; font-weight: 700; color: #222; margin-bottom: 8px; }
+    .meta-highlight p { font-size: .85rem; color: #555; }
+    .meta-highlight .stat { color: #6C5CE7; font-weight: 700; font-size: 1rem; }
+
+    /* PIPELINE */
+    .pipeline { position: relative; padding-left: 64px; }
+    /* 배경 트랙 (연한 선) */
+    .pipeline-track {
+      position: absolute; left: 29px; top: 0; bottom: 0; width: 3px;
+      background: #EDE9FE; border-radius: 3px; z-index: 0; pointer-events: none;
+    }
+    /* 진행 그라디언트 라인 — 원 뒤로 */
+    .pipeline-progress {
+      position: absolute; left: 29px; top: 0; width: 3px; height: 0%;
+      background: linear-gradient(180deg, #8B5CF6 0%, #A78BFA 40%, #8B5CF6 70%, #7C3AED 100%);
+      border-radius: 3px; z-index: 0; pointer-events: none;
+      transition: height .1s linear;
+    }
+    /* 스텝 간 세모 커넥터 */
+    .step-connector {
+      position: absolute; left: -56px; bottom: -54px; width: 44px;
+      display: flex; justify-content: center; z-index: 3;
+    }
+    .step-connector .connector-line { display: none; }
+    .step-connector .connector-arrow {
+      width: 0; height: 0;
+      border-left: 7px solid transparent; border-right: 7px solid transparent;
+      border-top: 10px solid #C4B5FD;
+      filter: drop-shadow(0 1px 2px rgba(139,92,246,.15));
+      animation: arrowBounce 2s ease-in-out infinite;
+    }
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateY(0); opacity: .6; }
+      50% { transform: translateY(4px); opacity: 1; }
+    }
+    .step { position: relative; margin-bottom: 100px; }
+    .step:last-child { margin-bottom: 0; }
+    .step:last-child .step-connector { display: none; }
+    .step .dot {
+      position: absolute; left: -56px; top: 0; width: 44px; height: 44px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: .85rem; font-weight: 800; color: #fff; z-index: 5;
+      background: #8B5CF6; box-shadow: 0 0 0 5px #fff, 0 0 0 8px rgba(139,92,246,.12);
+      transition: transform .3s, box-shadow .3s;
+    }
+    .step.active .dot {
+      transform: scale(1.12);
+      box-shadow: 0 0 0 5px #fff, 0 0 0 9px rgba(139,92,246,.22), 0 4px 20px rgba(139,92,246,.2);
+    }
+    /* 스텝 라벨 뱃지 */
+    .step .step-label {
+      display: inline-block; padding: 4px 14px; border-radius: 100px;
+      font-size: .7rem; font-weight: 700; letter-spacing: .08em;
+      background: rgba(139,92,246,.06); color: #8B5CF6; border: none;
+      margin-bottom: 8px;
+    }
+    .step h3 { font-size: 1.15rem; font-weight: 700; color: #222; margin-bottom: 8px; }
+    .step > p { font-size: .9rem; color: #888; margin-bottom: 24px; line-height: 1.8; }
+
+    .step-body { display: flex; flex-direction: column; gap: 20px; }
+
+    /* TABLE TOGGLE */
+    .tbl-toggle {
+      display: flex; align-items: center; gap: 8px; cursor: pointer;
+      padding: 14px 20px; border-radius: 10px; border: 1px solid #eee;
+      background: #FAFAFA; margin-bottom: 0; transition: background .2s;
+      user-select: none;
+    }
+    .tbl-toggle:hover { background: #F3F0FF; border-color: #ddd; }
+    .tbl-toggle .tbl-toggle-icon {
+      font-size: .75rem; color: #6C5CE7; transition: transform .3s; flex-shrink: 0;
+    }
+    .tbl-toggle.open .tbl-toggle-icon { transform: rotate(90deg); }
+    .tbl-toggle span { font-size: .82rem; font-weight: 600; color: #222; }
+    .tbl-collapsible {
+      max-height: 0; overflow: hidden; transition: max-height .4s cubic-bezier(.22,1,.36,1);
+    }
+    .tbl-collapsible.open { max-height: 2000px; }
+
+    /* TABLE */
+    .tbl-wrap {
+      overflow-x: auto; border-radius: 0 0 10px 10px; border: 1px solid #eee; border-top: none; background: #fff;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    thead th {
+      text-align: left; padding: 14px 20px; font-weight: 600; font-size: .75rem;
+      letter-spacing: .08em; text-transform: uppercase; color: #aaa;
+      background: #FAFAFA; border-bottom: 1px solid #eee;
+    }
+    tbody td {
+      padding: 14px 20px; border-bottom: 1px solid #f5f5f5;
+      color: #555; vertical-align: top;
+    }
+    tbody td:first-child { color: #222; font-weight: 600; white-space: nowrap; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr { transition: background .2s; }
+    tbody tr:hover { background: #FAFAFA; }
+
+    /* STEP IMAGE */
+    .step-screenshot {
+      border-radius: 12px; overflow: hidden; border: 1px solid #eee;
+      background: #FAFAFA; aspect-ratio: 16/10;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: transform .3s, box-shadow .3s;
+      position: relative;
+    }
+    .step-screenshot:hover {
+      transform: scale(1.01);
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    }
+    .step-screenshot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .step-screenshot .ph {
+      display: flex; flex-direction: column; align-items: center; gap: 10px; color: #ccc;
+    }
+    .step-screenshot .ph svg { width: 36px; height: 36px; }
+    .step-screenshot .ph span { font-size: .75rem; font-weight: 500; }
+    .step-screenshot .zoom-badge {
+      position: absolute; bottom: 10px; right: 12px;
+      background: rgba(108,92,231,.8); color: #fff; padding: 3px 10px;
+      border-radius: 8px; font-size: .65rem; font-weight: 600;
+      opacity: 0; transition: opacity .25s;
+    }
+    .step-screenshot:hover .zoom-badge { opacity: 1; }
+
+    /* STEP GALLERY — equal height row */
+    .step-gallery {
+      position: relative;
+    }
+    .step-gallery .gallery-track {
+      display: flex; gap: 16px;
+    }
+    .step-gallery .gallery-track img {
+      flex: 1 1 0; min-width: 0; width: 0; height: auto;
+      display: block; cursor: pointer;
+      border-radius: 12px; border: 1px solid #eee;
+      background: #fff; object-fit: contain;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .step-gallery .gallery-track img:hover {
+      transform: scale(1.01);
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    }
+    .step-gallery .gallery-nav { display: none; }
+    .step-gallery .gallery-dots { display: none; }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,.85); backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .3s; padding: 40px;
+    }
+    .lightbox.active { opacity: 1; pointer-events: auto; }
+    .lightbox img {
+      max-width: 92vw; max-height: 88vh; border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+      transform: scale(.92); transition: transform .4s cubic-bezier(.16,1,.3,1);
+    }
+    .lightbox.active img { transform: scale(1); }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 24px;
+      width: 44px; height: 44px; border: none; border-radius: 50%;
+      background: rgba(255,255,255,.1); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: background .2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,.2); }
+    .lightbox-close svg { width: 18px; height: 18px; stroke: #fff; stroke-width: 2; }
+    .lightbox-caption {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,.5); font-size: .8rem; font-weight: 500; white-space: nowrap;
+    }
+
+    /* IMPACT */
+    .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    @media (max-width: 720px) { .impact-grid { grid-template-columns: 1fr; } }
+    .impact-card {
+      text-align: center; padding: 44px 28px; border-radius: 16px;
+      border: none; background: #FAFAFA;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .impact-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,.05); }
+    .impact-card .impact-icon { font-size: 2rem; margin-bottom: 16px; }
+    .impact-card h3 { font-size: 1.05rem; font-weight: 700; color: #222; margin-bottom: 8px; }
+    .impact-card p { font-size: .85rem; color: #888; line-height: 1.8; }
+
+    /* ROLLOUT */
+    .rollout-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
+    @media (max-width: 720px) { .rollout-cards { grid-template-columns: 1fr; } }
+    .rollout-card {
+      padding: 36px 30px; border-radius: 16px; border: none;
+      background: #FAFAFA; position: relative; overflow: hidden;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .rollout-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,.05); }
+    .rollout-card::before { display: none; }
+    .rollout-card .badge {
+      position: absolute; top: 20px; right: 20px; padding: 4px 12px;
+      border-radius: 100px; font-size: .68rem; font-weight: 600;
+    }
+    .rollout-card h3 { font-size: 1rem; font-weight: 700; color: #222; margin-bottom: 14px; }
+    .rollout-card p { font-size: .88rem; color: #666; line-height: 1.8; }
+    .rollout-card ul {
+      list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 10px;
+    }
+    .rollout-card ul li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: .85rem; color: #555; line-height: 1.7;
+    }
+    .rollout-card ul li .bullet {
+      flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 8px;
+    }
+    .rollout-card:nth-child(1) ul li .bullet { background: #6C5CE7; }
+    .rollout-card:nth-child(2) ul li .bullet { background: #6C5CE7; }
+
+    .rollout-summary {
+      padding: 28px 32px; border-radius: 14px;
+      background: #FAFAFA; border: none;
+    }
+    .rollout-summary h4 { font-size: .9rem; font-weight: 700; color: #222; margin-bottom: 10px; }
+    .rollout-summary p { font-size: .85rem; color: #555; line-height: 1.8; }
+
+    /* INTRO SECTION */
+    .intro-section {
+      padding: 100px 0 80px; text-align: center;
+      background: #fff;
+      border-bottom: none;
+    }
+    .intro-section .intro-label {
+      font-size: .72rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+      color: #6C5CE7; margin-bottom: 16px;
+      display: inline-block; padding: 6px 20px; border: 1.5px solid #6C5CE7; border-radius: 100px;
+    }
+    .intro-section .intro-title {
+      font-size: clamp(1.4rem, 3vw, 1.85rem); font-weight: 800; color: #222;
+      letter-spacing: -.02em; margin-bottom: 40px;
+    }
+    .intro-section .intro-desc {
+      font-size: .95rem; color: #666; line-height: 1.9; max-width: 700px; margin: 0 auto 28px;
+      text-align: center;
+    }
+    .intro-section .intro-desc strong { color: #222; }
+    .intro-section .intro-sub {
+      font-size: 1.05rem; font-weight: 700; color: #222; margin-bottom: 12px;
+    }
+    /* Evolution Timeline */
+    .evo-timeline {
+      display: flex; align-items: stretch; justify-content: center;
+      gap: 0; margin: 32px auto 8px; max-width: 1100px;
+    }
+    .evo-arrow {
+      display: flex; align-items: center; font-size: 1.3rem; font-weight: 700;
+      color: #ddd; padding: 0 12px; flex-shrink: 0;
+    }
+    .evo-card {
+      flex: 1; padding: 24px 20px; border-radius: 14px;
+      text-align: left; position: relative;
+      border: none; background: #FAFAFA;
+    }
+    .evo-card h4 { font-size: .95rem; font-weight: 700; color: #222; margin: 10px 0 12px; }
+    .evo-card ul { list-style: none; padding: 0; margin: 0; }
+    .evo-card li {
+      font-size: .78rem; color: #666; line-height: 1.6;
+      padding-left: 14px; position: relative; margin-bottom: 4px;
+    }
+    .evo-card li::before {
+      content: '·'; position: absolute; left: 0; font-weight: 700; color: #bbb;
+    }
+    .evo-badge {
+      display: inline-block; padding: 4px 14px; border-radius: 100px;
+      font-size: .65rem; font-weight: 700; letter-spacing: .06em;
+    }
+    .evo-badge--past { background: #eee; color: #999; border: none; }
+    .evo-badge--v1 { background: rgba(108,92,231,.1); color: #6C5CE7; border: none; }
+    .evo-badge--v2 { background: #6C5CE7; color: #fff; border: none; }
+    .evo-past { opacity: .7; }
+    .evo-v2 { border: none; box-shadow: none; background: rgba(108,92,231,.06); }
+    @media (max-width: 720px) {
+      .evo-timeline { flex-direction: column; gap: 0; }
+      .evo-arrow { transform: rotate(90deg); padding: 8px 0; justify-content: center; }
+    }
+
+    .intro-arrow-connector {
+      color: #ccc; font-size: 1.2rem; margin: 16px 0;
+      animation: arrowBounce 1.8s ease-in-out infinite;
+    }
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateY(0); opacity: .5; }
+      50% { transform: translateY(6px); opacity: 1; }
+    }
+    .intro-section .cycle {
+      display: inline-flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center;
+      margin-top: 28px;
+    }
+    .intro-section .cycle span {
+      padding: 10px 26px; border-radius: 100px;
+      background: #6C5CE7; border: none;
+      color: #fff; font-weight: 600; font-size: .84rem;
+      transition: transform .25s, opacity .25s;
+    }
+    .intro-section .cycle span:hover { transform: scale(1.04); opacity: .9; }
+    .intro-section .cycle .arrow { color: #ccc; font-size: 1rem; border: none; background: none; }
+
+    /* FLOW LOOP — circles with dashed lines */
+    .flow-loop {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; margin-top: 36px; flex-wrap: wrap;
+    }
+    .flow-node { flex-shrink: 0; }
+    .flow-circle {
+      width: 110px; height: 110px; border-radius: 50%;
+      background: #6C5CE7;
+      border: 2px solid #5A4BD1;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; font-size: .78rem; font-weight: 700; color: #fff;
+      line-height: 1.4; transition: transform .3s, background .3s;
+    }
+    .flow-circle:hover {
+      transform: scale(1.08); background: #5A4BD1;
+    }
+    .flow-node--1 .flow-circle { animation: circlePulse 3.2s ease-in-out infinite; animation-delay: 0s; }
+    .flow-node--2 .flow-circle { animation: circlePulse 3.2s ease-in-out infinite; animation-delay: 0.8s; }
+    .flow-node--3 .flow-circle { animation: circlePulse 3.2s ease-in-out infinite; animation-delay: 1.6s; }
+    .flow-node--4 .flow-circle { animation: circlePulse 3.2s ease-in-out infinite; animation-delay: 2.4s; }
+    @keyframes circlePulse {
+      0%, 100% { transform: scale(1); border-color: #5A4BD1; background: #6C5CE7; }
+      25% { transform: scale(1.12); border-color: #4A3BC1; background: #5A4BD1; }
+      50% { transform: scale(1); border-color: #5A4BD1; background: #6C5CE7; }
+    }
+    .flow-line {
+      width: 60px; height: 12px; flex-shrink: 0;
+    }
+    .flow-dash {
+      animation: flowDash 1.2s linear infinite;
+    }
+    .flow-line:nth-of-type(2) .flow-dash { animation-delay: .3s; }
+    .flow-line:nth-of-type(3) .flow-dash { animation-delay: .6s; }
+    .flow-line:nth-of-type(4) .flow-dash { animation-delay: .9s; }
+    @keyframes flowDash {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -20; }
+    }
+    /* Return curve */
+    .flow-return-svg {
+      display: block; width: 100%; max-width: 660px; height: 70px; margin: -6px auto 0;
+    }
+    .flow-dash-return {
+      animation: flowDashReturn 1.5s linear infinite;
+    }
+    @keyframes flowDashReturn {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -20; }
+    }
+    @media (max-width: 720px) {
+      .flow-loop { flex-direction: column; gap: 0; }
+      .flow-line { width: 4px; height: 40px; transform: rotate(90deg); }
+      .flow-circle { width: 100px; height: 100px; font-size: .72rem; }
+      .flow-return-svg { height: 40px; }
+    }
+
+    /* SUBSECTION */
+    .subsection { margin-top: 64px; }
+    .subsection-header {
+      display: flex; align-items: baseline; gap: 14px; margin-bottom: 16px;
+    }
+    .subsection-num {
+      font-size: 1.3rem; font-weight: 900; color: #6C5CE7; flex-shrink: 0;
+    }
+    .subsection-title {
+      font-size: 1.15rem; font-weight: 700; color: #222; line-height: 1.4;
+    }
+    .subsection-title small { font-size: .82rem; font-weight: 500; color: #aaa; margin-left: 6px; }
+    .subsection > p { font-size: .9rem; color: #666; line-height: 1.8; margin-bottom: 16px; }
+    .subsection > p strong { color: #222; }
+
+    .point-box {
+      padding: 20px 24px; border-radius: 12px; margin-bottom: 16px;
+      background: #FAFAFA; border: none;
+    }
+    .point-box h4 { font-size: .95rem; font-weight: 700; color: #222; margin-bottom: 8px; }
+    .point-box p { font-size: .86rem; color: #555; line-height: 1.8; }
+    .point-box .em { color: #6C5CE7; font-weight: 600; }
+
+    .conclusion-box {
+      padding: 22px 28px; border-radius: 12px; margin-top: 24px;
+      background: #FAFAFA; border: none;
+    }
+    .conclusion-box p { font-size: .88rem; color: #222; font-weight: 600; line-height: 1.7; }
+
+    /* Part conclusion */
+    .part-conclusion {
+      text-align: center; margin-top: 64px; padding: 48px 32px;
+      border-radius: 16px;
+      background: #FAFAFA;
+      border: none;
+      position: relative; overflow: hidden;
+    }
+    .part-conclusion::before { display: none; }
+    .part-conclusion-icon {
+      font-size: 2rem; margin-bottom: 12px; position: relative;
+    }
+    .part-conclusion-label {
+      font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+      color: #6C5CE7; margin-bottom: 14px; position: relative;
+    }
+    .part-conclusion-text {
+      font-size: 1.05rem; font-weight: 600; color: #222; line-height: 1.8; position: relative;
+    }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px; border: none; margin: 0;
+      background: #eee;
+    }
+
+    /* FOOTER */
+    footer { padding: 60px 0; text-align: center; border-top: 1px solid #eee; }
+    footer p { font-size: .78rem; color: #aaa; }
+
+    @media (max-width: 720px) {
+      .pipeline { padding-left: 48px; }
+      .pipeline .pipeline-track, .pipeline .pipeline-progress { left: 23px; }
+      .step .dot { left: -42px; width: 36px; height: 36px; font-size: .75rem; }
+      .step-connector { left: -42px; width: 36px; bottom: -62px; }
+      .step { margin-bottom: 80px; }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 0 20px; }
+      nav ul { display: none; }
+      section { padding: 64px 0; }
+      .hero { padding: 100px 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar"><div class="progress-bar-fill" id="progressBar"></div></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="inner">
+    <div class="logo"><span>F&CO</span> Influencer Dashboard v2.0</div>
+    <ul>
+      <li><a href="#background">도입 배경</a></li>
+      <li><a href="#meta">트렌드&META 대응</a></li>
+      <li><a href="#pipeline">워크플로우</a></li>
+      <li><a href="#impact">임팩트</a></li>
+      <li><a href="#rollout">실행 전략</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO — dark bg -->
+<section class="hero">
+  <div class="hero-content reveal">
+    <p class="overline">[AI를 활용한 마케팅의 변화]</p>
+    <h1>F&CO 인플루언서 대시보드 v2.0</h1>
+    <h3>트렌드를 반영하고 광고 맞춤형 소재로의 확장</h3>
+    <br>
+    <div class="hero-divider"></div>
+    <p style="font-size:.72rem;font-weight:500;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:12px;">F&F AX 마케팅팀</p>
+  </div>
+  <div class="scroll-hint"><span></span></div>
+</section>
+<!-- 추진 배경 및 목표 — centered intro -->
+<div class="intro-section">
+  <div class="container reveal">
+    <p class="intro-label">Overview</p>
+    <h2 class="intro-title">추진 배경 및 목표</h2>
+  
+    <!-- Evolution Timeline -->
+    <div class="evo-timeline">
+      <div class="evo-card evo-past reveal">
+        <span class="evo-badge evo-badge--past">Past</span>
+        <h4>직감&수기 운영</h4>
+        <ul>
+          <li>SNS 채널 인플루언서 서칭&컨택</li>
+          <li>조회수/좋아요 수작업 기록</li>
+          <li>담당자의 경험과 직감 기반의 의사결정</li>
+          <li><strong>의사결정의 딜레이 발생</strong></li>
+        </ul>
+
+      </div>
+      <div class="evo-arrow reveal">→</div>
+      <div class="evo-card evo-v1 reveal">
+        <span class="evo-badge evo-badge--v1">대시보드 v1.0</span>
+        <h4>AI 크롤링 도입</h4>
+        <ul>
+          <li><strong>SNS 콘텐츠 AI 크롤링 & 분석</strong></li>
+          <li>성과 우수 콘텐츠 알림</li>
+          <li>제품 기획안 → AI 시딩 가이드 생성</li>
+        </ul>
+
+      </div>
+      <div class="evo-arrow reveal">→</div>
+      <div class="evo-card evo-v2 reveal">
+        <span class="evo-badge evo-badge--v2">대시보드 v2.0</span>
+        <h4>캠페인 자동화</h4>
+        <ul>
+          <li>채널별 뷰티 트렌드 영상 수집</li>  
+          <li>광고 소재 맞춤형 <strong>컨셉 다각화</strong></li>
+          <li>인플루언서 크롤링&분석 → 최적의 컨셉 매칭</li>
+          <li>전체 콘텐츠 모니터링 → <strong>소재별 효율 분석</strong></li>
+        </ul>
+
+      </div>
+    </div>
+    <br>
+    <br>
+      <p class="intro-desc">기존 '콘텐츠 관리'에 머물렀던 대시보드를 외부 소셜 데이터를 AI가 분석하여 <strong>반응률이 좋은 트렌드</strong>를 적용하고, 변경된 광고 로직에 완벽히 대응하는 <strong class="em">'소재 중심의 캠페인 운영 플랫폼(v2.0)'</strong>으로 도약하고자 합니다.</p>
+    <br>
+    <br>
+      <div class="intro-arrow-connector">&#9660;</div>
+    <br>
+      <h3 class="intro-sub"><span style="background:linear-gradient(transparent 55%,rgba(108,92,231,.25) 55%);padding:0 4px;">"Infinity LOOP : 유기적인 운영 싸이클 구축"</span></h3>
+    <p class="intro-desc">단순 운영 툴을 넘어 유기적으로 이어지는 마케팅 자동화 사이클 구축이 목표입니다.</p>
+    <div class="flow-loop">
+      <div class="flow-node flow-node--1">
+        <div class="flow-circle">트렌드<br>감지</div>
+      </div>
+      <svg class="flow-line" viewBox="0 0 80 12">
+        <line x1="0" y1="6" x2="60" y2="6" stroke="#6C5CE7" stroke-width="2" stroke-dasharray="6 4" class="flow-dash"/>
+        <polygon points="58,2 68,6 58,10" fill="#6C5CE7"/>
+      </svg>
+      <div class="flow-node flow-node--2">
+        <div class="flow-circle">캠페인<br>기획</div>
+      </div>
+      <svg class="flow-line" viewBox="0 0 80 12">
+        <line x1="0" y1="6" x2="60" y2="6" stroke="#6C5CE7" stroke-width="2" stroke-dasharray="6 4" class="flow-dash"/>
+        <polygon points="58,2 68,6 58,10" fill="#6C5CE7"/>
+      </svg>
+      <div class="flow-node flow-node--3">
+        <div class="flow-circle">콘텐츠<br>제작 및 실행</div>
+      </div>
+      <svg class="flow-line" viewBox="0 0 80 12">
+        <line x1="0" y1="6" x2="60" y2="6" stroke="#6C5CE7" stroke-width="2" stroke-dasharray="6 4" class="flow-dash"/>
+        <polygon points="58,2 68,6 58,10" fill="#6C5CE7"/>
+      </svg>
+      <div class="flow-node flow-node--4">
+        <div class="flow-circle">성공 패턴<br>학습 및 자산화</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- PART 1 -->
+<section id="background">
+  <div class="part-banner part-banner--1 reveal">
+    <div class="container">
+      <div class="part-num">01</div>
+      <div class="part-info">
+        <span class="part-label">Part 1 — 도입 배경 및 진화 방향</span>
+        <h2 class="part-title">META 광고 알고리즘 변화</h2>
+      </div>
+    </div>
+  </div>
+  <div class="container"> 
+
+    <div class="subsection reveal" id="meta">
+      <div class="subsection-header">
+        <h3 class="subsection-title">Meta 광고 알고리즘 전환 : 이제는 광고 소재가 타겟팅의 무기가 됩니다.</h3>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-box reveal-left">
+          <span class="tag tag--purple" style="margin-bottom:16px;display:inline-flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#fff;color:#6C5CE7;font-size:.75rem;font-weight:800;flex-shrink:0;">1</span> GEM : 초거대 AI 두뇌</span>
+          <p>기존의 단순 '키워드 매칭' 방식에서 벗어나,<br>소재의 <strong style="color:#6C5CE7;">맥락(Context)</strong>을 파악하여 사용자의 <strong style="color:#6C5CE7;">잠재적 의도(Semantic)</strong>를 연결</p>
+          <div class="example">
+            <strong>[기존]</strong> '운동화' 키워드 매칭<br>
+            <strong>[변경]</strong> '도심 속에서 러닝을 즐기는 30대 직장인'의 라이프스타일 매칭
+          </div>
+        </div>
+        <div class="meta-box reveal-right">
+          <span class="tag tag--blue" style="margin-bottom:16px;display:inline-flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#fff;color:#6C5CE7;font-size:.75rem;font-weight:800;flex-shrink:0;">2</span> Andromeda : 차세대 추천 엔진</span>
+          <p>광고주가 설정한 인구통계학적 타겟팅보다,<br><strong style="color:#0EA5E9;">'이 광고 소재에 가장 반응할 확률이 높은 유저'</strong>를 AI가 스스로 찾아가 매칭</p>
+          <div class="example">
+            <strong>비건 뷰티 제품</strong><br>
+            <strong>[기존]</strong> "2030 여성, 뷰티/화장품" 관심사 타겟 설정<br>
+            <strong>[변경]</strong> 환경 보호 콘텐츠에 반응하거나 성분 분석 앱을 이용하는 유저에게 노출
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:28px;margin-bottom:-12px;font-size:1.4rem;color:#ccc;">▼</div>
+
+      <div class="meta-highlight reveal" style="margin-top:28px;">
+        <h4 style="text-align:center;font-size:1.15rem;">🎯 광고 운영의 핵심 = <span style="background:linear-gradient(transparent 55%,rgba(108,92,231,.25) 55%);padding:0 4px;">'소재의 다양성'</span>과 <span style="background:linear-gradient(transparent 55%,rgba(108,92,231,.25) 55%);padding:0 4px;">'교체 속도'</span></h4>
+        <p style="margin-bottom:20px;text-align:center;">다수의 전문가 데이터에 따르면, 광고 세트당 <span class="stat">5~15개의 다각화된 소재</span>가 필요하며, <span class="stat">7~14일</span> 주기로 소재 교체가 필수적입니다.<br>
+        그리고 그 소재 핵심은 <span class="stat">"P.D.A 매트릭스" </span>입니다.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px;">
+          <div style="background:#fff;border-radius:14px;padding:28px 20px;text-align:center;">
+            <div style="width:52px;height:52px;border-radius:50%;background:rgba(14,165,233,.08);border:2px solid rgba(14,165,233,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.3rem;font-weight:800;color:#0EA5E9;">P</div>
+            <h5 style="font-size:.95rem;font-weight:700;color:#222;margin-bottom:4px;">Persona</h5>
+            <p style="font-size:.78rem;color:#888;margin-bottom:10px;">누구에게</p>
+            <p style="font-size:.78rem;color:#555;line-height:1.6;">학생, 직장인, 전문가 등<br>다양한 타겟별 맞춤 메시지</p>
+          </div>
+          <div style="background:#fff;border-radius:14px;padding:28px 20px;text-align:center;">
+            <div style="width:52px;height:52px;border-radius:50%;background:rgba(16,185,129,.08);border:2px solid rgba(16,185,129,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.3rem;font-weight:800;color:#10B981;">D</div>
+            <h5 style="font-size:.95rem;font-weight:700;color:#222;margin-bottom:4px;">Desire</h5>
+            <p style="font-size:.78rem;color:#888;margin-bottom:10px;">무엇을 원하는가</p>
+            <p style="font-size:.78rem;color:#555;line-height:1.6;">효율, 트렌드, 피부 문제 해결 등<br> 다양한 동기 요소를 반영</p>
+          </div>
+          <div style="background:#fff;border-radius:14px;padding:28px 20px;text-align:center;">
+            <div style="width:52px;height:52px;border-radius:50%;background:rgba(108,92,231,.08);border:2px solid rgba(108,92,231,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.3rem;font-weight:800;color:#6C5CE7;">A</div>
+            <h5 style="font-size:.95rem;font-weight:700;color:#222;margin-bottom:4px;">Awareness</h5>
+            <p style="font-size:.78rem;color:#888;margin-bottom:10px;">얼마나 알고 있는가</p>
+            <p style="font-size:.78rem;color:#555;line-height:1.6;">인지 → 고려 → 구매 결정<br> 단계별 차별화된 메시지 전략</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    </div>
+
+    <div class="part-conclusion reveal">
+      <div class="part-conclusion-icon">&#9889;</div>
+      <p class="part-conclusion-label">Conclusion</p>
+      <p class="part-conclusion-text">수동으로 이 속도와 양을 감당하기엔 한계가 있습니다.<br>AI가 로직에 맞춰 트렌드를 읽고 무한대로 소재를 다각화하는 시스템이 필수적입니다.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- PIPELINE -->
+<section id="pipeline">
+  <div class="part-banner part-banner--2 reveal">
+    <div class="container">
+      <div class="part-num">02</div>
+      <div class="part-info">
+        <span class="part-label">Part 2 — System Pipeline</span>
+        <h2 class="part-title">데이터 기반 마케팅 자동화 선순환 워크플로우</h2>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="reveal">
+      <p class="section-desc">트렌드 감지부터 성과 검증까지, 5단계 파이프라인으로 캠페인 전 과정을 데이터의 근거해 설계하고 분석합니다.</p>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-track"></div>
+      <div class="pipeline-progress" id="pipelineProgress"></div>
+
+      <!-- STEP 1 -->
+      <div class="step reveal">
+        <div class="dot">1</div>
+        <div class="step-connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+        <div class="step-label">STEP 01</div>
+        <h3>인플루언서 발굴 및 트렌드 감지</h3>
+        <p>타사 및 자사 인플루언서를 크롤링한 데이터를 AI가 심층 분석하여 설정 된 페르소나를 도출합니다.<br> 이후 캠페인 진행 시, 제품 소구에 가장 적합한 인플루언서를 제안합니다.</p>
+        <div class="step-body">
+          <div class="step-gallery" data-caption="Step 1 — 트렌드 감지 및 인플루언서 발굴">
+            <div class="gallery-track">
+              <img src="images/STEP%2001-1.png" alt="Step 1-1">
+              <img src="images/STEP%2001-2.png" alt="Step 1-2">
+            </div>
+            <button class="gallery-nav gallery-prev">&#8249;</button>
+            <button class="gallery-nav gallery-next">&#8250;</button>
+            <div class="gallery-dots"></div>
+          </div>
+
+          <div style="margin-top:32px;">
+            <h4 style="font-size:1.1rem;font-weight:700;color:#222;margin-bottom:8px;">뷰티 트렌드 감지 및 활용</h4>
+            <p style="font-size:.88rem;color:#888;margin-bottom:20px;">SNS 채널별 뷰티 키워드를 AI가 크롤링 · 분류하여, 지금 뜨고있는 콘텐츠를 실무자에게 공유하고 캠페인 소재 컨셉으로 반영합니다.</p>
+            <div class="step-gallery" data-caption="Step 1 — 뷰티 트렌드 감지 및 소재 자산화">
+              <div class="gallery-track">
+                <img src="images/STEP01-3.png" alt="트렌드 감지 예시 3" style="flex:none;height:360px;width:auto;">
+                <img src="images/STEP%2001-4.png" alt="트렌드 감지 예시 4" style="flex:none;height:360px;width:auto;">
+              </div>
+              <button class="gallery-nav gallery-prev">&#8249;</button>
+              <button class="gallery-nav gallery-next">&#8250;</button>
+              <div class="gallery-dots"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step reveal">
+        <div class="dot">2</div>
+        <div class="step-connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+        <div class="step-label">STEP 02</div>
+        <h3>P.D.A 프레임워크 기반 맞춤형 소재 전략 세팅</h3>
+        <p>브랜드 DNA와 제품 기획안을 기반으로 P(페르소나) × D(욕구) × A(인지단계) 매트릭스를 조합하여 빈틈없이 캠페인 컨셉을 도출합니다.<br>제품의 타겟과 USP를 활용하여 'P.D.A = 누구에게 어떤 욕구를 어떻게 후킹할지' 설계합니다.</p>
+        <div class="step-body">
+          <div class="tbl-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open');">
+            <span class="tbl-toggle-icon">&#9654;</span><span>상세 기능 보기</span>
+          </div>
+          <div class="tbl-collapsible">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>기능</th><th>설명</th></tr></thead>
+              <tbody>
+                <tr><td>Persona 페르소나 & Desire 욕구</td><td>고객 유형(프로필/행동) 및 감정을 자극하는 소구점(Trigger) 설계</td></tr>
+                <tr><td>Awareness 인지단계 매핑</td><td>P×D 매트릭스 기반 TOFU(미인지) / MOFU(인지) / BOFU(구매고려) 퍼널별 구분 </td></tr>
+                <tr><td>컨셉 매트릭스</td><td>P × D × A 조합에서 콘텐츠 컨셉 자동 생성</td></tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+
+          <!-- 페르소나 & 디자이어 예시 토글 -->
+          <div class="tbl-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open');">
+            <span class="tbl-toggle-icon">&#9654;</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(14,165,233,.1);color:#0EA5E9;font-size:.7rem;font-weight:800;">P</span>
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(16,185,129,.1);color:#10B981;font-size:.7rem;font-weight:800;">D</span>
+              F&CO 페르소나 × 디자이어 설계 예시
+            </span>
+          </div>
+          <div class="tbl-collapsible">
+            <div style="padding:16px 0;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+              <div>
+                <p style="font-size:.82rem;font-weight:600;color:#0EA5E9;margin-bottom:10px;">Persona — 타겟 고객 프로필</p>
+                <div class="tbl-wrap" style="border:1px solid #eee;border-radius:10px;">
+                  <table style="font-size:.62rem;">
+                    <thead><tr><th style="font-size:.58rem;padding:8px 10px;">코드</th><th style="font-size:.58rem;padding:8px 10px;">페르소나</th><th style="font-size:.58rem;padding:8px 10px;">연령</th><th style="font-size:.58rem;padding:8px 10px;">직업</th><th style="font-size:.58rem;padding:8px 10px;">주요 고민</th></tr></thead>
+                    <tbody>
+                      <tr><td><span style="background:#8B5CF6;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">P1</span></td><td>피부 입문자</td><td>18-24</td><td>대학생, 취준생</td><td>화장이 서투름, 정보 과부하</td></tr>
+                      <tr><td><span style="background:#8B5CF6;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">P2</span></td><td>효율 추구형</td><td>25-34</td><td>직장인</td><td>아침 화장 시간 부족, 다크닝</td></tr>
+                      <tr><td><span style="background:#8B5CF6;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">P3</span></td><td>얼리 안티에이징</td><td>25-29</td><td>사무직 직장인</td><td>눈가 잔주름, 탄력 저하 불안</td></tr>
+                      <tr><td><span style="background:#8B5CF6;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">P4</span></td><td>클린 뷰티 비건</td><td>20-35</td><td>전문직, 프리랜서</td><td>유해 성분 우려, 철학 부재</td></tr>
+                      <tr><td><span style="background:#8B5CF6;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">P5</span></td><td>트러블 슈터</td><td>15-24</td><td>학생, 취준생</td><td>반복 트러블, 흉터, 넓은 모공</td></tr>
+                      <tr><td><span style="background:#8B5CF6;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">P6</span></td><td>바쁜 워킹/육아맘</td><td>30-45</td><td>워킹맘, 육아맘</td><td>시간 부족, 거칠어진 피부 결</td></tr>
+                      <tr><td colspan="5" style="text-align:center;color:#aaa;font-weight:500;letter-spacing:.1em;">⋯</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <p style="font-size:.82rem;font-weight:600;color:#10B981;margin-bottom:10px;">Desire — 핵심 욕구 & 감정 트리거</p>
+                <div class="tbl-wrap" style="border:1px solid #eee;border-radius:10px;">
+                  <table style="font-size:.62rem;">
+                    <thead><tr><th style="font-size:.58rem;padding:8px 10px;">코드</th><th style="font-size:.58rem;padding:8px 10px;">디자이어</th><th style="font-size:.58rem;padding:8px 10px;">정의</th><th style="font-size:.58rem;padding:8px 10px;">감정 트리거</th><th style="font-size:.58rem;padding:8px 10px;">연관 제품</th></tr></thead>
+                    <tbody>
+                      <tr><td><span style="background:#10B981;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">D1</span></td><td>사회적 자신감</td><td>매력적으로 보이고 싶은 욕구</td><td>타인의 시선, 첫인상 불안</td><td>메이크업, 톤업 크림, 향수</td></tr>
+                      <tr><td><span style="background:#10B981;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">D2</span></td><td>피부 건강</td><td>유해 성분에서 피부를 지키려는 욕구</td><td>케모포비아, 민감 반응</td><td>더마 코스메틱, 무자극 라인</td></tr>
+                      <tr><td><span style="background:#10B981;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">D3</span></td><td>노화 방지</td><td>젊음을 유지하려는 욕구</td><td>일상 속 번아웃</td><td>올인원, 패드 토너, 퀵 메이크업</td></tr>
+                      <tr><td><span style="background:#10B981;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">D5</span></td><td>가치 소비</td><td>올바른 신념을 실천하려는 욕구</td><td>소비 죄책감, 실천 자부심</td><td>비건 뷰티, 친환경 패키지</td></tr>
+                      <tr><td><span style="background:#10B981;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">D6</span></td><td>럭셔리/지위 과시</td><td>프리미엄으로 가치를 높이려는 욕구</td><td>특별대우 기대, 부러움 유발</td><td>명품 브랜드, 리미티드 에디션</td></tr>
+                      <tr><td><span style="background:#10B981;color:#fff;padding:2px 6px;border-radius:100px;font-size:.6rem;font-weight:700;">D7</span></td><td>트렌드 동질감</td><td>최신 뷰티 문화를 향유하려는 욕구</td><td>FOMO, 호기심</td><td>신제품 런칭 세트, 콜라보 제품</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-gallery" data-caption="Step 2 — PDA 프레임워크 소재 전략">
+            <div class="gallery-track">
+              <img src="images/STEP%2002-1.png" alt="Step 2-1" style="flex:none;height:360px;width:auto;">
+              <img src="images/STEP%2002-2.png" alt="Step 2-2" style="flex:none;height:360px;width:auto;">
+            </div>
+            <button class="gallery-nav gallery-prev">&#8249;</button>
+            <button class="gallery-nav gallery-next">&#8250;</button>
+            <div class="gallery-dots"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step reveal">
+        <div class="dot">3</div>
+        <div class="step-connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+        <div class="step-label">STEP 03</div>
+        <h3>AI 전략 생성 및 콘텐츠 가이드 제작</h3>
+        <p>세팅된 P.D.A 컨셉을 바탕으로 채널/예산 전략, 내러티브 아크(단계별 업로드 시점)를 설계하고 AI가 시딩 가이드을 생성하는 '콘텐츠 공장' 단계입니다.</p>
+        <div class="step-body">
+          <div class="tbl-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open');">
+            <span class="tbl-toggle-icon">&#9654;</span><span>상세 기능 보기</span>
+          </div>
+          <div class="tbl-collapsible">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>기능</th><th>설명</th></tr></thead>
+              <tbody>
+                <tr><td>AI 통합 전략 & 가이드</td><td>SNS 채널 · 핵심 메시지 · 업로드 타이밍 · 예산 배분 전략 자동 생성</td></tr>
+                <tr><td>내러티브 아크</td><td>Tease → Launch → Spread → LastCall 단계별 업로드 시점 설계</td></tr>
+                <tr><td>AI 이미지 & 영상 가이드</td><td>시나리오 기반 AI 이미지(Nanobana Pro) → AI 영상(Kling3.0) 자동 제작</td></tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+          <div class="step-gallery" data-caption="Step 3 — AI 전략 생성 및 콘텐츠 가이드">
+            <div class="gallery-track">
+              <img src="images/STEP%2003-1.png" alt="Step 3-1" style="flex:none;height:360px;width:auto;">
+              <img src="images/STEP%2003%20-2.png" alt="Step 3-2" style="flex:none;height:360px;width:auto;">
+              <img src="images/STEP%2003-3.png" alt="Step 3-3" style="flex:none;height:360px;width:auto;">
+            </div>
+            <button class="gallery-nav gallery-prev">&#8249;</button>
+            <button class="gallery-nav gallery-next">&#8250;</button>
+            <div class="gallery-dots"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step reveal">
+        <div class="dot">4</div>
+        <div class="step-connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+        <div class="step-label">STEP 04</div>
+        <h3>콘텐츠 타임라인 통합 관리 및 실시간 광고 전환</h3>
+        <p>섭외 메일/DM 발송부터 콘텐츠 업로드 타임라인 조율, 제품 발송까지 시스템 내에서 일원화합니다.<br>런칭된 시딩 콘텐츠의 초기 오가닉 반응을 실시간 분석하여 바이럴 조짐이 보이는 '초고효율 소재' 감지 시<br>즉각 메타 스폰서드 광고로 전환할 수 있도록 담당자에게 자동 알림을 발송합니다.</p>
+        <div class="step-body">
+          <div class="step-gallery" data-caption="Step 4 — 타임라인 통합 관리 및 실시간 광고 전환">
+            <div class="gallery-track">
+              <img src="images/STEP%2004-1.png" alt="Step 4-1" style="flex:none;height:360px;width:auto;">
+              <img src="images/STEP%2004-2.png" alt="Step 4-2" style="flex:none;height:360px;width:auto;">
+            </div>
+            <button class="gallery-nav gallery-prev">&#8249;</button>
+            <button class="gallery-nav gallery-next">&#8250;</button>
+            <div class="gallery-dots"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step reveal">
+        <div class="dot">5</div>
+        <div class="step-label">STEP 05</div>
+        <h3>성과 검증 및 자동 최적화 — 콘텐츠 엔진 2.0</h3>
+        <p>성과를 분석하고 자산화하여 다음 캠페인을 준비하는 '학습' 단계입니다.<br>P.D.A 히트맵으로 효율을 분석하고, 피로도가 쌓인 소재는 즉각 교체하며 성공한 소재는 글로벌 채널로 증폭시킵니다.</p>
+        <div class="step-body">
+          <div class="tbl-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open');">
+            <span class="tbl-toggle-icon">&#9654;</span><span>상세 기능 보기</span>
+          </div>
+          <div class="tbl-collapsible">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>핵심 기능</th><th>실무 적용 포인트</th></tr></thead>
+              <tbody>
+                <tr><td>P.D.A 히트맵 & 실시간 KPI</td><td>P×D×A 전략별 성과 히트맵 시각화 및 노출/인게이지먼트 실시간 추적</td></tr>
+                <tr><td>피로도 감지 & 크리에이티브 교체</td><td>오디언스 피로도 경고 알림 및 효율 저하 소재 자동 교체 제안</td></tr>
+                <tr><td>채널 리밸런싱 </td><td>실시간 예산 재배분 및 우수 시딩 콘텐츠 수확 → 큐레이션 → 증폭 사이클 구축</td></tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+          <div class="step-gallery" data-caption="Step 5 — 성과 검증 및 자동 최적화">
+            <div class="gallery-track">
+              <img src="images/STEP%2005-1.png" alt="Step 5-1" style="flex:none;height:360px;width:auto;">
+              <img src="images/STEP%2005-2.png" alt="Step 5-2" style="flex:none;height:360px;width:auto;">
+            </div>
+            <button class="gallery-nav gallery-prev">&#8249;</button>
+            <button class="gallery-nav gallery-next">&#8250;</button>
+            <div class="gallery-dots"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section id="impact">
+  <div class="part-banner part-banner--3 reveal">
+    <div class="container">
+      <div class="part-num">03</div>
+      <div class="part-info">
+        <span class="part-label">Part 3 — Business Impact</span>
+        <h2 class="part-title">비즈니스 임팩트</h2>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="reveal" style="margin-bottom:32px;"></div>
+    <div class="impact-grid stagger">
+      <div class="impact-card reveal">
+        <div class="impact-icon">⚡</div>
+        <h3>업무 효율성</h3>
+        <p>AI 콘텐츠 기획 및 인플루언서 자동 서칭으로<br>실무 리소스를 획기적으로 절감합니다.</p>
+      </div>
+      <div class="impact-card reveal">
+        <div class="impact-icon">📈</div>
+        <h3>ROI 극대화</h3>
+        <p>P.D.A 히트맵 데이터에 기반한 의사결정으로<br>캠페인 성과를 개선합니다.</p>
+      </div>
+      <div class="impact-card reveal">
+        <div class="impact-icon">🌐</div>
+        <h3>확장성</h3>
+        <p>글로벌 대응(GEO Ready) 및 크리에이터 자산화로 지속 가능한 마케팅 기반을 마련합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROLLOUT -->
+<section id="rollout">
+  <div class="part-banner part-banner--4 reveal">
+    <div class="container">
+      <div class="part-num">04</div>
+      <div class="part-info">
+        <span class="part-label">Part 4 — Roll-out & Next Step</span>
+        <h2 class="part-title">실행 전략 및 향후 방향성</h2>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="reveal">
+      <p class="section-desc">핵심 기능을 우선적으로 오픈하여 빠르게 실무에 적용하고 피드백 과정을 거쳐 리스크를 최소화하고,<br>궁극적으로 마케팅을 넘어 커머스까지 연결되는 통합 엔진으로 발전 예정입니다.</p>
+    </div>
+
+    <!-- HORIZONTAL TIMELINE: NOW → NEXT -->
+    <div class="reveal" style="display:flex;align-items:stretch;gap:12px;margin-top:16px;max-width:1200px;">
+
+      <!-- NOW -->
+      <div style="flex:1;background:#FAFAFA;border-radius:16px;padding:28px 20px;text-align:center;position:relative;">
+        <div style="display:inline-block;background:#6C5CE7;color:#fff;padding:5px 18px;border-radius:100px;font-size:.72rem;font-weight:700;margin-bottom:16px;">🚀 NOW</div>
+        <h3 style="font-size:1.05rem;font-weight:700;color:#222;margin-bottom:10px;">현장 중심 애자일 검증</h3>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:16px;text-align:left;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="font-size:1.2rem;flex-shrink:0;">⚡</span>
+            <p style="font-size:.8rem;color:#666;line-height:1.6;">핵심 기능 우선 오픈, 주 단위 순차적 업데이트</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="font-size:1.2rem;flex-shrink:0;">👤</span>
+            <p style="font-size:.8rem;color:#666;line-height:1.6;">AI 결과물은 담당자가 최종 검토 (Human-in-the-loop)</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="font-size:1.2rem;flex-shrink:0;">📊</span>
+            <p style="font-size:.8rem;color:#666;line-height:1.6;">Step별 KPI 설정, 효과를 정량적으로 측정</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;flex-shrink:0;font-size:1.2rem;color:#ccc;">▶</div>
+
+      <!-- GROWTH -->
+      <div style="flex:1;background:#FAFAFA;border-radius:16px;padding:28px 20px;text-align:center;position:relative;">
+        <div style="display:inline-block;background:#888;color:#fff;padding:5px 18px;border-radius:100px;font-size:.72rem;font-weight:700;margin-bottom:16px;">📈 GROWTH</div>
+        <h3 style="font-size:1.05rem;font-weight:700;color:#222;margin-bottom:10px;">데이터 기반 고도화</h3>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:16px;text-align:left;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="font-size:1.2rem;flex-shrink:0;">🌐</span>
+            <p style="font-size:.8rem;color:#666;line-height:1.6;">Meta 외 Google Ads, 자사몰 등 멀티 채널 확장</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="font-size:1.2rem;flex-shrink:0;">💰</span>
+            <p style="font-size:.8rem;color:#666;line-height:1.6;">소재 성과 → 실제 매출(전환율) 실시간 API 연동</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;flex-shrink:0;font-size:1.2rem;color:#ccc;">▶</div>
+
+      <!-- NEXT -->
+      <div style="flex:1;background:#FAFAFA;border-radius:16px;padding:28px 20px;text-align:center;position:relative;">
+        <div style="display:inline-block;background:#222;color:#fff;padding:5px 18px;border-radius:100px;font-size:.72rem;font-weight:700;margin-bottom:16px;">🔮 NEXT</div>
+        <h3 style="font-size:1.05rem;font-weight:700;color:#222;margin-bottom:10px;">풀퍼널 커머스 엔진</h3>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:16px;text-align:left;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="font-size:1.2rem;flex-shrink:0;">♾️</span>
+            <p style="font-size:.8rem;color:#666;line-height:1.6;">트렌드 → 소재 → 광고 → 매출 끊김 없는 순환</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="font-size:1.2rem;flex-shrink:0;">🤖</span>
+            <p style="font-size:.8rem;color:#666;line-height:1.6;">AI가 전 과정을 자동 최적화하는 통합 비즈니스 엔진</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="font-size:1.2rem;flex-shrink:0;">🚀</span>
+            <p style="font-size:.8rem;color:#666;line-height:1.6;">글로벌 확장 대응 (GEO Ready)</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="reveal" style="text-align:center;margin-top:80px;">
+      <p style="font-size:1.5rem;font-weight:800;color:#222;line-height:1.9;letter-spacing:-.02em;">F&CO는 <span style="background:linear-gradient(135deg,#6C5CE7,#00D2FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900;">AI-Native</span> 로 향해 있습니다.</p>
+      <p style="font-size:1.05rem;font-weight:500;color:#888;line-height:1.8;margin-top:10px;">단순한 업무 보조를 넘어 인접 기능들을 점진적으로 전사 확산하도록 하겠습니다.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>F&CO Influencer Seeding Dashboard v2.0 — Strategic Report</p>
+    <p style="font-size:.65rem;color:#bbb;margin-top:8px;">F&F AX 마케팅팀 김효은  |  2026.03.16</p>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox(event)">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
+<script>
+  // Nav: dark on hero, light on white sections
+  const nav = document.getElementById('nav');
+  const hero = document.querySelector('.hero');
+  function updateNav() {
+    const heroBottom = hero.getBoundingClientRect().bottom;
+    nav.classList.toggle('light-nav', heroBottom <= 64);
+  }
+  // Progress bar
+  const progressBar = document.getElementById('progressBar');
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+  }
+
+  // Hide/show nav on scroll direction
+  let lastScrollY = window.scrollY;
+  function updateNavVisibility() {
+    const currentScrollY = window.scrollY;
+    if (currentScrollY > lastScrollY && currentScrollY > 80) {
+      nav.classList.add('nav-hidden');
+    } else {
+      nav.classList.remove('nav-hidden');
+    }
+    lastScrollY = currentScrollY;
+  }
+
+  window.addEventListener('scroll', () => { updateNav(); updateProgress(); updateNavVisibility(); });
+  updateNav();
+  updateProgress();
+
+  // Reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => observer.observe(el));
+
+  // Pipeline progress line + active step
+  const pipelineEl = document.querySelector('.pipeline');
+  const pipelineProgressEl = document.getElementById('pipelineProgress');
+  const steps = document.querySelectorAll('.pipeline .step');
+  function updatePipeline() {
+    if (!pipelineEl || !pipelineProgressEl || steps.length === 0) return;
+    const pipeRect = pipelineEl.getBoundingClientRect();
+    const pipeTop = pipeRect.top;
+    const pipeHeight = pipeRect.height;
+    const triggerY = window.innerHeight * 0.55;
+    const progress = Math.min(Math.max((triggerY - pipeTop) / pipeHeight, 0), 1);
+    pipelineProgressEl.style.height = (progress * 100) + '%';
+    steps.forEach(step => {
+      const dotRect = step.querySelector('.dot').getBoundingClientRect();
+      step.classList.toggle('active', dotRect.top < triggerY);
+    });
+  }
+  window.addEventListener('scroll', updatePipeline, { passive: true });
+  updatePipeline();
+
+  // Lightbox
+  function openLightbox(el) {
+    const img = el.querySelector('img');
+    if (!img) return;
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox-caption').textContent = el.dataset.caption || '';
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(e) {
+    if (e.target === document.getElementById('lightbox') || e.target.closest('.lightbox-close')) {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Gallery — click image to open lightbox
+  document.querySelectorAll('.step-gallery .gallery-track img').forEach(img => {
+    img.addEventListener('click', () => {
+      const lb = document.getElementById('lightbox');
+      document.getElementById('lightbox-img').src = img.src;
+      const gallery = img.closest('.step-gallery');
+      document.getElementById('lightbox-caption').textContent = gallery ? gallery.dataset.caption : '';
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+</script>
+</body>
+</html>

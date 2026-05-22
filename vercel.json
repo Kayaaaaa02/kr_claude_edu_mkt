@@ -2,6 +2,6 @@
   "cleanUrls": false,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/", "destination": "/cn_claude_edu.html" }
+    { "source": "/", "destination": "/kr_claude_edu_mkt.html" }
   ]
 }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>F&amp;F · Claude Code · 나만의 대시보드</title>
+<title>F&amp;F · Claude Code · 마케팅 워크숍 (1·2회차)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -2172,33 +2172,33 @@
     .hero, .yellow-bold-banner, .feat-card { background: white !important; color: black !important; }
     .chapter-section { page-break-before: always; padding: 24px 16px; }
   }
+
+  /* ─── Session tabs (merged 1·2회차) ──────────── */
+  .nav-inner.nav-inner-tabs{display:flex;align-items:center;justify-content:space-between;gap:var(--md);}
+  .session-tabs{display:flex;gap:6px;list-style:none;margin:0;padding:0;}
+  .session-tab{font-family:var(--font);font-size:14px;font-weight:600;color:var(--slate);background:transparent;border:1px solid transparent;border-radius:var(--r-full);padding:8px 18px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s;}
+  .session-tab:hover{background:var(--surface);color:var(--ink);}
+  .session-tab.active{background:var(--ink-deep);color:var(--on-dark);}
+  .session-panel[hidden]{display:none;}
+  @media (max-width:760px){ .session-tab{font-size:12px;padding:6px 11px;} .nav-inner.nav-inner-tabs{gap:var(--xs);} }
 </style>
 </head>
 <body>
 
-<!-- ── Top nav ───────────────────────────────────────── -->
 <header class="top-nav">
-  <div class="nav-inner">
-    <a href="#" class="nav-logo">
+  <div class="nav-inner nav-inner-tabs">
+    <a href="#" class="nav-logo" data-session-link="s1">
       <span class="mark">F</span>
       <span>F&amp;F</span>
     </a>
-    <nav>
-      <ul class="nav-links" id="nav">
-        <li><a href="#ros">강의 개요</a></li>
-        <li><a href="#ch2">설계 프레임워크</a></li>
-        <li><a href="#scenarios">시나리오 A</a></li>
-        <li><a href="#ch4">핸즈온</a></li>
-        <li><a href="#ch7">배포</a></li>
-      </ul>
-    </nav>
-    <div class="nav-cta">
-      <a href="MLB_Sample_data.xlsx" download class="ghost">실습자료 받기</a>
-      <a href="#ros" class="btn btn-primary">워크숍 시작</a>
-    </div>
+    <ul class="session-tabs" role="tablist" aria-label="회차 선택">
+      <li><button type="button" class="session-tab active" data-session="s1" role="tab">1회차 · 나만의 대시보드</button></li>
+      <li><button type="button" class="session-tab" data-session="s2" role="tab">2회차 · 나만의 템플릿</button></li>
+    </ul>
   </div>
 </header>
 
+<div id="panel-s1" class="session-panel">
 <!-- ── Hero ──────────────────────────────────────────── -->
 <section class="hero">
   <!-- Decorative scattered sticky-note dots + wires -->
@@ -4046,6 +4046,717 @@ HTML이 완성된 뒤 **딱 1회만** 톤 정리를 한다.
     <span>No. 001 / Vol. 01</span>
   </div>
 </footer>
+</div>
+
+<div id="panel-s2" class="session-panel" hidden>
+<!-- ── Hero ──────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-decor" aria-hidden="true">
+    <span class="dot" style="width:14px;height:14px;background:var(--brand-pink);top:14%;left:8%;"></span>
+    <span class="sticky" style="background:var(--brand-orange);top:20%;left:18%;--rot:-9deg;"></span>
+    <span class="dot" style="width:10px;height:10px;background:var(--brand-green);top:30%;left:6%;"></span>
+    <span class="dot" style="width:18px;height:18px;background:var(--brand-yellow);top:55%;left:12%;"></span>
+    <span class="sticky" style="background:var(--brand-purple-300);top:68%;left:7%;--rot:8deg;"></span>
+    <span class="dot" style="width:12px;height:12px;background:var(--brand-teal);top:18%;right:10%;"></span>
+    <span class="sticky" style="background:var(--brand-pink);top:30%;right:6%;--rot:6deg;"></span>
+    <span class="dot" style="width:16px;height:16px;background:var(--brand-purple-300);top:50%;right:14%;"></span>
+    <span class="sticky" style="background:var(--brand-yellow);top:62%;right:9%;--rot:-7deg;"></span>
+    <span class="dot" style="width:9px;height:9px;background:var(--brand-orange);top:78%;right:18%;"></span>
+    <svg class="wire" viewBox="0 0 1440 600" preserveAspectRatio="none">
+      <path d="M -20 420 Q 240 360 480 420 T 960 420 T 1480 420" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="none"/>
+      <path d="M -20 480 Q 320 540 640 480 T 1280 480 T 1480 480" stroke="rgba(156,108,228,0.4)" stroke-width="1" fill="none"/>
+      <path d="M -20 80 Q 360 130 720 80 T 1440 100" stroke="rgba(255,255,255,0.18)" stroke-width="1" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="hero-inner">
+    <span class="hero-kicker"><span class="blink"></span>F&amp;F CHINA · CLAUDE CODE WORKSHOP · SESSION 2</span>
+    <h1 class="hero-title">이번엔 <span class="accent">나만의 템플릿</span>을 <br/>직접 만들다</h1>
+    <p class="hero-subtitle">지난 시간이 조금 어려우셨죠? 한 번 더, 천천히 갑니다. <br>이번 세션은 각자 자신의 데이터로 나만의 대시보드와 브랜드 디자인 템플릿(design.md)을 직접 만들어 가는 시간입니다.</p>
+    <div class="hero-buttons">
+      <a href="#s2-ros" class="btn btn-primary btn-lg">2회차 시작하기</a>
+      <a href="#" data-session-link="s1" class="btn btn-secondary-on-dark btn-lg">1회차 강의안 다시보기</a>
+    </div>
+  </div>
+</section>
+<div class="hero-spacer"></div>
+
+<!-- ── Run-of-show grid ──────────────────────────────── -->
+<section class="block" id="s2-ros">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Session 2 · Run-of-Show</span>
+      <h2 class="h2">오늘은 <span class="accent">내 손으로</span><br/>처음부터 끝까지</h2>
+      <p class="lead">복습으로 막힌 곳을 풀고, 내 데이터로 Plan을 짜고, 대시보드를 만들고,<br>마지막엔 우리 브랜드 design.md까지. 4단계로 나만의 템플릿을 완성합니다.</p>
+    </div>
+
+    <div class="ros-grid">
+      <a class="ros-tile tint-peach" href="#s2-recap">
+        <div class="num">00</div>
+        <div class="title">복습 · Recap</div>
+        <div class="desc">지난 5챕터 미니 요약 + 어려웠던 부분 Q&amp;A</div>
+      </a>
+      <a class="ros-tile tint-rose" href="#s2-plan">
+        <div class="num">01</div>
+        <div class="title">나만의 Plan</div>
+        <div class="desc">내 대시보드 정하기 · 막연하면 기존 보고자료 가져오기</div>
+      </a>
+      <a class="ros-tile tint-mint" href="#s2-build">
+        <div class="num">02</div>
+        <div class="title">1차 제작</div>
+        <div class="desc">frontend-design으로 내 데이터를 대시보드로</div>
+      </a>
+      <a class="ros-tile tint-lavender" href="#s2-design">
+        <div class="num">03</div>
+        <div class="title">디자인 템플릿</div>
+        <div class="desc">우리 브랜드/팀 전용 design.md 만들기</div>
+      </a>
+      <a class="ros-tile tint-yellow" href="#s2-next">
+        <div class="num">04</div>
+        <div class="title">다음 예고</div>
+        <div class="desc">CLAUDE.md · Hook · Agent로 자동화·고정화</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 00 · Recap ────────────────────────────── -->
+<section class="chapter-section" id="s2-recap">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part Zero</div>
+      <div class="chapter-aside-title">복습 · Recap</div>
+      <p class="chapter-aside-note">지난 5챕터를 한 장으로 다시 봅니다. 막혔던 부분은 여기서 멈춰 질문받고 넘어갈게요.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">복습 · 지난 세션 리캡</span>
+      <h2 class="chapter-h2">지난 5챕터,<br/><span class="accent">한 장으로 다시.</span></h2>
+      <p class="chapter-lead">1회차에서 다룬 흐름입니다. 각 카드의 링크를 누르면 1회차 강의안 해당 위치로 이동합니다. 어렵게 느껴진 부분이 있으면 지금 질문해 주세요.</p>
+
+      <div class="sub">
+        <div class="explain-grid">
+
+          <div class="feat-card lavender">
+            <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:var(--brand-purple-800);">RECAP 1 · 개념</span>
+            <h4 class="ttl">Skill · Plugin · Memory · MCP</h4>
+            <p>Claude Code의 4가지 핵심 기능. <strong>Skill</strong>은 노하우 매뉴얼, <strong>Plugin</strong>은 스킬 묶음 설치, <strong>Memory</strong>는 기억 노트, <strong>MCP</strong>는 외부 시스템 연결선.</p>
+            <p>핵심은 <code>/plugin install</code>로 스킬을 설치하고, 설치 후 <code>exit</code> → <code>claude</code> 재시작.</p>
+            <p class="ex"><strong><a href="#ch2b" data-session-link="s1" target="_blank" rel="noopener">1회차에서 다시 보기 →</a></strong></p>
+          </div>
+
+          <div class="feat-card sky">
+            <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:#2A6FB7;">RECAP 2 · PLAN</span>
+            <h4 class="ttl">5단계 PLAN + Plan Mode</h4>
+            <p>본격 제작 전 5분 계획이 완성도를 좌우합니다. <strong>목적 · 데이터 · 화면 · 형식 · 배포</strong> 5칸 워크시트.</p>
+            <p>Plan Mode는 <code>Shift + Tab</code> 두 번 또는 <code>/plan</code> — OK 받기 전엔 코드를 쓰지 않습니다.</p>
+            <p class="ex"><strong><a href="#ch2" data-session-link="s1" target="_blank" rel="noopener">1회차에서 다시 보기 →</a></strong></p>
+          </div>
+
+          <div class="feat-card mint">
+            <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:var(--brand-green);">RECAP 3 · 디자인</span>
+            <h4 class="ttl">'AI 티' 탈출 4전략</h4>
+            <p>그냥 만들면 어디서 본 듯한 화면이 나옵니다. ① <code>frontend-design</code> 켜기 ② 레퍼런스 명시 ③ 브랜드 톤 한 단어 ④ Bad·Good 예시 주입.</p>
+            <p>이 4가지가 오늘 STEP 2~3의 핵심입니다.</p>
+            <p class="ex"><strong><a href="#ch3" data-session-link="s1" target="_blank" rel="noopener">1회차에서 다시 보기 →</a></strong></p>
+          </div>
+
+          <div class="feat-card peach">
+            <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:var(--brand-orange-deep);">RECAP 4 · 핸즈온</span>
+            <h4 class="ttl">데이터 → 대시보드</h4>
+            <p><code>xlsx</code> skill로 엑셀을 읽고, 집계하고, <code>frontend-design</code>으로 HTML 한 파일로 만드는 흐름. 1회차에서는 MLB 샘플 데이터로 함께 했습니다.</p>
+            <p>오늘은 이 흐름을 <strong>본인 데이터</strong>로 다시 합니다.</p>
+            <p class="ex"><strong><a href="#ch4" data-session-link="s1" target="_blank" rel="noopener">1회차에서 다시 보기 →</a></strong></p>
+          </div>
+
+          <div class="feat-card yellow">
+            <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:#8B6B17;">RECAP 5 · 배포</span>
+            <h4 class="ttl">DCS AI로 사내 배포</h4>
+            <p>완성한 HTML을 <code>please deploy dashboard</code> 한 줄로 사내 환경에 올리고, 공유 링크를 받습니다. 데이터가 외부로 나가지 않아 보안 정책에 안전.</p>
+            <p>오늘 만든 결과물도 같은 방식으로 공유할 수 있습니다.</p>
+            <p class="ex"><strong><a href="#ch7" data-session-link="s1" target="_blank" rel="noopener">1회차에서 다시 보기 →</a></strong></p>
+          </div>
+
+        </div>
+
+        <div class="callout"><span><strong>여기서 잠깐 — 어려웠던 부분을 질문해 주세요.</strong> 설치가 안 됐던 분, Plan Mode가 헷갈렸던 분, 디자인이 'AI 티'에서 안 벗어났던 분 모두 환영입니다. 다음으로 넘어가기 전에 막힌 곳을 풀고 갑니다.</span></div>
+
+        <div style="margin-top:18px;">
+          <a class="btn btn-secondary" href="#" data-session-link="s1" target="_blank" rel="noopener">1회차 강의안 전체 다시보기 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 01 · My Plan ──────────────────────────── -->
+<section class="chapter-section" id="s2-plan">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part One</div>
+      <div class="chapter-aside-title">나만의 Plan</div>
+      <p class="chapter-aside-note">샘플 데이터가 아니라 본인 업무 데이터로 갑니다. 막연하면 예전에 보고했던 자료를 그대로 가져오세요.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">나만의 Plan · STEP BY STEP</span>
+      <h2 class="chapter-h2">한 번에 말고,<br/><span class="accent">4스텝으로 하나씩.</span></h2>
+      <p class="chapter-lead">아래 4개 칸을 하나씩 채우기만 하면 나만의 Plan 완성. 다 채우면 마지막 박스를 복사해 Plan Mode에 붙여넣습니다.</p>
+
+      <div class="sub">
+        <p style="margin:0;font-size:15px;color:var(--charcoal);"><strong>한 번에 다 정하지 마세요.</strong> 4스텝을 하나씩, 각 칸을 채울 때마다 바로 적습니다. 다 채우면 마지막 박스를 복사해 Plan Mode에 붙여넣으면 끝.</p>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="sub" style="margin-top:var(--xxl);">
+        <span class="sub-eyebrow">STEP 1 · 목적</span>
+        <h3>누가 · 언제 · 무슨 판단인지 한 줄</h3>
+        <div class="codebox" data-label="채워보기 ①"><pre>나는 [______] 가
+    [______] 에
+    [______] 를 판단하려고 본다.
+
+예) 마케팅팀이 / 매주 월요일 / 캠페인 성과를</pre></div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="sub" style="margin-top:var(--xxl);">
+        <span class="sub-eyebrow">STEP 2 · 데이터 위치</span>
+        <h3>내 데이터, 어디에 있나? — 하나만 고르기</h3>
+        <table class="compare">
+          <thead><tr><th>고르기</th><th>이런 경우</th><th>가져오는 법</th></tr></thead>
+          <tbody>
+            <tr><td>☐ ① Local · 내 PC</td><td>엑셀·CSV 파일이 손에 있음</td><td>채팅창에 드래그 → <code>xlsx</code> skill</td></tr>
+            <tr><td>☐ ② Snowflake · DB</td><td>사내 데이터베이스에 있음</td><td>필요한 범위만 엑셀로 추출 → Local</td></tr>
+            <tr><td>☐ ③ 지식그래프 · KG</td><td>DCS AI 지식그래프에 업로드됨</td><td>DCS AI MCP로 KG 조회</td></tr>
+          </tbody>
+        </table>
+        <div class="codebox" data-label="채워보기 ②"><pre># 고른 출처 한 줄을 그대로 복사
+Local      → "첨부한 [파일명].xlsx 를 데이터 소스로 써줘."
+Snowflake  → "데이터는 Snowflake [스키마.테이블]에 있어. 필요한 컬럼 확인 쿼리부터 제안해줘."
+KG         → "데이터는 DCS AI 지식그래프에 있어. [주제] 데이터를 KG에서 조회해줘."</pre></div>
+        <p style="font-size:13px;color:var(--slate);margin:6px 0 0;">※ 모르겠으면 가장 빠른 길 = 필요한 범위만 엑셀로 받아 Local로 시작. 실제 운영 데이터는 KG·사내 DB 권장(외부 유출 없음).</p>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="sub" style="margin-top:var(--xxl);">
+        <span class="sub-eyebrow">STEP 3 · 핵심 지표</span>
+        <h3>화면에 띄울 지표 3~5개</h3>
+        <div class="codebox" data-label="채워보기 ③"><pre>- 지표 1: [______]
+- 지표 2: [______]
+- 지표 3: [______]
+- (지표 4~5: 선택)
+
+예) 채널별 매출 / 전주 대비 증감 / TOP10 상품</pre></div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="sub" style="margin-top:var(--xxl);">
+        <span class="sub-eyebrow">STEP 4 · 화면 레이아웃</span>
+        <h3>위 → 아래 3단으로</h3>
+        <div class="codebox" data-label="채워보기 ④"><pre>상단: [______]   (한눈에 보는 KPI)
+중단: [______]   (비교·추이 차트)
+하단: [______]   (상세 표 / 인사이트)</pre></div>
+      </div>
+
+      <!-- 조립 -->
+      <div class="sub" style="margin-top:var(--section);">
+        <span class="sub-eyebrow">마지막 · 조립해서 붙여넣기</span>
+        <h3>Plan Mode 켜고 → 4칸 합쳐 붙여넣기</h3>
+        <ol class="steps" style="grid-template-columns:repeat(2,1fr);">
+          <li><h4>Plan Mode 켜기</h4><p><code>Shift + Tab</code> 두 번, 또는 <code>/plan</code>. 승인 전엔 코드 안 씀.</p></li>
+          <li><h4>STEP 1~4 답을 채워 붙여넣기</h4><p>설계안만 받고, OK 전까지 제작 금지.</p></li>
+        </ol>
+        <div class="prompt-card">
+          <div class="pc-head">
+            <span class="pc-title">Prompt · 내 Plan 조립</span>
+            <span class="sub-eyebrow" style="margin:0;background:var(--tint-lavender);color:var(--brand-purple-800);">붙여넣기</span>
+          </div>
+<pre>Plan Mode로 설계안만 만들어줘. (제작은 OK 받기 전 금지)
+
+[목적]      STEP 1 답
+[데이터]    STEP 2에서 고른 출처 한 줄 (+ 파일명/테이블/주제)
+[핵심 지표] STEP 3 지표 3~5개
+[레이아웃]  STEP 4 상단 / 중단 / 하단
+
+스타일: AI 기본 스타일 금지, 미니멀.
+설계안만. 코드는 내가 OK 하기 전엔 쓰지 마.</pre>
+        </div>
+      </div>
+
+      <!-- 막막하면 -->
+      <details class="toggle-card" style="margin-top:var(--xxl);">
+        <summary>
+          <span class="ttl-row"><span class="icon">🧩</span><span>막막하면 — 기존 보고자료를 붙여서 Plan 자동으로 뽑기 (대안)</span></span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </summary>
+        <div class="toggle-body">
+          <p style="margin:0 0 12px;font-size:13.5px;color:var(--charcoal);line-height:1.7;">4칸이 막히면, 예전 보고 자료(PPT·엑셀·노션)를 그대로 첨부하고 아래를 붙여넣으세요. Claude가 자료를 읽고 4칸을 대신 채운 설계안을 줍니다.</p>
+          <div class="prompt-card" style="margin:0;">
+            <div class="pc-head"><span class="pc-title">Prompt · 기존 자료 → Plan 자동 추출</span></div>
+<pre>내가 예전에 보고했던 이 자료(첨부)를
+매주 반복해서 볼 대시보드로 바꾸고 싶어.
+Plan Mode로 설계안만 만들어줘. (제작 금지)
+
+- 이 자료가 답하려는 핵심 질문 3개
+- 매주 갱신될 핵심 지표 3~5개
+- 데이터 출처 / 형태 (Local / Snowflake / KG)
+- 화면 레이아웃 (상단 KPI / 중단 비교 / 하단 상세)
+- 형식(HTML) / 공유 방법
+
+설계안만. 코드는 OK 전엔 쓰지 마.</pre>
+          </div>
+        </div>
+      </details>
+
+      <div class="slider-section" style="margin-top:var(--xxl);">
+        <h4 class="slider-title">Plan Mode 화면 — 1회차 복습</h4>
+        <p class="slider-sub">진입 흐름 다시 확인. 이미지 클릭 시 확대.</p>
+        <div class="image-slider" id="s2-planmode-recap">
+          <button class="slide" type="button" aria-label="Plan Mode 1단계 확대">
+            <img src="planmode/plan1.png" alt="Plan Mode 1단계 — 진입" />
+          </button>
+          <button class="slide" type="button" aria-label="Plan Mode 2단계 확대">
+            <img src="planmode/plan2.png" alt="Plan Mode 2단계 — 계획 작성" />
+          </button>
+          <button class="slide" type="button" aria-label="Plan Mode 3단계 확대">
+            <img src="planmode/plan3.png" alt="Plan Mode 3단계 — 계획 확인 후 승인" />
+          </button>
+          <button class="slide" type="button" aria-label="터미널 Plan Mode 확대">
+            <img src="planmode/plan4.png" alt="터미널 · /plan 명령으로 Plan Mode 진입" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 02 · Build v1 ─────────────────────────── -->
+<section class="chapter-section" id="s2-build" style="background:var(--surface-soft);">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part Two</div>
+      <div class="chapter-aside-title">1차 제작 · Build v1</div>
+      <p class="chapter-aside-note">완벽하지 않아도 됩니다. 1차 목표는 '내 데이터가 화면에 뜨는 것'. 막히면 손을 들어주세요.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">STEP 2 · frontend-design으로 1차 제작</span>
+      <h2 class="chapter-h2">Plan을 화면으로,<br/><span class="accent">일단 띄워봅니다.</span></h2>
+      <p class="chapter-lead">앞에서 정한 나만의 PLAN을 그대로 재료로 넣어, 첫 대시보드를 만듭니다. 1차는 다듬기 전 초안 — 우리 브랜드 톤은 STEP 3에서 올립니다.</p>
+
+      <ol class="steps" style="grid-template-columns:repeat(3,1fr);">
+        <li>
+          <h4>PLAN 확정</h4>
+          <p>STEP 1~4에서 정리한 4칸 워크시트(또는 자료에서 뽑아낸 설계안)를 그대로 입력합니다.</p>
+        </li>
+        <li>
+          <h4>frontend-design으로 생성</h4>
+          <p>아래 프롬프트로 1차 대시보드를 HTML 한 파일로 생성. <code>frontend-design</code> · <code>xlsx</code> skill을 함께 켭니다.</p>
+        </li>
+        <li>
+          <h4>화면 확인 · 품질 체크</h4>
+          <p>브라우저로 직접 열어 폰트 깨짐 · 어색한 문구 · 빠진 지표를 점검하고 HTML을 손봅니다.</p>
+        </li>
+      </ol>
+
+      <div class="sub">
+        <h3>1차 제작 프롬프트 — 내 데이터 버전</h3>
+        <p>대괄호 <code>[ ]</code> 부분을 본인 데이터에 맞게 채워 붙여넣으세요.</p>
+        <div class="prompt-card">
+          <div class="pc-head">
+            <span class="pc-title">Prompt · My Dashboard v1</span>
+            <span class="sub-eyebrow" style="margin:0;background:var(--tint-lavender);color:var(--brand-purple-800);">내 데이터</span>
+          </div>
+<pre>첨부한 [내 데이터 파일] 을 분석해서
+"[누가 / 언제 / 어떤 판단을 위해]" 보는
+대시보드를 HTML 단일 파일로 만들어줘.
+
+핵심 지표 (3~5개):
+- [지표 1]
+- [지표 2]
+- [지표 3]
+
+차트:  [막대 / 라인 / 표 / 히트맵] 중 선택
+스타일: AI 기본 스타일 금지, 미니멀
+frontend-design skill, xlsx skill 활용</pre>
+        </div>
+      </div>
+
+      <div class="tip-callout">
+        <div class="tip-head">REMINDER · 'AI 티' 탈출 4전략</div>
+        <ul>
+          <li><strong>① frontend-design 켜기</strong> — 프롬프트에 "frontend-design skill 적극 활용" 한 줄.</li>
+          <li><strong>② 레퍼런스 명시</strong> — "이 사이트 스타일로" 처럼 구체적 시안 첨부.</li>
+          <li><strong>③ 브랜드 톤 한 단어</strong> — 미니멀 / 클래식 / 스트리트 / 아웃도어.</li>
+          <li><strong>④ Bad·Good 예시</strong> — "보라 그라데이션 금지, Inter 남발 금지" 처럼 금지 목록.</li>
+        </ul>
+      </div>
+
+      <div class="callout"><span>1차 결과가 나오면 <strong>꼭 브라우저로 직접 열어 보세요.</strong> 화면을 눈으로 확인하고 어색한 부분을 메모해두면, 다음 STEP 3에서 우리 브랜드 톤으로 한 번에 끌어올릴 수 있습니다.</span></div>
+
+      <div class="tip-callout">
+        <div class="tip-head">TIP · 세션 정리에 유용한 명령어</div>
+        <ul>
+          <li><strong><code>/rename</code></strong> — 현재 대화 이름을 <code>내 주간 대시보드</code>처럼 바꿔두면 나중에 찾기 쉽습니다.</li>
+          <li><strong><code>/resume</code></strong> — 이전 대화를 이어서 엽니다. 오늘 작업을 다음에 이어서 수정·배포할 때.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 03 · Design Template (design.md) ──────── -->
+<section class="chapter-section" id="s2-design">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part Three</div>
+      <div class="chapter-aside-title">디자인 템플릿 · design.md</div>
+      <p class="chapter-aside-note">오늘의 핵심 결과물. 우리 브랜드/팀 디자인 규칙을 design.md 한 장에 정리해 둡니다.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">STEP 3 · 우리 브랜드 디자인 템플릿</span>
+      <h2 class="chapter-h2">'어디서 본 듯한' 화면 대신,<br/><span class="accent">우리 브랜드의 design.md.</span></h2>
+      <p class="chapter-lead">1차 결과를 우리 브랜드 톤으로 고정하는 핵심 산출물 — <code>design.md</code> 한 장입니다. 한 번 만들어두면 매번 다시 설명할 필요가 없어요.</p>
+
+      <div class="yellow-bold-banner">
+        <h3 class="ybh">design.md 한 장이면<br><strong>"design.md 따라줘"</strong> 한 줄로 끝.</h3>
+        <p>우리 브랜드의 컬러 · 폰트 · 여백 · 모서리 · 금지사항을 문서 한 장에 박아두면, 다음부터는 그 파일만 첨부하면 됩니다. 매번 톤을 설명하지 않아도 일관된 결과가 나와요.</p>
+        <div class="decor"></div>
+      </div>
+
+      <div class="sub">
+        <div class="feat-card lavender" style="margin:20px 0;">
+          <span class="sub-eyebrow" style="margin:0 0 8px;background:rgba(255,255,255,0.6);color:var(--brand-purple-800);">개념</span>
+          <h4 class="ttl">design.md = 우리 브랜드 디자인 시스템 메모</h4>
+          <p style="margin:0;">컬러 · 폰트 · 여백 · 모서리 · 사진 톤 · <strong>금지사항</strong>을 한 파일에 적은 디자인 규칙서입니다. <code style="background:var(--canvas);padding:1px 6px;border-radius:var(--r-xs);">frontend-design</code> skill과 <strong>함께 첨부</strong>하면 Claude가 그 규칙을 따라 'AI 티' 없는 우리 브랜드 화면을 만들어줍니다. 1회차에서 본 Apple.com 디자인 시스템 정리가 바로 이 형태예요.</p>
+        </div>
+
+        <h3 style="margin-top:var(--xxl);">만드는 법 — 5단계</h3>
+        <ol class="steps stack">
+          <li>
+            <h4>① 브랜드 톤 한 단어 정하기</h4>
+            <p>미니멀 / 클래식 / 스트리트 / 아웃도어 캐주얼 … 형용사 한 단어라도 못 박는 것이 결과물의 차이를 만듭니다. (예: MLB "스트리트 클래식", Discovery "아웃도어 캐주얼")</p>
+          </li>
+          <li>
+            <h4>② 기존 자료 모으기</h4>
+            <p>브랜드 가이드, 룩북, 매장 사진, 기존 브로셔·보고서 — 회사가 이미 가진 자료가 가장 정확한 레퍼런스입니다. 외부 시안보다 내부 자료가 톤을 더 잘 잡아줘요.</p>
+          </li>
+          <li>
+            <h4>③ Claude에게 골격 요청</h4>
+            <p>아래 프롬프트로 자료를 읽혀 design.md 초안을 받습니다. 11개 항목 구조로 만들어 달라고 명시합니다.</p>
+          </li>
+          <li>
+            <h4>④ 11개 항목 채우기</h4>
+            <p>색은 HEX(예: #1d1d1f), 폰트는 실제 이름으로 구체적으로. 모르는 값은 지어내지 말고 <code>[확인 필요]</code>로 비워둡니다. (아래 빈 양식 참고)</p>
+          </li>
+          <li>
+            <h4>⑤ frontend-design과 함께 재생성</h4>
+            <p>완성한 design.md를 STEP 2의 1차 대시보드와 함께 첨부해 다시 생성 → 우리 브랜드 톤으로 끌어올린 2차 결과물 완성.</p>
+          </li>
+        </ol>
+
+        <h4 style="margin:28px 0 6px;">design.md 빈 양식 — 이 11칸을 채우면 됩니다</h4>
+        <div class="codebox" data-label="design.md"><pre># [브랜드명] Design System (design.md)
+
+## ① Overview · 한 줄 컨셉
+"____한 ____ 대시보드"          ← 한 문장으로 톤 정의
+
+## ② Brand & Accent · 액센트 컬러
+- Action: #______               ← 링크·버튼·포커스 단일 컬러 권장
+- (보조 액센트는 최소화)
+
+## ③ Surface · 캔버스 톤
+- Base:      #FFFFFF
+- Off-white: #______            ← 섹션 교대용
+- Dark:      #______
+
+## ④ Text · 잉크 톤
+- 본문/헤드라인: #______        ← 순수 #000은 지양
+- Muted:        #______
+
+## ⑤ Typography · 폰트
+- Display: ____
+- Body/UI: ____                 ← Inter 남발 주의, 브랜드 폰트 우선
+
+## ⑥ Type Scale · 위계
+- Hero: __px / weight __ / line __
+- Body: __px / weight __ / line __
+
+## ⑦ Spacing & Layout
+- Base unit: 8px (4 / 8 / 12 / 16 / 24 / 32 / 48 / 80)
+- Section padding / Max width: ____
+
+## ⑧ Elevation · 그림자 철학
+- 그림자를 어디에 / 얼마나 쓸지 한 줄
+
+## ⑨ Border Radius · 모서리
+- 0 / small / large / pill 중 어디에 무엇
+
+## ⑩ Photography · 사진 톤
+- 촬영·이미지 방향 한 줄
+
+## ⑪ Don'ts · 금지사항
+- 보라 그라데이션 금지 / Inter 남발 금지 / 모든 모서리 큰 radius 금지 …</pre></div>
+
+        <h4 style="margin:28px 0 6px;">design.md 생성 프롬프트</h4>
+        <div class="prompt-card">
+          <div class="pc-head">
+            <span class="pc-title">Prompt · 우리 브랜드 design.md 만들기</span>
+            <span class="sub-eyebrow" style="margin:0;background:var(--tint-lavender);color:var(--brand-purple-800);">핵심 산출물</span>
+          </div>
+<pre>우리 브랜드는 "[톤 한 단어: 미니멀 / 클래식 / 스트리트 / 아웃도어]" 야.
+첨부한 자료(브랜드 가이드 / 룩북 / 매장 사진 / 기존 보고서)를 참고해서
+우리 브랜드 전용 design.md 디자인 시스템 문서를 만들어줘.
+
+[담을 항목 — 11개]
+① 컨셉 한 줄   ② 액센트 컬러   ③ 서피스 톤   ④ 텍스트 톤
+⑤ 폰트         ⑥ 타입 스케일   ⑦ 여백/레이아웃 ⑧ 그림자 규칙
+⑨ 모서리 규칙  ⑩ 사진 톤       ⑪ 금지사항(Don'ts)
+
+[규칙]
+- 색은 HEX로, 폰트는 실제 이름으로 구체적으로.
+- 'AI 티' 나는 기본값(보라 그라데이션 · Inter 남발 · 과한 radius)은
+  반드시 Don'ts에 명시.
+- 추측하지 말고, 자료에서 못 찾은 값은 [확인 필요]로 비워둬.
+
+design.md 파일로 저장해줘.</pre>
+        </div>
+
+        <details class="toggle-card" style="margin-top:24px;">
+          <summary>
+            <span class="ttl-row"><span class="icon">🍎</span><span>참고 모델 — Apple.com 디자인 시스템 (이 구조 그대로 우리 브랜드로 바꾸면 됩니다)</span></span>
+            <span class="chev" aria-hidden="true">▾</span>
+          </summary>
+          <div class="toggle-body" style="padding:0;">
+            <div class="design-example" style="margin:0;border:0;border-radius:0;">
+              <div class="design-example-header" style="border-radius:0;">
+                <span class="design-example-tag">참고 자료 · 실제 디자인 시스템 예시</span>
+                <h4>Apple.com 디자인 시스템 — 우리 브랜드로 바꿀 자리</h4>
+                <p>실제 Apple.com이 따르는 디자인 시스템 정리입니다. <mark>노란색 하이라이트</mark>가 본인 브랜드 값으로 바꿔야 할 자리예요. 같은 구조로 우리 design.md를 채우면 됩니다.</p>
+              </div>
+              <div class="design-example-body">
+
+                <h5>① Overview · 한 줄 컨셉</h5>
+                <p><mark>"제품 사진을 거의 보이지 않는 UI로 감싸는 미니멀 카탈로그"</mark> — Apple은 모든 페이지를 풀블리드 제품 타일이 light/dark 번갈아 쌓이는 구조로 잡는다. 어떤 요소도 제품과 경쟁하지 않는다.</p>
+
+                <h5>② Brand &amp; Accent · 단일 액센트 컬러</h5>
+                <ul>
+                  <li>Action Blue: <mark><span class="swatch" style="background:#0066cc;"></span><code>#0066cc</code></mark> — 모든 인터랙티브 요소(링크, CTA, 포커스). <strong>두 번째 브랜드 컬러는 없음.</strong></li>
+                  <li>Focus Blue: <mark><code>#0071e3</code></mark> — 키보드 포커스 링 전용</li>
+                  <li>Sky Link Blue: <mark><code>#2997ff</code></mark> — dark 타일 위에서만 사용</li>
+                </ul>
+
+                <h5>③ Surface · 캔버스 톤</h5>
+                <ul>
+                  <li>Pure White: <span class="swatch" style="background:#ffffff;"></span><code>#ffffff</code></li>
+                  <li>Parchment (시그니처 off-white): <mark><span class="swatch" style="background:#f5f5f7;"></span><code>#f5f5f7</code></mark> — light 타일 교대용</li>
+                  <li>Near-Black Tile: <mark><span class="swatch" style="background:#272729;"></span><code>#272729</code></mark> — dark 타일 / 풀블리드 제품 진열대</li>
+                  <li>Pure Black: <code>#000000</code> — 글로벌 nav 바에만</li>
+                </ul>
+
+                <h5>④ Text · 잉크 톤</h5>
+                <ul>
+                  <li>Near-Black Ink: <mark><code>#1d1d1f</code></mark> — 모든 헤드라인·본문. <strong>순수 #000은 안 씀</strong> (인쇄가 아닌 사진 같은 느낌).</li>
+                  <li>Body On Dark: <code>#ffffff</code></li>
+                  <li>Body Muted (dark 위): <code>#cccccc</code></li>
+                </ul>
+
+                <h5>⑤ Typography · 폰트 시스템</h5>
+                <ul>
+                  <li>Display: <mark><code>SF Pro Display</code></mark> — 19px 이상 헤드라인용 (Apple 자체 폰트)</li>
+                  <li>Body / UI: <mark><code>SF Pro Text</code></mark> — 20px 미만 본문용</li>
+                  <li>대체 폰트: 시스템 스택 <code>system-ui, -apple-system</code> 우선, 비-Apple 환경에선 <mark>Inter</mark>가 가장 가까움</li>
+                </ul>
+
+                <h5>⑥ Type Scale · 위계</h5>
+                <ul>
+                  <li>Hero Display: <mark>56px / 600 / line 1.07 / tracking -0.28px</mark> — Apple 시그니처 "tight" 헤드라인</li>
+                  <li>Tile Display: <mark>40px / 600 / line 1.10</mark> — 제품 타일 헤드라인</li>
+                  <li>Body: <mark>17px / 400 / line 1.47 / tracking -0.374px</mark> — <strong>16px가 아닌 17px</strong>, Apple만의 readability 기준</li>
+                  <li>Caption: 14px / 400 / -0.224px</li>
+                  <li>Weight ladder: <strong>300 / 400 / 600 / 700</strong> — <strong>500은 의도적으로 제외</strong></li>
+                </ul>
+
+                <h5>⑦ Spacing &amp; Layout · 리듬</h5>
+                <ul>
+                  <li>Base unit: 8px (4 / 8 / 12 / 16 / 20 / 24 / 32 / 48 / 80)</li>
+                  <li>Section vertical padding: <mark>80px</mark> (제품 타일 안쪽)</li>
+                  <li>타일 사이 gap: <strong>0px</strong> — 색상 변화 자체가 구분선</li>
+                  <li>Max content width: <mark>980px (텍스트), 1440px (그리드)</mark></li>
+                </ul>
+
+                <h5>⑧ Elevation · 그림자 철학</h5>
+                <ul>
+                  <li>그림자는 <strong>딱 하나</strong>: <mark><code>rgba(0, 0, 0, 0.22) 3px 5px 30px</code></mark></li>
+                  <li>적용 대상: <strong>제품 사진</strong>에만. 카드·버튼·텍스트엔 절대 안 씀</li>
+                  <li>UI 위계는 (a) 표면 색 변화 + (b) backdrop-blur로 표현</li>
+                </ul>
+
+                <h5>⑨ Border Radius · 모서리</h5>
+                <ul>
+                  <li>None (0px): 풀블리드 타일 (모서리 라운딩 없음)</li>
+                  <li>Small (8px): dark 유틸리티 버튼 (Sign In, Bag)</li>
+                  <li>Large (18px): 스토어 유틸리티 카드</li>
+                  <li>Pill (9999px): <strong>primary 액션 — 파란 pill CTA</strong>, 검색 input, 설정 chip</li>
+                </ul>
+
+                <h5>⑩ Photography Direction · 촬영 톤</h5>
+                <p><mark>"제품 사진이 주인공, UI는 사라진다"</mark>. 풀블리드 21:9 또는 16:9 히어로 이미지. 제품 렌더는 PNG 투명 배경에 표면 위 그림자 하나만 받아서 무게감을 만든다. 데코레이션 그라데이션은 <strong>없음</strong> — 분위기는 모두 사진에서 온다.</p>
+
+                <h5>⑪ Don'ts · 금지 사항</h5>
+                <ul>
+                  <li>두 번째 액센트 컬러 추가 금지 — 모든 "click me"는 단일 Action Blue</li>
+                  <li>카드·버튼·텍스트에 그림자 추가 금지 — 그림자는 제품 사진 전용</li>
+                  <li>장식용 그라데이션 배경 금지 — 분위기는 사진에서</li>
+                  <li>본문에 weight 500 금지 — 사다리는 300 / 400 / 600 / 700</li>
+                  <li>풀블리드 타일 모서리 라운딩 금지 — 색 변화가 구분선</li>
+                  <li>본문 line-height 1.47 미만으로 줄이지 않기 — editorial 페이스의 일부</li>
+                </ul>
+
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <div class="slider-section" style="margin-top:28px;">
+          <h4 class="slider-title">레퍼런스 갤러리 — awesome-design-md</h4>
+          <p class="slider-sub">톤이 비슷한 시안을 골라 design.md 작성 참고로 쓰세요. 이미지를 클릭하면 크게 볼 수 있습니다. — <a href="https://github.com/VoltAgent/awesome-design-md" target="_blank" rel="noopener">github.com/VoltAgent/awesome-design-md</a></p>
+          <div class="image-slider" id="s2-awesome-slider">
+            <button class="slide" type="button" aria-label="awesome-design-md 1 확대">
+              <img src="awesome_design/awesome-design-md_1.png" alt="awesome-design-md 1" />
+            </button>
+            <button class="slide" type="button" aria-label="awesome-design-md 2 확대">
+              <img src="awesome_design/awesome-design-md_2.png" alt="awesome-design-md 2" />
+            </button>
+            <button class="slide" type="button" aria-label="awesome-design-md 3 확대">
+              <img src="awesome_design/awesome-design-md_3.png" alt="awesome-design-md 3" />
+            </button>
+            <button class="slide" type="button" aria-label="awesome-design-md 4 확대">
+              <img src="awesome_design/awesome-design-md_4.png" alt="awesome-design-md 4" />
+            </button>
+            <button class="slide" type="button" aria-label="awesome-design-md 5 확대">
+              <img src="awesome_design/awesome-design-md_5.png" alt="awesome-design-md 5" />
+            </button>
+          </div>
+        </div>
+
+        <div class="callout"><span>완성한 <code>design.md</code>는 프로젝트 폴더나 <code>~/.claude/</code> 아래에 보관하고, 작업할 때마다 함께 첨부하세요. <strong>다음 세션에서는 이 규칙을 CLAUDE.md에 등록해 첨부조차 생략</strong>합니다.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Chapter 04 · Next Session ─────────────────────── -->
+<section class="chapter-section" id="s2-next" style="background:var(--surface-soft);">
+  <div class="chapter-grid">
+    <aside class="chapter-aside">
+      <div class="chapter-num">Part Four</div>
+      <div class="chapter-aside-title">다음 세션 예고</div>
+      <p class="chapter-aside-note">오늘 만든 대시보드와 design.md를 CLAUDE.md · Hook · Agent로 자동화하고 고정화합니다.</p>
+    </aside>
+    <div class="chapter-body">
+      <span class="eyebrow">다음 세션 예고 · 자동화 &amp; 고정화</span>
+      <h2 class="chapter-h2">만든 걸<br/><span class="accent">자동으로, 고정으로.</span></h2>
+      <p class="chapter-lead">오늘은 '직접 만드는' 세션이었습니다. 다음 세션은 그걸 <strong>매번 안 해도 되게</strong> 만드는 시간 — 반복 업무 자동화의 시작입니다.</p>
+
+      <div class="deep-callout">
+        <span class="deep-tag">다음 세션 · CLAUDE.md + Hook + Agent</span>
+        <h4>"다음 주엔 데이터만 갈아끼우면 끝"</h4>
+        <p>오늘 만든 <strong>대시보드</strong>와 <strong>design.md</strong>를 자동화·고정화 장치에 연결합니다. 세 가지 도구를 한 번 설정해두면, 매주 반복하던 작업이 사람 손 없이 돌아갑니다.</p>
+
+        <div class="deep-block">
+          <div class="deep-block-title"><span class="num">1</span>CLAUDE.md — 항상 적용되는 규칙</div>
+          <p>우리 브랜드 톤 · design.md · 보고 규칙을 프로젝트 <code>CLAUDE.md</code> 파일에 적어두면, <strong>매번 첨부하지 않아도</strong> 모든 대화에 자동 적용됩니다. 오늘 만든 design.md를 여기에 한 번 고정해두는 단계예요.</p>
+        </div>
+
+        <div class="deep-block">
+          <div class="deep-block-title"><span class="num">2</span>Hook — 자동 시작·자동 마무리 트리거</div>
+          <p>어떤 일을 <strong>시작할 때 / 끝낼 때</strong> 자동으로 같이 돌릴 작업을 등록. 예) 파일 저장 시 자동 점검, 결과 파일이 생기면 사내 메신저로 자동 발송.</p>
+        </div>
+
+        <div class="deep-block">
+          <div class="deep-block-title"><span class="num">3</span>Agent — 반복 작업 위임</div>
+          <p>"매출 데이터 → 대시보드 → 공유 링크" 흐름을 <code>weekly-report</code> 에이전트에 저장해두면, 다음 주엔 한 줄로 호출 끝. 메인 대화도 깔끔하게 유지됩니다.</p>
+        </div>
+
+        <div class="deep-flow">
+          <div class="step">월 09:00<br/>OS 스케줄러</div>
+          <div class="arrow">→</div>
+          <div class="step">claude -p<br/>"주간 보고서"</div>
+          <div class="arrow">→</div>
+          <div class="step">weekly-report<br/>agent 실행</div>
+          <div class="arrow">→</div>
+          <div class="step">Hook이 사내<br/>메신저 알림</div>
+        </div>
+      </div>
+
+      <div class="tip-callout">
+        <div class="tip-head">준비물 · 다음 세션에 가져오세요</div>
+        <ul>
+          <li><strong>오늘 만든 대시보드 HTML</strong> 1개</li>
+          <li><strong>오늘 만든 design.md</strong> 1장</li>
+          <li>매주 반복하는 본인 업무 흐름 한 가지 (자동화 후보)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Final CTA banner light ────────────────────────── -->
+<section class="cta-light">
+  <h3>오늘의 마무리</h3>
+  <p>나만의 대시보드 1개 + 우리 브랜드 design.md 1장. <br><br>두 가지를 직접 만들어 가셨다면 오늘 목표 달성입니다. 다음 세션에서는 이 둘을 CLAUDE.md · Hook · Agent로 자동화·고정화해, 사람 손이 덜 가는 나만의 에이전트로 키워봅니다.</p>
+  <p class="cta-qa-note">Q&amp;A는 사내 메신저로 부탁드립니다! 감사합니다.</p>
+</section>
+
+<!-- ── Footer ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="b">
+        <span class="mark">F</span>
+        <span>F&amp;F</span>
+      </div>
+      <p>F&amp;F PROCESS AX TEAM이 운영하는 Claude Code 교육. 2회차 — 각자 자신의 데이터로 나만의 대시보드와 디자인 템플릿을 직접 만드는 실습형 워크숍.</p>
+    </div>
+    <div>
+      <h4>강의</h4>
+      <ul>
+        <li><a href="#s2-ros">Run-of-Show</a></li>
+        <li><a href="#s2-recap">복습 · Recap</a></li>
+        <li><a href="#s2-plan">나만의 Plan</a></li>
+        <li><a href="#s2-build">1차 제작</a></li>
+        <li><a href="#s2-design">디자인 템플릿</a></li>
+        <li><a href="#s2-next">다음 세션 예고</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>산출물</h4>
+      <ul>
+        <li><a href="#s2-build">대시보드 HTML</a></li>
+        <li><a href="#s2-design">우리 브랜드 design.md</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>자료</h4>
+      <ul>
+        <li><a href="#" data-session-link="s1">1회차 강의안</a></li>
+        <li><a href="https://github.com/VoltAgent/awesome-design-md" target="_blank" rel="noopener">awesome-design-md</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>F&amp;F</h4>
+      <ul>
+        <li><a href="#">AX팀 소개</a></li>
+        <li><a href="#">교육 커리큘럼</a></li>
+        <li><a href="mailto:hyoeun28@fnfcorp.com">문의하기</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-colophon">
+    <span>© 2026 F&amp;F · Claude Code Workshop</span>
+    <span>Set in Inter &amp; Pretendard</span>
+    <span>No. 002 / Vol. 01</span>
+  </div>
+</footer>
+</div>
 
 <!-- Lightbox modal (shared for image sliders) -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="이미지 확대 보기">
@@ -4057,110 +4768,75 @@ HTML이 완성된 뒤 **딱 1회만** 톤 정리를 한다.
 </div>
 
 <script>
-  // Active chapter highlight
   (() => {
-    const getSections = () => {
-      const ids = ['#ch0','#ch2','#scenarios','#ch4','#ch7'];
-      return ids.map(id => document.querySelector(id)).filter(Boolean);
-    };
+    const panels = [...document.querySelectorAll('.session-panel')];
+    const tabs = [...document.querySelectorAll('.session-tab')];
     const topNav = document.querySelector('.top-nav');
-    let lastY = window.scrollY;
-    const NAV_HEIGHT = 64;
-    const SCROLL_THRESHOLD = 6;
-
-    const onScroll = () => {
-      const links = document.querySelectorAll('#nav a');
-      const sections = getSections();
-      const probe = window.innerHeight * 0.3;
-      let activeIdx = -1;
-      sections.forEach((s, i) => {
-        const r = s.getBoundingClientRect();
-        if (r.top < probe && r.bottom > probe) activeIdx = i;
-      });
-      links.forEach((a, i) => a.classList.toggle('active', i === activeIdx));
-
-      // Hide/show top nav based on scroll direction
-      if (topNav) {
-        const y = window.scrollY;
-        const delta = y - lastY;
-        if (Math.abs(delta) > SCROLL_THRESHOLD) {
-          if (delta > 0 && y > NAV_HEIGHT) {
-            // scrolling down — hide
-            topNav.classList.add('nav-hidden');
-          } else if (delta < 0) {
-            // scrolling up — show
-            topNav.classList.remove('nav-hidden');
-          }
-          lastY = y;
-        }
-        // Always show near the very top
-        if (y <= NAV_HEIGHT) {
-          topNav.classList.remove('nav-hidden');
-        }
-      }
+    const showSession = (id) => {
+      panels.forEach(p => { p.hidden = (p.id !== 'panel-' + id); });
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.session === id));
+      if (topNav) topNav.classList.remove('nav-hidden');
+      window.scrollTo(0, 0);
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    tabs.forEach(t => t.addEventListener('click', () => showSession(t.dataset.session)));
+    document.querySelectorAll('[data-session-link]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        showSession(a.getAttribute('data-session-link'));
+        const hash = a.getAttribute('href');
+        if (hash && hash.length > 1 && hash.charAt(0) === '#') {
+          const el = document.querySelector(hash);
+          if (el) requestAnimationFrame(() => el.scrollIntoView());
+        }
+      });
+    });
+    let lastY = window.scrollY;
+    const NAV_HEIGHT = 64, TH = 6;
+    window.addEventListener('scroll', () => {
+      if (!topNav) return;
+      const y = window.scrollY, d = y - lastY;
+      if (Math.abs(d) > TH) {
+        if (d > 0 && y > NAV_HEIGHT) topNav.classList.add('nav-hidden');
+        else if (d < 0) topNav.classList.remove('nav-hidden');
+        lastY = y;
+      }
+      if (y <= NAV_HEIGHT) topNav.classList.remove('nav-hidden');
+    }, { passive: true });
   })();
 
-  // Lightbox + slider (any .image-slider on page) + standalone illustrations
   (() => {
     const sliders = document.querySelectorAll('.image-slider');
     const illusts = document.querySelectorAll('.feat-card .illust');
     if (!sliders.length && !illusts.length) return;
     const lightbox = document.getElementById('lightbox');
+    if (!lightbox) return;
     const lightboxImg = document.getElementById('lightbox-img');
     const counter = document.getElementById('lightbox-counter');
     const closeBtn = lightbox.querySelector('.lightbox-close');
     const prevBtn = lightbox.querySelector('.lightbox-prev');
     const nextBtn = lightbox.querySelector('.lightbox-next');
-    let currentSet = [];
-    let currentIdx = 0;
-
-    const open = (slidesArr, idx) => {
-      currentSet = slidesArr;
-      currentIdx = idx;
-      const node = currentSet[idx];
+    let currentSet = [], currentIdx = 0;
+    const open = (arr, idx) => {
+      currentSet = arr; currentIdx = idx;
+      const node = arr[idx];
       const img = node.tagName === 'IMG' ? node : node.querySelector('img');
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt || '';
-      const multi = currentSet.length > 1;
+      lightboxImg.src = img.src; lightboxImg.alt = img.alt || '';
+      const multi = arr.length > 1;
       counter.style.display = multi ? '' : 'none';
       prevBtn.style.display = multi ? '' : 'none';
       nextBtn.style.display = multi ? '' : 'none';
-      if (multi) counter.textContent = `${idx + 1} / ${currentSet.length}`;
+      if (multi) counter.textContent = (idx + 1) + ' / ' + arr.length;
       lightbox.classList.add('open');
       document.body.style.overflow = 'hidden';
     };
-    const close = () => {
-      lightbox.classList.remove('open');
-      document.body.style.overflow = '';
-    };
-    const nav = (delta) => {
-      if (!currentSet.length) return;
-      const newIdx = (currentIdx + delta + currentSet.length) % currentSet.length;
-      open(currentSet, newIdx);
-    };
-
+    const close = () => { lightbox.classList.remove('open'); document.body.style.overflow = ''; };
+    const nav = (delta) => { if (!currentSet.length) return; open(currentSet, (currentIdx + delta + currentSet.length) % currentSet.length); };
     sliders.forEach(slider => {
       const slides = [...slider.querySelectorAll('.slide')];
-      slides.forEach((s, i) => {
-        s.addEventListener('click', () => open(slides, i));
-      });
+      slides.forEach((sl, i) => sl.addEventListener('click', () => open(slides, i)));
     });
-
-    // Standalone illustrations (single image lightbox)
-    document.querySelectorAll('.feat-card .illust').forEach(img => {
-      img.addEventListener('click', () => open([img], 0));
-    });
-
-    // Standalone result preview (single image lightbox)
-    document.querySelectorAll('.result-preview-shot').forEach(btn => {
-      const img = btn.querySelector('img');
-      if (!img) return;
-      btn.addEventListener('click', () => open([img], 0));
-    });
-
+    document.querySelectorAll('.feat-card .illust').forEach(img => img.addEventListener('click', () => open([img], 0)));
+    document.querySelectorAll('.result-preview-shot').forEach(btn => { const img = btn.querySelector('img'); if (img) btn.addEventListener('click', () => open([img], 0)); });
     closeBtn.addEventListener('click', close);
     prevBtn.addEventListener('click', e => { e.stopPropagation(); nav(-1); });
     nextBtn.addEventListener('click', e => { e.stopPropagation(); nav(1); });

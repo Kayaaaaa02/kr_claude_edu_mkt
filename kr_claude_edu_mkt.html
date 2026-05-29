@@ -1495,7 +1495,7 @@
   }
   .codebox-edit { color: #E8E6E3; }
   .prompt-edit { color: var(--charcoal); min-height: 60px; }
-  .ws-copy {
+  .ws-copy, .ws-rebuild {
     margin-top: 8px;
     font-family: var(--font); font-size: 12px; font-weight: 600;
     color: var(--charcoal); background: var(--surface);
@@ -1503,7 +1503,7 @@
     padding: 5px 12px; cursor: pointer;
     transition: background .15s, border-color .15s, color .15s;
   }
-  .ws-copy:hover { background: var(--surface-soft); border-color: var(--steel); }
+  .ws-copy:hover, .ws-rebuild:hover { background: var(--surface-soft); border-color: var(--steel); }
   .ws-copy.copied { background: var(--tint-mint); border-color: var(--brand-green); color: var(--brand-green); }
 
   /* ─── Prompt card (lighter, on-page) ───────────────── */
@@ -4263,6 +4263,15 @@ HTML이 완성된 뒤 **딱 1회만** 톤 정리를 한다.
       <p class="chapter-aside-note">샘플 데이터가 아니라 본인 업무 데이터로 갑니다. 막연하면 예전에 보고했던 자료를 그대로 가져오세요.</p>
     </aside>
     <div class="chapter-body">
+      <div class="callout" style="margin-top:0;"><span><strong>시작 전에 — 모델을 Sonnet으로 변경해주세요.</strong> 빠른 작업 진행을 위해 권장합니다. 채팅창에 <code>/model</code> 명령어로 변경할 수 있어요.</span></div>
+      <div class="tip-callout">
+        <div class="tip-head">TIP · Claude Code 업데이트</div>
+        <ul>
+          <li>아래 명령을 터미널에 입력하면 Claude Code가 최신 버전으로 업데이트됩니다.</li>
+        </ul>
+        <div class="codebox" data-label="TERMINAL" style="margin:10px 0 0;"><pre>npm install -g @anthropic-ai/claude-code@latest</pre></div>
+      </div>
+
       <span class="eyebrow">나만의 Plan · STEP BY STEP</span>
       <h2 class="chapter-h2">한 번에 말고,<br/><span class="accent">4스텝으로 하나씩.</span></h2>
       <p class="chapter-lead">아래 4개 칸을 하나씩 채우기만 하면 나만의 Plan 완성. 다 채우면 마지막 박스를 복사해 Plan Mode에 붙여넣습니다.</p>
@@ -4275,7 +4284,7 @@ HTML이 완성된 뒤 **딱 1회만** 톤 정리를 한다.
       <div class="sub" style="margin-top:var(--xxl);">
         <span class="sub-eyebrow">STEP 1 · 목적</span>
         <h3>누가 · 언제 · 무슨 판단인지 한 줄</h3>
-        <div class="codebox" data-label="채워보기 ①"><textarea class="codebox-edit" spellcheck="false" rows="6"> [누가]이 [언제] 에 [무엇을] 를 판단하려고 본다.
+        <div class="codebox" data-label="채워보기 ①"><textarea id="plan-s1" class="codebox-edit" spellcheck="false" rows="6"> [누가]이 [언제] 에 [무엇을] 를 판단하려고 본다.
 예) 마케팅팀이 / 매주 월요일 / 캠페인 성과를</textarea></div>
         <button type="button" class="ws-copy">복사</button>
       </div>
@@ -4292,7 +4301,7 @@ HTML이 완성된 뒤 **딱 1회만** 톤 정리를 한다.
             <tr><td>☐ ③ 지식그래프 · KG</td><td>DCS AI 지식그래프에 업로드됨</td><td>DCS AI MCP로 KG 조회</td></tr>
           </tbody>
         </table>
-        <div class="codebox" data-label="채워보기 ②"><textarea class="codebox-edit" spellcheck="false" rows="6"># 고른 출처 한 줄을 그대로 복사 (택1)
+        <div class="codebox" data-label="채워보기 ②"><textarea id="plan-s2" class="codebox-edit" spellcheck="false" rows="6"># 고른 출처 한 줄을 그대로 복사 (택1)
 Local: "첨부한 [파일명].xlsx 를 데이터 소스로 써줘."
 Snowflake: "데이터는 Snowflake [스키마.테이블]에 있어. 필요한 컬럼 확인 쿼리부터 제안해줘."
 KG: "데이터는 DCS AI 지식그래프에 있어. [어떤 브랜드의 어떤] 데이터를 KG에서 조회해줘."</textarea></div>
@@ -4304,7 +4313,7 @@ KG: "데이터는 DCS AI 지식그래프에 있어. [어떤 브랜드의 어떤]
       <div class="sub" style="margin-top:var(--xxl);">
         <span class="sub-eyebrow">STEP 3 · 핵심 지표</span>
         <h3>화면에 띄울 지표 3~5개</h3>
-        <div class="codebox" data-label="채워보기 ③"><textarea class="codebox-edit" spellcheck="false" rows="6">- 지표 1: [______]
+        <div class="codebox" data-label="채워보기 ③"><textarea id="plan-s3" class="codebox-edit" spellcheck="false" rows="6">- 지표 1: [______]
 - 지표 2: [______]
 - 지표 3: [______]
 - (지표 4~5: 선택)
@@ -4317,12 +4326,17 @@ KG: "데이터는 DCS AI 지식그래프에 있어. [어떤 브랜드의 어떤]
       <div class="sub" style="margin-top:var(--xxl);">
         <span class="sub-eyebrow">STEP 4 · 화면 레이아웃</span>
         <h3>위 → 아래 3단으로</h3>
-        <div class="codebox" data-label="채워보기 ④"><textarea class="codebox-edit" spellcheck="false" rows="4">상단: [______] (한눈에 보는 KPI)
-중단: [______] (비교·추이 차트)
-하단: [______] (상세 표 / 인사이트)</textarea></div>
+        <div class="codebox" data-label="채워보기 ④"><textarea id="plan-s4" class="codebox-edit" spellcheck="false" rows="4">상단: [______] (한눈에 보는 KPI ex.총매출, 카테고리별, 총 IMP(팔로워수x0.3), 총 ENG
+중단: [______] (비교·추이 차트 ex.국내채널별 매출(도넛차트),카테고리별 매출(도넛차트), 서브카테고리별 매출(도넛 차트),카테고리별 국내 판매량 TOP5 표(카테고리별 필터 추가),인플루언서 컨텐츠 성과, 컨텐츠 ENG. TOP12)
+하단: [______] (상세 표 / 인사이트 ex.매출 AI 인사이트, 인플루언서 컨텐츠 AI 인사이트)</textarea></div>
         <button type="button" class="ws-copy">복사</button>
 
-        <p style="margin:18px 0 8px;font-size:13px;color:var(--slate);"><strong style="color:var(--ink);">레이아웃 예시</strong> — 상단 KPI · 중단 차트 · 하단 표 배치</p>
+        <details class="toggle-card" style="margin-top:18px;">
+          <summary>
+            <span class="ttl-row"><span class="icon">📊</span><span>레이아웃 예시 — 미니 대시보드 미리보기 (상단 KPI · 중단 차트 · 하단 표)</span></span>
+            <span class="chev" aria-hidden="true">▾</span>
+          </summary>
+          <div class="toggle-body">
         <div style="border:1px solid var(--hairline);border-radius:var(--r-lg);overflow:hidden;background:var(--canvas);box-shadow:var(--sh-1);">
           <div style="background:var(--surface-soft);border-bottom:1px solid var(--hairline);padding:8px 14px;font-family:var(--font-mono);font-size:11px;color:var(--steel);letter-spacing:0.08em;">DASHBOARD PREVIEW · 예시</div>
           <div style="padding:16px;">
@@ -4392,6 +4406,8 @@ KG: "데이터는 DCS AI 지식그래프에 있어. [어떤 브랜드의 어떤]
           </div>
         </div>
         <p style="margin:8px 0 0;font-size:12px;color:var(--slate);">※ 예시일 뿐 — 본인 지표에 맞게 KPI·차트·표 종류를 골라 STEP 4 칸에 적으세요.</p>
+          </div>
+        </details>
       </div>
 
       <!-- 조립 -->
@@ -4407,7 +4423,8 @@ KG: "데이터는 DCS AI 지식그래프에 있어. [어떤 브랜드의 어떤]
             <span class="pc-title">Prompt · 내 Plan 조립</span>
             <span class="sub-eyebrow" style="margin:0;background:var(--tint-lavender);color:var(--brand-purple-800);">붙여넣기</span>
           </div>
-<textarea class="prompt-edit" spellcheck="false" rows="11">Plan Mode로 설계안만 만들어줘. (제작은 OK 받기 전 금지)
+<p style="margin:0 0 10px;font-size:12px;color:var(--slate);">↓ STEP 1~4 입력이 아래에 자동으로 합쳐집니다. 직접 수정도 가능해요.</p>
+<textarea id="plan-assembled" class="prompt-edit" spellcheck="false" rows="13">Plan Mode로 설계안만 만들어줘. (제작은 OK 받기 전 금지)
 
 [목적] STEP 1 답
 [데이터] STEP 2에서 고른 출처 한 줄
@@ -4416,7 +4433,10 @@ KG: "데이터는 DCS AI 지식그래프에 있어. [어떤 브랜드의 어떤]
 
 스타일: AI 기본 스타일 금지, 미니멀.
 설계안만. 코드는 OK 전엔 쓰지 마.</textarea>
-          <button type="button" class="ws-copy">복사</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="ws-copy">복사</button>
+            <button type="button" class="ws-rebuild" id="plan-rebuild">↻ STEP에서 다시 만들기</button>
+          </div>
         </div>
       </div>
 
@@ -4499,6 +4519,25 @@ Plan Mode로 설계안만 만들어줘. (제작 금지)
 3) "Install for you (user scope)" 선택
 4) exit 후 claude 재시작                          ← 적용</pre></div>
           <p style="margin:10px 0 0;font-size:13px;color:var(--slate);">💡 설치 확인 — <code>/skills</code> 로 <code>frontend-design</code>이 보이면 완료. 프롬프트에 "frontend-design skill 적극 활용" 한 줄을 넣어 강제로 켤 수도 있습니다.</p>
+        </div>
+      </details>
+
+      <details class="toggle-card">
+        <summary>
+          <span class="ttl-row"><span class="icon">🔧</span><span>HTML 직접 수정 TIP — F12 개발자도구로 수정 위치 찾기</span></span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </summary>
+        <div class="toggle-body">
+          <p style="margin:0 0 12px;font-size:13.5px;color:var(--charcoal);line-height:1.7;">화면에서 고치고 싶은 부분이 HTML 어디인지 찾을 때 유용합니다.</p>
+          <ol class="steps stack" style="max-width:none;margin:0 0 14px;">
+            <li><h4>1️⃣ F12 클릭</h4><p>브라우저에서 <code>F12</code>를 눌러 개발자도구를 엽니다. <strong>맥은 <code>Cmd + Option + I</code></strong>를 누르세요.</p></li>
+            <li><h4>2️⃣ Elements → "Select an element" 버튼</h4><p><strong>Elements</strong> 탭으로 간 뒤, 좌상단 <strong>화살표 아이콘(Select an element..)</strong> 버튼을 클릭합니다.</p></li>
+            <li><h4>3️⃣ 수정할 위치에 마우스 호버</h4><p>화면에서 고칠 부분 위에 마우스를 올리면 해당 코드가 Elements에서 하이라이트됩니다 — 거기가 HTML에서 수정할 자리예요.</p></li>
+          </ol>
+          <figure style="margin:0;">
+            <img class="zoomable" src="images_fin/html_edit_tip.png" alt="Chrome 개발자도구 Elements 탭과 Select an element 버튼 — 수정 위치 찾기" style="display:block;width:100%;max-width:560px;height:auto;border-radius:var(--r-md);border:1px solid var(--hairline);box-shadow:var(--sh-1);cursor:zoom-in;" />
+            <figcaption style="margin-top:8px;font-size:12px;color:var(--slate);">F12 → Elements → Select an element(좌상단 화살표) → 화면 호버로 위치 찾기 (이미지 클릭 시 확대)</figcaption>
+          </figure>
         </div>
       </details>
 
@@ -4986,6 +5025,39 @@ design.md 파일로 저장해줘.</pre>
         setTimeout(() => { btn.textContent = old; btn.classList.remove('copied'); }, 1500);
       });
     });
+  })();
+
+  // Plan auto-assemble: STEP 1~4 → 조립 박스 (편집 시 자동합침 멈춤)
+  (() => {
+    const s1 = document.getElementById('plan-s1');
+    const s2 = document.getElementById('plan-s2');
+    const s3 = document.getElementById('plan-s3');
+    const s4 = document.getElementById('plan-s4');
+    const out = document.getElementById('plan-assembled');
+    const rebuildBtn = document.getElementById('plan-rebuild');
+    if (!out || !s1) return;
+    let manual = false;
+    const clean = (ta, ph) => {
+      if (!ta) return ph;
+      const v = ta.value.split('\n')
+        .map(l => l.replace(/\s+$/, ''))
+        .filter(l => { const t = l.trim(); return t && !t.startsWith('예)') && !t.startsWith('#') && !t.startsWith('※'); })
+        .join('\n').trim();
+      return v || ph;
+    };
+    const build = () =>
+      'Plan Mode로 설계안만 만들어줘. (제작은 OK 받기 전 금지)\n\n' +
+      '[목적]\n' + clean(s1, '(STEP 1 입력)') + '\n\n' +
+      '[데이터]\n' + clean(s2, '(STEP 2 입력)') + '\n\n' +
+      '[핵심 지표]\n' + clean(s3, '(STEP 3 입력)') + '\n\n' +
+      '[레이아웃]\n' + clean(s4, '(STEP 4 입력)') + '\n\n' +
+      '스타일: AI 기본 스타일 금지, 미니멀.\n' +
+      '설계안만. 코드는 OK 전엔 쓰지 마.';
+    const sync = () => { if (!manual) out.value = build(); };
+    [s1, s2, s3, s4].forEach(t => t && t.addEventListener('input', sync));
+    out.addEventListener('input', () => { manual = true; });
+    if (rebuildBtn) rebuildBtn.addEventListener('click', () => { manual = false; out.value = build(); });
+    sync();
   })();
 </script>
 
